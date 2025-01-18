@@ -13,10 +13,10 @@ TaiwanCultureProject
 │   ├── layouts/
 │   ├── pages/
 │   ├── plugins/
-│   ├── public/
 │   ├── utils/
 │   ├── App.jsx
 │   └── main.jsx
+├── public/
 ├── .env
 ├── index.html
 ├── eslint.config.js
@@ -32,12 +32,12 @@ TaiwanCultureProject
   * **layouts:** 頁面佈局組件。
   * **pages:** 頁面檔案 (e.g., Home.jsx, About.jsx)
   * **plugins:** 使用的插件或第三方函式庫的封裝
-  * **public:** 靜態文件
   * **utils:** 工具函數或輔助功能，可以在整個應用中重複使用。
   * **App.jsx:** 應用的根組件、設定路由
   * **main.jsx:** 主應用程式入口
 * **.env:** 配置應用的環境變數。
 * **index.html:** 頁面入口，主要 HTML 檔案。
+  * **public:** 靜態文件
 * **eslint.config.js:** ESLint 的配置文件。它用來定義代碼檢查規則，以確保代碼風格的一致性。
 * **vite.config.js:** Vite 配置檔案
 * **package.json:** 依賴管理
