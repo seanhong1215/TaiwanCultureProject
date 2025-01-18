@@ -5,8 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? 'taiwan-culture-project' : '/',
   plugins: [react()],
+  publicDir: 'public', // 默認為 public 資料夾,
   build: {
-    assetsInlineLimit: 0, // 禁用內聯資源，確保所有文件打包到 dist
+    outDir: "dist",
   },
   resolve: {
     alias: {
