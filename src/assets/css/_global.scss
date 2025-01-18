@@ -1,0 +1,22 @@
+// 全局樣式
+
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+
+button {
+  font-family: Arial, sans-serif;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.primary {
+  background-color: $primary-color;
+  color: white;
+}
+
+button.secondary {
+  background-color: $secondary-color;
+  color: white;
+}

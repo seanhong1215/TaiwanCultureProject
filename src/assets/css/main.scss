@@ -1,0 +1,11 @@
+// 引入所有樣式的主文件
+
+@import './variables';
+@import './global';
+@import './mixins';
+
+
+body {
+  font-family: $font-family;
+  background-color: $secondary-color;
+}

@@ -6,28 +6,40 @@
 
 ## 專案簡介
 ```bash
-your-project-name/
-├── public/
-│   └── index.html
+TaiwanCultureProject
 ├── src/
-│   ├── components/
 │   ├── assets/
+│   ├── components/
+│   ├── layouts/
 │   ├── pages/
+│   ├── plugins/
+│   ├── public/
 │   ├── utils/
+│   ├── App.jsx
 │   └── main.jsx
+├── .env
+├── index.html
+├── eslint.config.js
 ├── vite.config.js
 ├── package.json
 └── package-lock.json
 ```
 
-* **public:** 放置靜態檔案，如 index.html。
+
 * **src:** 存放源碼：
-  * **components:** 共用元件
-  * **assets:** 靜態資源（圖片、SCSS）
-  * **layouts:** 頁面佈局
-  * **pages:** 各個頁面
-  * **main.js:** 應用程式入口
-* **vite.config.js:** Vite 配置
+  * **assets:** 靜態資源，如圖片、字型、顏色樣式、音效等。
+  * **components:** React 組件
+  * **layouts:** 頁面佈局組件。
+  * **pages:** 頁面檔案 (e.g., Home.jsx, About.jsx)
+  * **plugins:** 使用的插件或第三方函式庫的封裝
+  * **public:** 靜態文件
+  * **utils:** 工具函數或輔助功能，可以在整個應用中重複使用。
+  * **App.jsx:** 應用的根組件、設定路由
+  * **main.jsx:** 主應用程式入口
+* **.env:** 配置應用的環境變數。
+* **index.html:** 頁面入口，主要 HTML 檔案。
+* **eslint.config.js:** ESLint 的配置文件。它用來定義代碼檢查規則，以確保代碼風格的一致性。
+* **vite.config.js:** Vite 配置檔案
 * **package.json:** 依賴管理
 
 ## 開發環境設置
@@ -35,11 +47,11 @@ your-project-name/
 1. 安裝 ```Node.js``` 和 ```npm:``` 請確保您的系統已安裝 ```Node.js``` (版本 v16 以上) 和 ```npm。```
 2. ```clone 專案:```
    ```bash
-   git clone [https://github.com/your-username/your-project-name.git](https://github.com/your-username/your-project-name.git)
+   git clone [https://github.com/codebreakers2025/TaiwanCultureProject.git]
    ```
 3. **安裝依賴:**
   ```bash
-  cd your-project-name
+  cd TaiwanCultureProject
   npm install
 ```
 4. **啟動開發伺服器:**
@@ -68,9 +80,9 @@ your-project-name/
 git init
 git add .
 git commit -m 'first commit'
-git branch -M main
-git remote add origin [https://github.com/your-username/your-project-name.git](https://github.com/your-username/your-project-name.git)
-git push -u origin main
+git branch -M master
+git remote add origin [https://github.com/codebreakers2025/TaiwanCultureProject.git]
+git push -u origin master
 ```
 2. 執行部署指令:
 ```bash
