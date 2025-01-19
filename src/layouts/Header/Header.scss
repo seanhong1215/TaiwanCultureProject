@@ -1,0 +1,33 @@
+.header {
+    background-color: #f8f9fa; /* 輕灰色背景 */
+    padding: 10px 0;
+  
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+  
+    .nav-item {
+      margin-left: 20px;
+    }
+  
+    .btn {
+      margin-left: 10px;
+    }
+  
+    .dropdown-menu {
+      min-width: 120px;
+    }
+  
+    /* 響應式設計 */
+    @media (max-width: 767px) {
+      .navbar-nav {
+        text-align: center;
+      }
+  
+      .btn {
+        margin-top: 10px;
+      }
+    }
+  }
+  
