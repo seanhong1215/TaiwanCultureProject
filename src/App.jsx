@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from '@/pages/Home';
 import ActivityList from '@/pages/ActivityList';
 import Journal from '@/pages/Journal';
@@ -8,7 +8,7 @@ import '@/assets/css/main.scss';
 
 const App = () => {
   return (
-    <Router>
+    <>
       <Header />
       <main className="container-fluid gx-0">
         <Routes>
@@ -18,7 +18,7 @@ const App = () => {
         </Routes>
       </main>
       <Footer />
-    </Router>
+    </>
   );
 };
 
