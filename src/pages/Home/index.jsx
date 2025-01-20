@@ -2,7 +2,32 @@ import Card from '@/components/Card/index.jsx';
 import './Home.scss';
 import { useTranslation } from 'react-i18next';
 
+import React, { useEffect, useState } from 'react';
+import { getUsers } from '@/utils/api';
+
+
 const Home = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+   // 使用 useEffect 在組件加載時獲取用戶資料
+   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await getUsers(); // 呼叫 API 函數
+        console.log(data);
+        
+      } catch (err) {
+        setError('Failed to fetch users');
+      } 
+    };
+
+    fetchUsers();
+  }, []); // 空陣列表示只在組件加載時呼叫一次
+
+
+
+
   const { t } = useTranslation();
   return (
     <div className="home">

@@ -1,9 +1,14 @@
 import axios from 'axios'
 
-const api = axios.create({
-    baseURL: `${import.meta.env.VITE_API}/api/${import.meta.env.VITE_PATH}`,
-    timeout: 5000,
-});
+const API_BASE_URL = '/api';
 
-export default api;
+export const getUsers = async () => {
+    try {
+      const response = await axios.get(`/api/spaces`);
+      return response.data; 
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      throw error; // 如果發生錯誤，拋出錯誤
+    }
+  };
 
