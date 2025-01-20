@@ -1,0 +1,36 @@
+{
+  "websiteName": "體驗台灣好文化",
+  "searchViewInfo": "立即搜索全台特色景點資訊！",
+  "popularEventTitle": "熱門活動",
+  "popularEventSubTitle": "體驗在地文化，暢遊台灣。 品嚐台灣道地美食！",
+  "benefit": "為什麼選擇我們",
+  "journalTitle": "慢活日誌",
+  "journalSubTitle": "放慢腳步，細品生活之美。",
+  "eventReviews": "活動好評",
+  "copyright": "© 2025 體驗台灣好文化Culture in Taiwan 版權所有,無商業行為.",
+  "common": {
+      "btnBack": "上一步",
+      "btnPay": "付款",
+      "step1": "我的資料",
+      "step2": "付款方式",
+      "help": "求助",
+      "signIn": "登入",
+      "continue": "繼續"
+  },
+  "form": {
+      "inputFirstName": "請輸入姓氏",
+      "inputLastName": "請輸入名子",
+      "name": "姓氏",
+      "lastName": "名子"
+  },
+  "lang": {
+    "zhCn": "中文",
+    "en": "英文",
+    "jp": "日文"
+  },
+  "menu": {
+    "activityList": "所有活動",
+    "journal": "慢活日誌",
+    "lang": "多國語言"
+  }
+}

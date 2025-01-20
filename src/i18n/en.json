@@ -1,0 +1,36 @@
+{
+  "websiteName": "Experience Taiwan's good culture",
+  "searchViewInfo": "Search for information on Taiwan’s special attractions now!",
+  "popularEventTitle": "Popular Event",
+  "popularEventSubTitle": "Experience local culture and travel around Taiwan. Taste Taiwanese local food!",
+  "benefit": "Why choose us",
+  "journalTitle": "Slow Living Journal",
+  "journalSubTitle": "Slow down and savor the beauty of life.",
+  "eventReviews": "Event Reviews",
+  "copyright": "© 2025 Culture in Taiwan. All rights reserved. No commercial activities.",
+  "common": {
+    "btnBack": "Back",
+    "btnPay": "Pay",
+    "step1": "My Data",
+    "step2": "Payment",
+    "help": "HELP",
+    "signIn": "SIGN IN",
+    "continue": "Continue"
+  },
+  "form": {
+    "inputFirstName": "please enter Name",
+    "inputLastName": "please enter LastName",
+    "name": "Name",
+    "lastName": "LastName"
+  },
+  "lang": {
+    "zhCn": "中文",
+    "en": "English",
+    "jp": "Japanese"
+  },
+  "menu": {
+    "activityList": "All activities",
+    "journal": "Slow Living Journal",
+    "lang": "Multiple languages"
+  }
+}

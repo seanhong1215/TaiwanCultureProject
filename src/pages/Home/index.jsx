@@ -1,11 +1,13 @@
 import Card from '@/components/Card/index.jsx';
 import './Home.scss';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+  const { t } = useTranslation();
   return (
     <div className="home">
        <section className="section section-0">
-        <h2 className="section-title">立即搜索全台特色景點資訊！</h2>
+        <h2 className="section-title">{t('searchViewInfo')}</h2>
         {/* <p className="section-subtitle">副標題 1</p> */}
         <div className="row row-cols-1">
           
@@ -13,8 +15,8 @@ const Home = () => {
       </section>
 
       <section className="section section-1">
-        <h2 className="section-title">熱門活動</h2>
-        <p className="section-subtitle">體驗在地文化，暢遊台灣。 品嚐台灣道地美食！</p>
+        <h2 className="section-title">{t('popularEventTitle')}</h2>
+        <p className="section-subtitle">{t('popularEventSubTitle')}</p>
         <div className="row row-cols-1 row-cols-md-3 g-4">
           <div className="col">
             <Card
