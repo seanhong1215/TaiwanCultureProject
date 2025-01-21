@@ -1,5 +1,7 @@
 {
   "websiteName": "體驗台灣好文化",
+  "websiteNameEn": "Culture in Taiwan",
+
   "searchViewInfo": "立即搜索全台特色景點資訊！",
   "popularEventTitle": "熱門活動",
   "popularEventSubTitle": "體驗在地文化，暢遊台灣。 品嚐台灣道地美食！",
@@ -24,13 +26,12 @@
       "lastName": "名子"
   },
   "lang": {
-    "zhCn": "中文",
     "en": "英文",
     "jp": "日文"
   },
   "menu": {
     "activityList": "所有活動",
     "journal": "慢活日誌",
-    "lang": "多國語言"
+    "lang": "繁體中文"
   }
 }

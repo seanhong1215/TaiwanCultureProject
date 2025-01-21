@@ -18,6 +18,5 @@ export default defineConfig({
     alias: {
       '@': '/src', // 設置 @ 為 src 目錄的別名
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
 })

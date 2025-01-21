@@ -13,6 +13,28 @@
   
     .btn {
       margin-left: 10px;
+      border-radius: 20px;
+      padding: 6px 20px;
+      background: #fff;
+      color: #000;
+      &:hover {
+        transition: all .3s;
+        background-color: #eeeeee;
+      }
+    }
+
+    .header-logo {
+      margin-right: 10px;
+      margin-bottom: 0;
+      font-size: 20px;
+    }
+
+    .header-logo-side {
+      font-size: 20px;
+      p {
+        font-size: 16px;
+        margin-bottom: 0;
+      }
     }
   
     .dropdown-menu {
