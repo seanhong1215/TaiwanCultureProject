@@ -17,7 +17,7 @@ const Home = () => {
             try {
                 const response  = await getActivity(); // 呼叫 API 函數
                 setActivityData(response); // 將取得的資料設置到 state
-                console.log(response);
+                // console.log(response);
             } catch (err) {
                 setError('Failed to fetch users');
             } 
@@ -26,7 +26,7 @@ const Home = () => {
             try {
                 const response  = await getJournal(); // 呼叫 API 函數
                 setJournalData(response); // 將取得的資料設置到 state
-                console.log(response);
+                // console.log(response);
             } catch (err) {
                 setError('Failed to fetch users');
             } 
@@ -35,7 +35,7 @@ const Home = () => {
             try {
                 const response = await getReviews();
                 setReviews(response); // 將 API 資料存入 reviews
-                console.log(response);
+                // console.log(response);
             } catch (err) {
                 setError("Failed to fetch reviews");
                 console.error(err);

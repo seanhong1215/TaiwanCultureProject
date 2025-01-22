@@ -4,7 +4,7 @@ import ActivityList from '@/pages/ActivityList';
 import Journal from '@/pages/Journal';
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
-import '@/assets/css/main.scss';
+
 
 const App = () => {
   return (

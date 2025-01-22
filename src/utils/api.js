@@ -60,7 +60,7 @@ export const login = async (userData) => {
 
     try {
         const response = await axios.post(`/api/signin`, userData);
-        console.log(response);
+        // console.log(response);
         // 登入成功後，可以儲存 token
         if (response.data.accessToken) {
             localStorage.setItem('token', response.data.accessToken);
