@@ -4,12 +4,12 @@ const auth = require("json-server-auth");
 
 const jwt_decode = require("jwt-decode");
 
-require('dotenv').config(); // 引入 dotenv 庫來讀取 .env 檔案
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+// require('dotenv').config(); // 引入 dotenv 庫來讀取 .env 檔案
+const JWT_SECRET_KEY =
+  require("json-server-auth/dist/constants").JWT_SECRET_KEY;
 
 const port = process.env.PORT || 3001;
 
-console.log(JWT_SECRET_KEY);
 
 const server = jsonServer.create();
 const router = jsonServer.router("src/json/db.json");
@@ -43,10 +43,8 @@ server.use((req, res, next) => {
 
     if (token) {
       try {
-
         const decoded = jwt_decode(token); // 解碼 JWT
-        console.log({ token, decoded }); // 輸出解碼後的 JWT 資料
-
+        // console.log({ token, JWT_SECRET_KEY, decoded }); // 輸出解碼後的 JWT 資料
         const intSub = Number(decoded.sub);
         req.body.userId = intSub;
 
