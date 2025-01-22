@@ -40,6 +40,15 @@
     .dropdown-menu {
       min-width: 120px;
     }
+
+    .dropdown {
+      .btn {
+        background-color: transparent;
+        border:none;
+        color: #fff;
+        padding: 0;
+      }
+    }
   
     /* 響應式設計 */
     @media (max-width: 767px) {

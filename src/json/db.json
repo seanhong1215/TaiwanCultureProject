@@ -1,293 +1,149 @@
 {
   "users": [
     {
-      "email": "sean1215@gmail.com",
-      "password": "$2a$10$0hNaLnLWektZJND.D1xluuHq6L1lnRnK5Fi9YuAszKrejTRnxR.6a",
-      "id": 1,
-      "role": "admin"
+      "email": "admin123@gmail.com",
+      "password": "$2a$10$8MB.qmmUwep2EqNPFoLRqOkMPKq8OjVP8t8zeCdhLNIys1/najo.S",
+      "id": 1
+    },
+    {
+      "email": "sean@gmail.com",
+      "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
+      "id": 2
+    },
+    {
+      "email": "aaa123@gmail.com",
+      "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
+      "id": 3
     }
   ],
-  "spaces": [
+  "activity": [
     {
       "id": 1,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_01.png"
+      "city": "台中",
+      "images": "https://www.welcometw.com/wp-content/uploads/2020/10/%E9%AB%98%E7%BE%8E%E6%BF%95%E5%9C%B0-9-850x558.png",
+      "isFavorited": false,
+      "rating": 4.5,
+      "date": "2025-01-21",
+      "eventType": "一日行程",
+      "content": {
+        "title": "經典行程＆高美濕地一日遊",
+        "description": "「台中高美濕地」一直都是熱門的台中景點，被國際譽為「一生必遊之地」，更在世界七大天空之鏡..."
+      }
     },
     {
       "id": 2,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_02.png"
+      "city": "台北",
+      "images": "https://uc.udn.com.tw/photo/2024/08/01/realtime/30185517.jpg",
+      "isFavorited": false,
+      "rating": 4.8,
+      "date": "2025-01-25",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "沉浸式 DIY 調製香水",
+        "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘..."
+      }
     },
     {
       "id": 3,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_03.png"
-    },
-    {
-      "id": 4,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_04.png"
-    },
-    {
-      "id": 5,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_05.png"
-    },
-    {
-      "id": 6,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_06.png"
-    },
-    {
-      "id": 7,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_07.png"
-    },
-    {
-      "id": 8,
-      "title": "生活空間",
-      "body": "專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/workspace_08.png"
+      "city": "宜蘭",
+      "images": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_9000,w_1200,f_auto,q_auto/6115976/481366_224354.jpeg",
+      "isFavorited": false,
+      "rating": 4.7,
+      "date": "2025-01-26",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "天送埤火車站 | 高空繩索體驗 ",
+        "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感..."
+      }
     }
   ],
-  "services": [
+  "journal": [
     {
       "id": 1,
       "title": "生活閱讀",
-      "body": "一人獨處小時光 X 小書房<br>專屬於你的個人空間",
+      "body": "一人獨處小時光 X 小書房",
       "images": "https://seanhong1215.github.io/workspace/images/card_01.png"
     },
     {
       "id": 2,
       "title": "主題餐廳",
-      "body": "咖啡與餐廳的風味體驗空間 X 慢慢生活<br>放慢腳步，打開五感親身感受",
+      "body": "咖啡與餐廳的風味體驗空間 X 慢慢生活",
       "images": "https://seanhong1215.github.io/workspace/images/card_02.png"
     },
     {
       "id": 3,
       "title": "共享辦公",
-      "body": "咖啡與餐廳的風味體驗空間 X 慢慢生活<br>放慢腳步，打開五感親身感受",
+      "body": "咖啡與餐廳的風味體驗空間 X 慢慢生活",
       "images": "https://seanhong1215.github.io/workspace/images/card_03.png"
     },
     {
       "id": 4,
       "title": "獨立書店",
-      "body": "生活閱讀 X 特色獨立書店<br>找回閱讀的溫暖與快樂",
+      "body": "生活閱讀 X 特色獨立書店",
       "images": "https://seanhong1215.github.io/workspace/images/card_04.png"
     }
   ],
-  "topics": [
+  "reviews": [
     {
       "id": 1,
-      "title": "生活閱讀",
-      "body": "一人獨處小時光 X 小書房<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/life_reading_01.png"
+      "user": {
+        "avatar": "https://mighty.tools/mockmind-api/content/human/125.jpg",
+        "name": "漩渦鳴人"
+      },
+      "rating": 4.5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
     },
     {
       "id": 2,
-      "title": "生活閱讀",
-      "body": "一人獨處小時光 X 小書房<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/life_reading_02.png"
+      "user": {
+        "avatar": "https://mighty.tools/mockmind-api/content/human/112.jpg",
+        "name": "漩渦鳴人"
+      },
+      "rating": 4.5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
     },
     {
       "id": 3,
-      "title": "生活閱讀",
-      "body": "一人獨處小時光 X 小書房<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/life_reading_03.png"
+      "user": {
+        "avatar": "https://mighty.tools/mockmind-api/content/human/124.jpg",
+        "name": "漩渦鳴人"
+      },
+      "rating": 4.5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
     },
     {
       "id": 4,
-      "title": "生活閱讀",
-      "body": "一人獨處小時光 X 小書房<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/life_reading_04.png"
+      "user": {
+        "avatar": "https://mighty.tools/mockmind-api/content/human/57.jpg",
+        "name": "漩渦鳴人"
+      },
+      "rating": 4.5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
     },
     {
       "id": 5,
-      "title": "共享辦公",
-      "body": "獨立創作者 X 個人風格靈感<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/creator_01.png"
+      "user": {
+        "avatar": "https://mighty.tools/mockmind-api/content/human/126.jpg",
+        "name": "漩渦鳴人"
+      },
+      "rating": 4.5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
     },
     {
       "id": 6,
-      "title": "共享辦公",
-      "body": "獨立創作者 X 個人風格靈感<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/creator_02.png"
-    },
-    {
-      "id": 7,
-      "title": "共享辦公",
-      "body": "獨立創作者 X 個人風格靈感<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/creator_03.png"
-    },
-    {
-      "id": 8,
-      "title": "共享辦公",
-      "body": "獨立創作者 X 個人風格靈感<br>專屬於你的個人空間",
-      "images": "https://seanhong1215.github.io/workspace/images/creator_04.png"
-    },
-    {
-      "id": 9,
-      "title": "主題餐廳",
-      "body": "咖啡餐廳的風味 X 體驗生活<br>放慢腳步，打開五感親身感受",
-      "images": "https://seanhong1215.github.io/workspace/images/coffee_restaurant_01.png"
-    },
-    {
-      "id": 10,
-      "title": "主題餐廳",
-      "body": "咖啡餐廳的風味 X 體驗生活<br>放慢腳步，打開五感親身感受",
-      "images": "https://seanhong1215.github.io/workspace/images/coffee_restaurant_02.png"
-    },
-    {
-      "id": 11,
-      "title": "主題餐廳",
-      "body": "咖啡餐廳的風味 X 體驗生活<br>放慢腳步，打開五感親身感受",
-      "images": "https://seanhong1215.github.io/workspace/images/coffee_restaurant_03.png"
-    },
-    {
-      "id": 12,
-      "title": "主題餐廳",
-      "body": "咖啡餐廳的風味 X 體驗生活<br>放慢腳步，打開五感親身感受",
-      "images": "https://seanhong1215.github.io/workspace/images/coffee_restaurant_04.png"
+      "user": {
+        "avatar": "https://mighty.tools/mockmind-api/content/cartoon/31.jpg",
+        "name": "漩渦鳴人"
+      },
+      "rating": 4.5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
     }
   ],
-  "myOrders": [
-    {
-      "id": 2,
-      "userId": 2,
-      "time": "15:00",
-      "seat": "單人座",
-      "paid": "消費方式",
-      "date": "2023-01-03",
-      "number": "2",
-      "price": "一般方案",
-      "images": "https://seanhong1215.github.io/workspace/images/card_01.png"
-    },
-    {
-      "id": 2,
-      "userId": 2,
-      "time": "15:00",
-      "seat": "單人座",
-      "paid": "消費方式",
-      "date": "2022-12-28",
-      "number": "2",
-      "price": "自由方案",
-      "images": "https://seanhong1215.github.io/workspace/images/card_04.png"
-    },
-    {
-      "userId": "5",
-      "time": "14:00",
-      "seat": "3",
-      "paid": "一杯飲料",
-      "date": "2022-12-29",
-      "number": "2",
-      "price": "一般方案",
-      "images": "https://seanhong1215.github.io/workspace/images/card_02.png",
-      "id": 4
-    },
-    {
-      "userId": "5",
-      "time": "19:00",
-      "seat": "雙人座",
-      "paid": "一杯飲料",
-      "date": "2023-01-04",
-      "number": "4",
-      "price": "體驗方案",
-      "images": "https://seanhong1215.github.io/workspace/images/card_01.png",
-      "id": 5
-    },
-    {
-      "userId": "5",
-      "time": "19:00",
-      "seat": "雙人座",
-      "paid": "一杯飲料",
-      "date": "2023-01-04",
-      "number": "4",
-      "price": "體驗方案",
-      "images": "https://seanhong1215.github.io/workspace/images/card_01.png",
-      "id": 7
-    },
-    {
-      "userId": "6",
-      "time": "19:00",
-      "seat": "3",
-      "paid": "一杯咖啡",
-      "date": "2022-12-21",
-      "number": "2",
-      "price": "一般方案",
-      "images": "https://seanhong1215.github.io/workspace/images/card_02.png",
-      "id": 8
-    }
-  ],
-  "orders": [
-    {
-      "appointmentDate": "",
-      "AppointmentTime": [
-        "00:00",
-        "10:00",
-        "11:00",
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00",
-        "18:00",
-        "19:00",
-        "20:00",
-        "21:00"
-      ],
-      "seat": [
-        "單人座",
-        "雙人座",
-        "四人座"
-      ],
-      "paid": [
-        "咖啡",
-        "飲料",
-        "餐點"
-      ],
-      "number": ""
-    }
-  ],
-  "products": [
-    {
-      "id": 1,
-      "title": "體驗方案",
-      "body": "將由專人導覽解說，帶你認識環境、了解每個空間的服務，你也可以自由的體驗。",
-      "price": "100元 / 日",
-      "images": "https://seanhong1215.github.io/workspace/images/card_01.png"
-    },
-    {
-      "id": 2,
-      "title": "一般方案",
-      "body": "專屬個人空間服務，你可以享用生活空間及獨立書店裡面所有的空間服務。",
-      "price": "1990元 / 日",
-      "images": "https://seanhong1215.github.io/workspace/images/card_02.png"
-    },
-    {
-      "id": 3,
-      "title": "自由方案",
-      "body": "這是為獨立創作工作者提供的方案，您可以自由使用所有的空間服務。",
-      "price": "2990元 / 日",
-      "images": "https://seanhong1215.github.io/workspace/images/card_04.png"
-    }
-  ],
-  "settings": [
-    {
-      "id": 1,
-      "userId": 1,
-      "name": "money123",
-      "email": "money123@gmail.com",
-      "phone": "0988000998",
-      "birthday": "2022-12-28",
-      "profile": ""
-    }
-  ]
+  "settings": []
 }

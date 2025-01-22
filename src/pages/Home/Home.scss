@@ -20,37 +20,167 @@
     }
   }
 
-  .section-0 {
-    background-color: #333; /* 黑色背景 */
-    height: 300px;
+  .banner-section {
+    background-color: #333; 
+    min-height: 100vh;
   }
 
-  .section-1 {
-    background-color: #555; /* 黑色背景 */
+  .popular-event-section {
+    background-color: #555; 
+    padding: 100px 0;
   }
 
-  .section-2 {
-    background-color: #777; /* 灰色背景 */
+  .benefit-section {
+    background-color: #777; 
+    padding: 100px 0;
   }
 
-  .section-3 {
-    background-color: #888; /* 淺灰色背景 */
+  .journal-section {
+    background-color: #888; 
+    padding: 100px 0;
   }
 
-  .section-4 {
-    background-color: #999; /* 更淺的灰色背景 */
+  .reviews-section {
+    background-color: #999; 
+    padding: 100px 0;
   }
 
+
+
+
+}
+
+
+.search-wrapper {
+  color: #000;
+  width: 80%;
+  margin: auto;
+
+  .search-header {
+    padding: 12px;
+  }
+
+  .search-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    
+  }
+
+  .search-input {
+    padding: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .search-input:focus {
+    border-color: #007bff;
+    box-shadow: none;
+  }
+
+  .search-button {
+    position: absolute;
+    right: 105px;
+    background-color: #666;
+    color: #fff;
+  }
+
+  .search-button-more {
+    position: absolute;
+    right: 8px;
+    background-color: #333;
+    color: #fff;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 20px;
+    color: #666;
+  }
+
+  .quick-filters {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .quick-filter {
+    padding: 5px 12px;
+    background: #e9ecef;
+    border-radius: 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .quick-filter:hover {
+    background: #dee2e6;
+  }
+}
+
+.benefit-section {
   .circle-image img {
     border-radius: 50%;
     width: 150px;
     height: 150px;
     object-fit: cover;
   }
+  .col {
+    padding: 0 16px;
+    text-align: center;
+    h5 {
+      margin: 8px 0;
+    }
+    p {
+      width: 85%;
+      margin: auto;
+    }
+  }
+}
 
-  .blog-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+.popular-event-section {
+  p{
+    margin-bottom: 0;
+  }
+  .card {
+    img {
+      position: relative;
+      min-height: 270px;
+    }
+    h5{
+      margin-bottom: 0;
+      margin-top: 8px;
+    }
+    p:last-of-type {
+      margin-top: 8px;
+    }
+  }
+  .card-body .btn {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+}
+
+.journal-section {
+  .blog-item {
+    background-color: #fff;
+    color: #000;
+    margin-bottom: 20px;
+    img {
+      width: 100%;
+      min-height: 480px;
+      object-fit: cover;
+    }
+    h5, p {
+      padding: 8px;
+    }
+  }
+}
+
+
+.reviews-section {
+  .row img {
+    margin-top: 12px;
+    margin-left: 12px;
   }
 }

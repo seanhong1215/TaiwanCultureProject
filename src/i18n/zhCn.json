@@ -5,7 +5,7 @@
   "searchViewInfo": "立即搜索全台特色景點資訊！",
   "popularEventTitle": "熱門活動",
   "popularEventSubTitle": "體驗在地文化，暢遊台灣。 品嚐台灣道地美食！",
-  "benefit": "為什麼選擇我們",
+
   "journalTitle": "慢活日誌",
   "journalSubTitle": "放慢腳步，細品生活之美。",
   "eventReviews": "活動好評",
@@ -17,7 +17,29 @@
       "step2": "付款方式",
       "help": "求助",
       "signIn": "登入",
-      "continue": "繼續"
+      "continue": "繼續",
+      "search": "搜尋"
+  },
+  "banner": {
+    "search": "搜尋",
+    "searchMore": "搜尋更多",
+    "searchPlacehoder": "搜尋關鍵字",
+    "taichung": "台中",
+    "taipei": "台北",
+    "kaohsiung": "高雄"
+  },
+  "benefit": {
+    "mainTitle": "為什麼選擇我們",
+    "content": {
+      "culturalExperienceTitle": "多元化的文化體驗",
+      "culturalExperienceText": "精選台灣各地的傳統工藝、節慶活動、美食之旅等豐富體驗，滿足不同旅遊需求。",
+      "reservationPlatformTitle": "一站式預約平台",
+      "reservationPlatformText": "整合體驗活動與觀光景點，方便快速預訂，免去繁瑣流程。",
+      "recommendationsTitle": "即時更新與推薦",
+      "recommendationsText": "獲取最新的活動資訊與熱門推薦，隨時掌握精彩的台灣文化活動。",
+      "DeepConnectionTitle": "在地文化深度連結",
+      "DeepConnectionText": "特別策劃與地方職人或文化團體合作，讓每次參與都充滿意義。"
+    }
   },
   "form": {
       "inputFirstName": "請輸入姓氏",
@@ -26,6 +48,7 @@
       "lastName": "名子"
   },
   "lang": {
+    "zhCn": "繁體中文",
     "en": "英文",
     "jp": "日文"
   },

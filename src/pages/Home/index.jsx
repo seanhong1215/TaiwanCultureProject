@@ -1,190 +1,200 @@
-import Card from '@/components/Card/index.jsx';
+import { Card, ReviewCard} from '@/components/Card';
 import './Home.scss';
 import { useTranslation } from 'react-i18next';
 
 import React, { useEffect, useState } from 'react';
-import { getUsers } from '@/utils/api';
+import { getActivity, getJournal, getReviews } from '@/utils/api';
 
 
 const Home = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-   // 使用 useEffect 在組件加載時獲取用戶資料
-   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const data = await getUsers(); // 呼叫 API 函數
-        console.log(data);
-        
-      } catch (err) {
-        setError('Failed to fetch users');
-      } 
-    };
+    const [activityData, setActivityData] = useState([]);
+    const [journalData, setJournalData] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [error, setError] = useState(null);
 
-    fetchUsers();
-  }, []); // 空陣列表示只在組件加載時呼叫一次
+    useEffect(() => {
+        const fetchGetActivity = async () => {
+            try {
+                const response  = await getActivity(); // 呼叫 API 函數
+                setActivityData(response); // 將取得的資料設置到 state
+                console.log(response);
+            } catch (err) {
+                setError('Failed to fetch users');
+            } 
+        };
+        const fetchGetJournal = async () => {
+            try {
+                const response  = await getJournal(); // 呼叫 API 函數
+                setJournalData(response); // 將取得的資料設置到 state
+                console.log(response);
+            } catch (err) {
+                setError('Failed to fetch users');
+            } 
+        };
+        const fetchReviews = async () => {
+            try {
+                const response = await getReviews();
+                setReviews(response); // 將 API 資料存入 reviews
+                console.log(response);
+            } catch (err) {
+                setError("Failed to fetch reviews");
+                console.error(err);
+            }
+        };
 
+        fetchGetActivity();
+        fetchGetJournal();
+        fetchReviews();
+    }, []); // 空陣列表示只在組件加載時呼叫一次
 
+    const { t } = useTranslation();
 
+    if (error) {
+        return <div className="alert alert-danger">{error}</div>;
+    }
 
-  const { t } = useTranslation();
-  return (
-    <div className="home">
-       <section className="section section-0">
-        <h2 className="section-title">{t('searchViewInfo')}</h2>
-        {/* <p className="section-subtitle">副標題 1</p> */}
-        <div className="row row-cols-1">
-          
-        </div>
-      </section>
+    return (
+        <div className="home">
+            <section className="section banner-section">
+                <div className="container">
+                    <h2 className="section-title text-center">{t('searchViewInfo')}</h2>
+                    <div className="search-wrapper">
+                        <div className="search-header">
+                            <div className="search-input-group">
+                                <input type="text" className="search-input form-control" placeholder={t('banner.searchPlacehoder')} />
+                                <button className="btn search-button">{t('banner.search')}</button>
+                                <button className="btn search-button-more">{t('banner.searchMore')}</button>
+                                {/* <i className="fas fa-search search-icon"></i> */}
+                            </div>
+                            <div className="quick-filters">
+                                <span className="quick-filter">{t('banner.taichung')}</span>
+                                <span className="quick-filter">{t('banner.taipei')}</span>
+                                <span className="quick-filter">{t('banner.kaohsiung')}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-      <section className="section section-1">
-        <h2 className="section-title">{t('popularEventTitle')}</h2>
-        <p className="section-subtitle">{t('popularEventSubTitle')}</p>
-        <div className="row row-cols-1 row-cols-md-3 g-4">
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 1"  
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 2"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 3"
-              description="這是卡片內容描述。"
-            />
-          </div>
-        </div>
-      </section>
+            <section className="section popular-event-section">
+                <div className="container">
+                    <div className="main-text text-center">
+                        <h2 className="section-title">{t('popularEventTitle')}</h2>
+                        <p className="section-subtitle">{t('popularEventSubTitle')}</p>
+                    </div>
+                    <div className="row">
+                        {activityData.length > 0 ? (
+                            activityData.map((item) => (
+                            <div className="col-md-6 col-lg-4" key={item.id}>
+                                <Card
+                                {...item}
+                                onFavoriteToggle={(id) => {
+                                    setActivityData((prevData) =>
+                                        prevData.map((activity) =>
+                                            activity.id === id
+                                            ? { ...activity, isFavorited: !activity.isFavorited }
+                                            : activity
+                                        )
+                                    );
+                                }}
+                                />
+                            </div>
+                            ))
+                        ) : (
+                            <div className="col-12">
+                                <p className="text-center">載入中...</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
 
-      <section className="section section-2">
-        <h2 className="section-title">為什麼選擇我們</h2>
-        {/* <p className="section-subtitle">副標題 2</p> */}
-        <div className="row row-cols-1 row-cols-md-4 g-4">
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-        </div>
-      </section>
+            <section className="section benefit-section">
+                <div className="container">
+                <h2 className="section-title text-center py-4">{t('benefit.mainTitle')}</h2>
+                <div className="row row-cols-1 row-cols-md-4 g-4">
+                    <div className="col">
+                    <div className="circle-image">
+                        <img src="https://placehold.co/200" alt="..." />
+                    </div>
+                    <h5 className="card-title">{t('benefit.content.culturalExperienceTitle')}</h5>
+                    <p className="card-text">{t('benefit.content.culturalExperienceText')}</p>
+                    </div>
+                    <div className="col">
+                    <div className="circle-image">
+                        <img src="https://placehold.co/200" alt="..." />
+                    </div>
+                    <h5 className="card-title">{t('benefit.content.reservationPlatformTitle')}</h5>
+                    <p className="card-text">{t('benefit.content.reservationPlatformText')}</p>
+                    </div>
+                    <div className="col">
+                    <div className="circle-image">
+                        <img src="https://placehold.co/200" alt="..." />
+                    </div>
+                    <h5 className="card-title">{t('benefit.content.recommendationsTitle')}</h5>
+                    <p className="card-text">{t('benefit.content.recommendationsText')}</p>
+                    </div>
+                    <div className="col">
+                    <div className="circle-image">
+                        <img src="https://placehold.co/200" alt="..." />
+                    </div>
+                    <h5 className="card-title">{t('benefit.content.DeepConnectionTitle')}</h5>
+                    <p className="card-text">{t('benefit.content.DeepConnectionText')}</p>
+                    </div>
+                </div>
+                </div>
+            </section>
 
-      <section className="section section-3">
-        <h2 className="section-title">慢活日誌</h2>
-        <p className="section-subtitle">放慢腳步，細品生活之美。</p>
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4">
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 1</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 2</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 3</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 4</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 5</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-        </div>
-      </section>
+            <section className="section journal-section">
+                <div className="container">
+                    <div className="main-text text-center">
+                        <h2 className="section-title">{t('journalTitle')}</h2>
+                        <p className="section-subtitle">{t('journalSubTitle')}</p>
+                    </div>
+                    <div className="row">
+                        {journalData.length > 0 ? (
+                            journalData.map((item) => (
+                                <div className="col-md-6 col-lg-3" key={item.id}>
+                                <div className="blog-item">
+                                    <img src={item.images}  />
+                                    <h5 className="card-title">{item.title}</h5>
+                                    <p className="card-text">{item.body}</p>
+                                </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="col-12">
+                                <p className="text-center">載入中...</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
 
-      <section className="section section-4">
-        <h2 className="section-title">活動好評</h2>
-        {/* <p className="section-subtitle">副標題 4</p> */}
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 1"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 2"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 3"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 4"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 5"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 6"
-              description="這是卡片內容描述。"
-            />
-          </div>
-        </div>
-      </section>
-
+            <section className="section reviews-section">
+                <div className="container">
+                    <h2 className="section-title text-center">{t('eventReviews')}</h2>
+                    <div className="row">
+                        {reviews.length > 0 ? ( 
+                            reviews.map((review) => (
+                            <div className="col-md-6 col-lg-4" key={review.id}>
+                                <ReviewCard
+                                    key={review.id}
+                                    avatar={review.user.avatar}
+                                    name={review.user.name}
+                                    rating={review.rating}
+                                    activityTitle={review.activityTitle}
+                                    reviewContent={review.reviewContent}
+                                />
+                            </div>
+                            ))
+                        ) : (
+                            <p>目前沒有好評。</p>
+                        )}
+                       
+                    </div>
+                </div>
+            </section>
     </div>
   );
 };
