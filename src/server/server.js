@@ -5,15 +5,18 @@ const auth = require("json-server-auth");
 const jwt_decode = require("jwt-decode");
 
 // require('dotenv').config(); // 引入 dotenv 庫來讀取 .env 檔案
-const JWT_SECRET_KEY =
-  require("json-server-auth/dist/constants").JWT_SECRET_KEY;
+const JWT_SECRET_KEY = require("json-server-auth/dist/constants").JWT_SECRET_KEY;
 
 const port = process.env.PORT || 3001;
-
 
 const server = jsonServer.create();
 const router = jsonServer.router("src/json/db.json");
 const middlewares = jsonServer.defaults();
+
+
+server.get('/', (req, res) => {
+  res.send('Welcome to the JSON Server!');
+});
 
 const rules = auth.rewriter({
   // Permission rules
