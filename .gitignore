@@ -50,5 +50,5 @@ npm-cache/
 .eslintcache
 
 # 靜態資源
-public/
+public/static
 
