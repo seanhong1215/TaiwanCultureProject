@@ -20,7 +20,7 @@
     {
       "id": 1,
       "city": "台中",
-      "images": "https://www.welcometw.com/wp-content/uploads/2020/10/%E9%AB%98%E7%BE%8E%E6%BF%95%E5%9C%B0-9-850x558.png",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
       "isFavorited": false,
       "rating": 4.5,
       "date": "2025-01-21",
@@ -33,7 +33,7 @@
     {
       "id": 2,
       "city": "台北",
-      "images": "https://uc.udn.com.tw/photo/2024/08/01/realtime/30185517.jpg",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
       "isFavorited": false,
       "rating": 4.8,
       "date": "2025-01-25",
@@ -46,7 +46,7 @@
     {
       "id": 3,
       "city": "宜蘭",
-      "images": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_9000,w_1200,f_auto,q_auto/6115976/481366_224354.jpeg",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
       "isFavorited": false,
       "rating": 4.7,
       "date": "2025-01-26",
@@ -60,89 +60,100 @@
   "journal": [
     {
       "id": 1,
-      "title": "生活閱讀",
-      "body": "一人獨處小時光 X 小書房",
-      "images": "https://seanhong1215.github.io/workspace/images/card_01.png"
+      "title": "注入創新泉源的職人手做工作坊",
+      "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
+      "date": "2025-01-21",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
     },
     {
       "id": 2,
-      "title": "主題餐廳",
-      "body": "咖啡與餐廳的風味體驗空間 X 慢慢生活",
-      "images": "https://seanhong1215.github.io/workspace/images/card_02.png"
+      "title": "喚醒感官的茶道體驗之旅",
+      "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
+      "date": "2025-01-22",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
     },
     {
       "id": 3,
-      "title": "共享辦公",
-      "body": "咖啡與餐廳的風味體驗空間 X 慢慢生活",
-      "images": "https://seanhong1215.github.io/workspace/images/card_03.png"
+      "title": "編織時光的草編藝術課程",
+      "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+      "date": "2025-01-23",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
     },
     {
       "id": 4,
-      "title": "獨立書店",
-      "body": "生活閱讀 X 特色獨立書店",
-      "images": "https://seanhong1215.github.io/workspace/images/card_04.png"
+      "title": "尋找味覺記憶的手作醬料體驗",
+      "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
+      "date": "2025-01-24",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
+    },
+    {
+      "id": 5,
+      "title": "染上屬於你的藍：靛藍染布體驗",
+      "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
+      "date": "2025-01-25",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     }
   ],
   "reviews": [
     {
       "id": 1,
       "user": {
-        "avatar": "https://mighty.tools/mockmind-api/content/human/125.jpg",
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
         "name": "漩渦鳴人"
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
+      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！"
     },
     {
       "id": 2,
       "user": {
-        "avatar": "https://mighty.tools/mockmind-api/content/human/112.jpg",
-        "name": "漩渦鳴人"
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
+        "name": "奇犽"
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
+      "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。"
     },
     {
       "id": 3,
       "user": {
-        "avatar": "https://mighty.tools/mockmind-api/content/human/124.jpg",
-        "name": "漩渦鳴人"
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
+        "name": "酷拉皮卡"
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
+      "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！"
     },
     {
       "id": 4,
       "user": {
-        "avatar": "https://mighty.tools/mockmind-api/content/human/57.jpg",
-        "name": "漩渦鳴人"
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
+        "name": "宇智波佐助"
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
+      "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！"
     },
     {
       "id": 5,
       "user": {
-        "avatar": "https://mighty.tools/mockmind-api/content/human/126.jpg",
-        "name": "漩渦鳴人"
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
+        "name": "艾連·葉卡"
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
+      "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~"
     },
     {
       "id": 6,
       "user": {
-        "avatar": "https://mighty.tools/mockmind-api/content/cartoon/31.jpg",
-        "name": "漩渦鳴人"
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+        "name": "米卡莎"
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "活動很棒！導遊很親切，景點安排得當，下次還會再來！"
+      "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。"
     }
   ],
   "settings": []
