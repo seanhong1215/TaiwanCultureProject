@@ -14,6 +14,26 @@
       "email": "aaa123@gmail.com",
       "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
       "id": 3
+    },
+    {
+      "email": "user123@gmail.com",
+      "password": "$2a$10$0siyi9fEacpZgBpp6qT2MutY9c1zyXsm5Vpy1UtGT6J/1sfm3EYY6",
+      "id": 4
+    },
+    {
+      "email": "test@gmail.com",
+      "password": "$2a$10$xG4CnGorWQF/Ujc8XGtRTeJtB15WrdzRJ6Hc9bLOu394twqEhbTUC",
+      "id": 5
+    },
+    {
+      "email": "test123@gmail.com",
+      "password": "$2a$10$JouLWUzd55kHWimADe2Fp./1X/RnVuQ1mA30ybqPgrDB5p9C.TqUO",
+      "id": 6
+    },
+    {
+      "email": "abc@gmail.com",
+      "password": "$2a$10$FZOV8DjnMrP6Is/LjTd3Cec8JVyZszBP04YNhIm0YTwjC8DP.jUA6",
+      "id": 7
     }
   ],
   "activity": [
@@ -95,25 +115,40 @@
     },
     {
       "id": 6,
+      "title": "注入創新泉源的職人手做工作坊",
+      "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
+      "date": "2025-01-21",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
+    },
+    {
+      "id": 7,
+      "title": "喚醒感官的茶道體驗之旅",
+      "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
+      "date": "2025-01-22",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
+    },
+    {
+      "id": 8,
       "title": "編織時光的草編藝術課程",
       "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
       "date": "2025-01-23",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
     },
     {
-      "id": 7,
+      "id": 9,
       "title": "尋找味覺記憶的手作醬料體驗",
       "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
       "date": "2025-01-24",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
     },
     {
-      "id": 8,
+      "id": 10,
       "title": "染上屬於你的藍：靛藍染布體驗",
       "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     }
+    
   ],
   "reviews": [
     {
@@ -177,5 +212,65 @@
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。"
     }
   ],
-  "settings": []
+  "settings": [
+    {
+      "id": 1,
+      "lastName": "Emily",
+      "firstName": "Hong",
+      "nickName": "CC",
+      "gender": "女",
+      "birthday": "2025-02-12",
+      "country": "台灣",
+      "countryCode": "+886",
+      "phoneNumber": "988123456",
+      "phone": "+886 ",
+      "userId": 3,
+      "user": {
+        "email": "aaa123@gmail.com",
+        "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
+        "id": 3
+      }
+    },
+    {
+      "lastName": "a",
+      "firstName": "b",
+      "nickName": "CC",
+      "gender": "男生",
+      "birthday": "2025-02-11",
+      "country": "韓國",
+      "countryCode": "+886",
+      "phoneNumber": "966123456",
+      "userId": 2,
+      "id": 2,
+      "user": {
+        "email": "sean@gmail.com",
+        "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
+        "id": 2
+      },
+      "": "sean@gmail.com"
+    },
+    {
+      "id": 3,
+      "lastName": "Hong",
+      "firstName": "ssss",
+      "nickName": "uu",
+      "gender": "女生",
+      "birthday": "2025-02-03",
+      "country": "韓國",
+      "countryCode": "+82",
+      "phoneNumber": "966123456"
+    },
+    {
+      "id": 4,
+      "lastName": "hong",
+      "firstName": "uuu",
+      "nickName": "ss",
+      "gender": "男生",
+      "birthday": "2025-02-14",
+      "country": "日本",
+      "countryCode": "+1",
+      "phoneNumber": "99123456",
+      "userId": 4
+    }
+  ]
 }
