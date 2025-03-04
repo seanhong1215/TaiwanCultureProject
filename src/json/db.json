@@ -1,275 +1,1310 @@
 {
   "users": [
     {
-      "email": "admin123@gmail.com",
-      "password": "$2a$10$8MB.qmmUwep2EqNPFoLRqOkMPKq8OjVP8t8zeCdhLNIys1/najo.S",
+      "email": "admin@gmail.com",
+      "password": "$2a$10$Wg2B6ggBSZILbvyOnwWnluNtrC8.Dv4ClUSe.9L7WQUFfhA.Q/XoC",
+      "name": "系統管理員",
+      "role": "ADMIN",
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
       "id": 1
     },
     {
-      "email": "sean@gmail.com",
-      "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
+      "email": "admin123@gmail.com",
+      "password": "$2a$10$v85Pxn1Cex.VTQi8NKJkgOF1FT3zB3m8vEPGugTvboIoeW10D8j3q",
+      "name": "活動管理者",
+      "role": "ACTIVITY_MANAGER",
+      "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740111558/abqxa84kdmokplslyrov.jpg",
       "id": 2
     },
     {
-      "email": "aaa123@gmail.com",
-      "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
+      "email": "user001@gmail.com",
+      "password": "$2a$10$4z3N9Mw44qN2zdHKOTcC/uKEfLuWBfoOYGJW7NLWEuyR0.mXJATnu",
+      "name": "漩渦鳴人",
+      "role": "Member",
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
       "id": 3
     },
     {
-      "email": "user123@gmail.com",
-      "password": "$2a$10$0siyi9fEacpZgBpp6qT2MutY9c1zyXsm5Vpy1UtGT6J/1sfm3EYY6",
+      "email": "user002@gmail.com",
+      "password": "$2a$10$7F9cQUEeXFTDMFGpUfaal.N6A4xFoClCmWkno9Sn5m1hC1bvKkJ9K",
+      "name": "奇犽",
+      "role": "Member",
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
       "id": 4
     },
     {
-      "email": "test@gmail.com",
-      "password": "$2a$10$xG4CnGorWQF/Ujc8XGtRTeJtB15WrdzRJ6Hc9bLOu394twqEhbTUC",
+      "email": "user003@gmail.com",
+      "password": "$2a$10$1rEa.qXYdkJRr6eIUnelzumvhJHzikORLTUqWcdAawS.MV7AGxIc2",
+      "name": "酷拉皮卡",
+      "role": "Member",
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
       "id": 5
-    },
-    {
-      "email": "test123@gmail.com",
-      "password": "$2a$10$JouLWUzd55kHWimADe2Fp./1X/RnVuQ1mA30ybqPgrDB5p9C.TqUO",
-      "id": 6
-    },
-    {
-      "email": "abc@gmail.com",
-      "password": "$2a$10$FZOV8DjnMrP6Is/LjTd3Cec8JVyZszBP04YNhIm0YTwjC8DP.jUA6",
-      "id": 7
     }
   ],
   "activity": [
     {
       "id": 1,
-      "city": "台中",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+      "city": "台北",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741063431/%E5%8F%B0%E5%8C%97_%E6%B2%89%E6%B5%B8%E5%BC%8F_DIY_%E8%AA%BF%E8%A3%BD%E9%A6%99%E6%B0%B4_qwhk60.png",
       "isFavorited": false,
-      "rating": 4.5,
-      "date": "2025-01-21",
+      "rating": 4.8,
+      "startDate": "2025-02-14",
+      "endDate": "2025-02-14",
+      "price": 1200,
+      "eventType": "特色體驗",
+      "content": {
+        "title": "沉浸式 DIY 調製香水",
+        "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。\n"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741096085/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_ejksex.jpg"
+            },
+            {
+              "url": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741096088/%E5%8F%B0%E6%9D%B1_%E7%90%89%E7%92%83%E7%8F%A0_DIY_%E9%AB%94%E9%A9%97_d5py89.jpg"
+            }
+          ],
+          "trip": {
+            "title": "沉浸式 DIY 調製香水",
+            "highlights": [
+              "專業調香指導：由專業調香師帶領，講解香水結構與調香技巧。",
+              "個人專屬配方：自由選擇多種香氛元素，調製獨一無二的香水。",
+              "高級原料使用：採用進口天然精油與專業香精，打造高品質香氛。",
+              "精美瓶裝設計：完成的香水將裝入特製瓶罐，成為獨家紀念品或精美禮物。"
+            ]
+          },
+          "map": {
+            "latitude": 25.0632753,
+            "longitude": 121.5002102,
+            "mapLink": "https://maps.google.com"
+          },
+          "sections": [
+            {
+              "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741091143/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_pwnwes.jpg",
+              "imageCaption": "沉浸式DIY調製香水",
+              "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
+            }
+          ]
+        }
+      ],
+      "eventAddress": "台北市大安區忠孝東路四段2號7樓之3"
+    },
+    {
+      "id": 2,
+      "city": "台中",
+      "isFavorited": false,
+      "rating": 4.7,
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740976990/%E5%8F%B0%E4%B8%AD_%E7%B6%93%E5%85%B8%E8%A1%8C%E7%A8%8B_%E9%AB%98%E7%BE%8E%E6%BF%95%E5%9C%B0%E4%B8%80%E6%97%A5%E9%81%8A_rzcyud.png",
+      "startDate": "2025-02-01",
+      "endDate": "2025-02-01",
+      "price": "2500",
       "eventType": "一日行程",
       "content": {
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
-      }
-    },
-    {
-      "id": 2,
-      "city": "台北",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
-      "isFavorited": false,
-      "rating": 4.8,
-      "date": "2025-01-25",
-      "eventType": "特色體驗",
-      "content": {
-        "title": "沉浸式 DIY 調製香水",
-        "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
-      }
+      },
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "風車、天空與濕地構成一幅迷人的畫面"
+            }
+          ],
+          "trip": {
+            "title": "台中：經典行程＆高美濕地一日遊",
+            "highlights": [
+              "經典景點巡禮：探訪台中知名景點，感受城市獨特魅力。",
+              "特色美食體驗：品嚐台中特色小吃與道地美食。",
+              "高美濕地日落：漫步木棧道，欣賞夕陽與水鳥生態。",
+              "舒適交通安排：提供專車接送，輕鬆享受行程。"
+            ]
+          },
+          "map": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com"
+          },
+          "sections": [
+            {
+              "image": "",
+              "imageCaption": "高空﻿咖啡廳與紀念品店",
+              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。"
+            },
+            {
+              "image": "",
+              "imageCaption": "夜景﻿時光的浪漫與感動",
+              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 3,
       "city": "宜蘭",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741062253/%E5%AE%9C%E8%98%AD_%E5%A4%A9%E9%80%81%E5%9F%A4%E7%81%AB%E8%BB%8A%E7%AB%99%E9%AB%98%E7%A9%BA%E7%B9%A9%E7%B4%A2%E9%AB%94%E9%A9%97_zqv3l0.png",
       "isFavorited": false,
-      "rating": 4.7,
-      "date": "2025-01-26",
+      "rating": 4.5,
+      "startDate": "2025-02-05",
+      "endDate": "2025-02-05",
+      "price": 1000,
       "eventType": "特色體驗",
       "content": {
-        "title": "天送埤火車站 | 高空繩索體驗 ",
-        "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
-      }
+        "title": "天送埤火車站高空繩索體驗",
+        "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。\n"
+      },
+      "activityDetails": []
+    },
+    {
+      "content": {
+        "title": "鳳梨酥 DIY 手作體驗",
+        "description": "想親手製作道地的台灣經典點心嗎？來到台北參加我們的鳳梨酥 DIY 手作體驗，學習如何製作美味的鳳梨酥，從餡料調配到烘焙成型，感受台灣傳統糕點的魅力。適合親子、情侶、朋友一同參與，創造難忘的甜點回憶！"
+      },
+      "eventType": "特色體驗",
+      "city": "台北",
+      "price": 800,
+      "rating": 5,
+      "startDate": "2025-02-11",
+      "endDate": "2025-02-11",
+      "activityDetails": [],
+      "id": 4,
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741062295/%E5%8F%B0%E5%8C%97%E5%A3%AB%E6%9E%97_%E9%B3%B3%E6%A2%A8%E9%85%A5DIY%E9%AB%94%E9%A9%97_zk7q5l.webp"
+    },
+    {
+      "id": 5,
+      "city": "台東",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977094/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_dtfthy.jpg",
+      "isFavorited": false,
+      "rating": 4.8,
+      "startDate": "2025-02-15",
+      "endDate": "2025-02-15",
+      "price": "600",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "月桃杯墊 DIY 手作體驗",
+        "description": "體驗台東獨特的月桃文化，親手編織一片屬於自己的月桃杯墊！月桃葉具有天然的香氣與防潮特性，是台灣原住民傳統生活中的重要元素。在這場手作體驗中，您將學習如何使用月桃葉進行編織，享受療癒的編織過程，並深入了解台東的在地文化。\n"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977094/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_dtfthy.jpg",
+              "caption": ""
+            }
+          ],
+          "trip": {
+            "title": "台東｜月桃杯墊 DIY 手作體驗",
+            "highlights": [
+              "天然素材：使用當地採摘的新鮮月桃葉，體驗最純粹的手作樂趣。",
+              "文化體驗：由專業講師講解月桃的用途與文化背景。",
+              "療癒編織：透過手作編織，感受靜心放鬆的過程。",
+              "獨家紀念品：親手製作的月桃杯墊可帶回家，作為獨一無二的紀念品。"
+            ]
+          },
+          "map": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sections": []
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "city": "台東",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977146/%E5%8F%B0%E6%9D%B1_%E7%90%89%E7%92%83%E7%8F%A0_DIY_%E9%AB%94%E9%A9%97_moqlgo.jpg",
+      "isFavorited": false,
+      "rating": 4.3,
+      "startDate": "2025-02-27",
+      "endDate": "2025-02-27",
+      "price": 800,
+      "eventType": "特色體驗",
+      "content": {
+        "title": "琉璃珠 DIY 手作體驗",
+        "description": "來到台東，親手製作獨具特色的琉璃珠飾品！琉璃珠是台灣原住民的重要文化象徵，代表祝福與守護。在這場手作體驗中，您將學習琉璃珠的製作過程，從設計、塑形到燒製，每顆琉璃珠都承載著您的創意與心意。適合親子、朋友、情侶一同參與，共同創造獨一無二的回憶！"
+      },
+      "detailsId": 1,
+      "activityDetails": []
+    },
+    {
+      "id": 7,
+      "city": "花蓮",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741062793/%E8%8A%B1%E8%93%AE_%E5%8E%9F%E4%BD%8F%E6%B0%91%E6%96%99%E7%90%86%E9%AB%94%E9%A9%97%E5%BB%9A%E6%88%BF_hqiqfg.jpg",
+      "isFavorited": false,
+      "rating": 4.8,
+      "startDate": "2025-02-25",
+      "endDate": "2025-02-25",
+      "price": "1500",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "原住民料理體驗廚房",
+        "description": "來到花蓮，體驗台灣原住民獨特的飲食文化！透過親手製作傳統料理，您將深入了解原住民飲食習慣與文化故事。使用當地新鮮食材，在專業老師的指導下，學習如何烹調出道地的原住民美食，感受花蓮的風土人情與美味。\n"
+      },
+      "detailsId": 1,
+      "activityDetails": []
+    },
+    {
+      "id": 8,
+      "city": "高雄",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106141/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_cfrwik.jpg",
+      "isFavorited": false,
+      "rating": 4.6,
+      "startDate": "2025-02-18",
+      "endDate": "2025-02-18",
+      "price": "900",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "糖果盒乾燥花蠟燭DIY 手作體驗",
+        "description": "在高雄體驗一場充滿香氛與創意的蠟燭手作課程！運用天然大豆蠟與乾燥花，親手製作專屬於您的糖果盒造型蠟燭，無論是作為家居擺飾、禮物或是自我療癒的儀式，都充滿溫暖與美感。在專業老師的指導下，您將學習蠟燭調色、香氛搭配及裝飾技巧，享受放鬆又有趣的創作時光。\n"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106265/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_zova5k.jpg"
+            }
+          ],
+          "trip": {
+            "title": "糖果盒乾燥花蠟燭DIY 手作體驗",
+            "highlights": [
+              "手作體驗：親手製作糖果盒造型的乾燥花蠟燭，展現個人風格。",
+              "天然材料：使用環保大豆蠟與精油，製作安全無害的香氛蠟燭。",
+              "創意設計：多種乾燥花與香氛搭配，打造獨一無二的作品。",
+              "專業指導：由經驗豐富的老師帶領，即使是新手也能輕鬆上手。"
+            ]
+          },
+          "map": {
+            "latitude": "22.6265565",
+            "longitude": "120.2885277",
+            "mapLink": "https://maps.google.com"
+          },
+          "sections": [
+            {
+              "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106266/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_njecdg.jpg",
+              "imageCaption": "",
+              "description": "在高雄體驗一場充滿香氛與創意的蠟燭手作課程！運用天然大豆蠟與乾燥花，親手製作專屬於您的糖果盒造型蠟燭，無論是作為家居擺飾、禮物或是自我療癒的儀式，都充滿溫暖與美感。在專業老師的指導下，您將學習蠟燭調色、香氛搭配及裝飾技巧，享受放鬆又有趣的創作時光。"
+            }
+          ]
+        }
+      ],
+      "eventAddress": "高雄市前金區市中一路204號2樓"
+    },
+    {
+      "id": 9,
+      "city": "台中",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+      "isFavorited": false,
+      "rating": 4.8,
+      "startDate": "2025-01-21",
+      "endDate": "2025-02-21",
+      "price": "666",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "經典行程＆高美濕地一日遊",
+        "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "風車、天空與濕地構成一幅迷人的畫面"
+            }
+          ],
+          "trip": {
+            "title": "台北 101 觀景台門票",
+            "highlights": [
+              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
+              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
+              "俯瞰大台北城市夜景，盡享全視野景觀！",
+              "【限時特展活動】",
+              "101 x 大谷翔平「50/50紀念球」",
+              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
+              "1. 大谷翔平「50/50紀念球」",
+              "2. Team Taiwan全員簽名球",
+              "3. 冠軍隊簽名球衣",
+              "4. 比賽實戰壘包"
+            ]
+          },
+          "map": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sections": [
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
+              "imageCaption": "高空﻿咖啡廳與紀念品店",
+              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
+            },
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "imageCaption": "夜景﻿時光的浪漫與感動",
+              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "city": "台中",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+      "isFavorited": false,
+      "rating": 4.8,
+      "startDate": "2025-01-21",
+      "endDate": "2025-02-21",
+      "price": "666",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "經典行程＆高美濕地一日遊",
+        "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "風車、天空與濕地構成一幅迷人的畫面"
+            }
+          ],
+          "trip": {
+            "title": "台北 101 觀景台門票",
+            "highlights": [
+              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
+              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
+              "俯瞰大台北城市夜景，盡享全視野景觀！",
+              "【限時特展活動】",
+              "101 x 大谷翔平「50/50紀念球」",
+              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
+              "1. 大谷翔平「50/50紀念球」",
+              "2. Team Taiwan全員簽名球",
+              "3. 冠軍隊簽名球衣",
+              "4. 比賽實戰壘包"
+            ]
+          },
+          "map": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sections": [
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
+              "imageCaption": "高空﻿咖啡廳與紀念品店",
+              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
+            },
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "imageCaption": "夜景﻿時光的浪漫與感動",
+              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "city": "台中",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+      "isFavorited": false,
+      "rating": 4.8,
+      "startDate": "2025-01-21",
+      "endDate": "2025-02-21",
+      "price": "666",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "經典行程＆高美濕地一日遊",
+        "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "風車、天空與濕地構成一幅迷人的畫面"
+            }
+          ],
+          "trip": {
+            "title": "台北 101 觀景台門票",
+            "highlights": [
+              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
+              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
+              "俯瞰大台北城市夜景，盡享全視野景觀！",
+              "【限時特展活動】",
+              "101 x 大谷翔平「50/50紀念球」",
+              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
+              "1. 大谷翔平「50/50紀念球」",
+              "2. Team Taiwan全員簽名球",
+              "3. 冠軍隊簽名球衣",
+              "4. 比賽實戰壘包"
+            ]
+          },
+          "map": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sections": [
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
+              "imageCaption": "高空﻿咖啡廳與紀念品店",
+              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
+            },
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "imageCaption": "夜景﻿時光的浪漫與感動",
+              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "city": "台中",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+      "isFavorited": false,
+      "rating": 4.8,
+      "startDate": "2025-01-21",
+      "endDate": "2025-02-21",
+      "price": "666",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "經典行程＆高美濕地一日遊",
+        "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "風車、天空與濕地構成一幅迷人的畫面"
+            }
+          ],
+          "trip": {
+            "title": "台北 101 觀景台門票",
+            "highlights": [
+              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
+              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
+              "俯瞰大台北城市夜景，盡享全視野景觀！",
+              "【限時特展活動】",
+              "101 x 大谷翔平「50/50紀念球」",
+              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
+              "1. 大谷翔平「50/50紀念球」",
+              "2. Team Taiwan全員簽名球",
+              "3. 冠軍隊簽名球衣",
+              "4. 比賽實戰壘包"
+            ]
+          },
+          "map": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sections": [
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
+              "imageCaption": "高空﻿咖啡廳與紀念品店",
+              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
+            },
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "imageCaption": "夜景﻿時光的浪漫與感動",
+              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗",
+        "description": "傳統摃丸DIY體驗\n"
+      },
+      "eventType": "一日行程",
+      "city": "台北",
+      "price": "997",
+      "rating": 5,
+      "startDate": "2025-03-09",
+      "endDate": "2025-03-29",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740921283/pexels-alankrantas-11741533_ha3zud.jpg",
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "caption": "風車、天空與濕地構成一幅迷人的畫面"
+            }
+          ],
+          "trip": {
+            "title": "台北 101 觀景台門票",
+            "highlights": [
+              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
+              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
+              "俯瞰大台北城市夜景，盡享全視野景觀！",
+              "【限時特展活動】",
+              "101 x 大谷翔平「50/50紀念球」",
+              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
+              "1. 大谷翔平「50/50紀念球」",
+              "2. Team Taiwan全員簽名球",
+              "3. 冠軍隊簽名球衣",
+              "4. 比賽實戰壘包"
+            ]
+          },
+          "map": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sections": [
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
+              "imageCaption": "高空﻿咖啡廳與紀念品店",
+              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
+            },
+            {
+              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "imageCaption": "夜景﻿時光的浪漫與感動",
+              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
+            }
+          ]
+        }
+      ],
+      "id": 13
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗14",
+        "description": "傳統摃丸DIY體驗14.."
+      },
+      "eventType": "一日行程",
+      "city": "台北",
+      "price": "1250",
+      "rating": 4,
+      "startDate": "2025-03-02",
+      "endDate": "2025-03-29",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740975292/pexels-alankrantas-11741533_sp2pps.jpg",
+      "id": 14,
+      "activityDetails": []
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗15",
+        "description": "傳統摃丸DIY體驗15..."
+      },
+      "eventType": "一日行程",
+      "city": "台中",
+      "price": "333",
+      "rating": 4,
+      "startDate": "2025-03-09",
+      "endDate": "2025-03-29",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740975363/pexels-alankrantas-11741533_sc9yth.jpg",
+      "id": 15,
+      "activityDetails": []
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗16",
+        "description": "傳統摃丸DIY體驗16..."
+      },
+      "eventType": "一日行程",
+      "city": "台北",
+      "price": "108",
+      "rating": 3,
+      "startDate": "2025-03-09",
+      "endDate": "2025-03-28",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740975386/pexels-che-yu-297995520-13325111_vkjjme.jpg",
+      "id": 16,
+      "activityDetails": []
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗17",
+        "description": "傳統摃丸DIY體驗17.."
+      },
+      "eventType": "一日行程",
+      "city": "台中",
+      "price": "553",
+      "rating": 3.8,
+      "startDate": "2025-03-09",
+      "endDate": "2025-03-28",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740975408/pexels-che-yu-297995520-13325111_nwylm7.jpg",
+      "id": 17,
+      "activityDetails": []
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗18",
+        "description": "傳統摃丸DIY體驗18.."
+      },
+      "eventType": "一日行程",
+      "city": "台中",
+      "price": "109",
+      "rating": 3,
+      "startDate": "2025-03-09",
+      "endDate": "2025-03-20",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740975428/pexels-che-yu-297995520-13325111_jax3fu.jpg",
+      "id": 18,
+      "activityDetails": []
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗19",
+        "description": "傳統摃丸DIY體驗19.."
+      },
+      "eventType": "特色體驗",
+      "city": "台中",
+      "price": "552",
+      "rating": 4,
+      "startDate": "2025-03-09",
+      "endDate": "2025-03-29",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740975454/pexels-che-yu-297995520-13325111_c0e2el.jpg",
+      "id": 19,
+      "activityDetails": []
+    },
+    {
+      "content": {
+        "title": "傳統摃丸DIY體驗20",
+        "description": "傳統摃丸DIY體驗20..."
+      },
+      "eventType": "一日行程",
+      "city": "台中",
+      "price": "664",
+      "rating": 4,
+      "startDate": "2025-03-09",
+      "endDate": "2025-04-04",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740975477/pexels-alankrantas-11741533_btsdlx.jpg",
+      "id": 20,
+      "activityDetails": []
     }
   ],
   "journal": [
     {
-      "id": 1,
-      "title": "注入創新泉源的職人手做工作坊",
-      "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
-      "date": "2025-01-21",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
+      "title": "繁華都市中的美食天堂",
+      "date": "2025-02-10",
+      "content": "<p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">台北士林夜市，作為台灣最具代表性的夜市之一，每年吸引著來自世界各地的遊客。這裡不僅是品嚐台灣地道美食的最佳場所，也是體驗台灣本島夜生活與地方文化的絕佳選擇。士林夜市擁有上百家小吃攤位，讓你徹底體驗台灣街頭美食的多樣性與豐富性，無論你是喜愛傳統美食，還是對創新小吃充滿興趣，這裡總能找到滿足你味蕾的選擇。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">士林夜市的招牌美食之一是「豪大大雞排」，這款大塊的炸雞排外酥內嫩，香氣四溢，是許多遊客來到夜市必嚐的美味。還有「蚵仔煎」，台灣獨特的小吃，鮮美的蚵仔搭配蛋與蔬菜，再淋上特製的醬料，味道鮮美，回味無窮。除此之外，「珍珠奶茶」也是士林夜市不可或缺的飲品，經典的甜奶茶搭配Q彈的珍珠，讓你感受台灣獨特的飲品文化。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">除了傳統小吃，士林夜市還有許多創新和異國風味的美食。例如「鹽酥雞」，這道台灣小吃在夜市中極為流行，香脆的炸雞塊加上香料，味道獨特，適合搭配啤酒一同享用。還有不少攤位提供小火鍋、炸物、糖葫蘆等現做現賣的美食，保證讓你吃得開心，滿足每一個口味的需求。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">除了美食，士林夜市周邊還有許多娛樂設施，如遊戲攤位、抓娃娃機等，讓遊客可以在品嚐美食之餘，享受不同的娛樂活動。夜市的熱鬧氛圍，加上五光十色的燈光，讓人不禁沉浸其中，感受到台灣獨有的熱情與活力。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">士林夜市的特色還不僅限於美食與遊戲，它也融合了台灣的傳統與現代文化。你可以在這裡發現不少手工藝品店、藝術品展示攤位等，這些小店販售各式各樣的手工藝品、紀念品，讓你能夠帶回一份台灣本土的特色紀念。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">來到台北，士林夜市無疑是每位遊客必訪的場所。不僅可以品嚐台灣道地的美食，還能體驗到台灣夜市獨有的熱鬧和活力。無論是跟朋友、家人一起來，還是單獨來此探索，士林夜市都能為你帶來一次難忘的台灣文化之旅。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741019049/08_%E5%A3%AB%E6%9E%97%E5%A4%9C%E5%B8%82_za9b8o.jpg",
+      "id": 1
     },
     {
-      "id": 2,
-      "title": "喚醒感官的茶道體驗之旅",
-      "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
-      "date": "2025-01-22",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
+      "title": "探索中華文化的瑰寶",
+      "date": "2025-02-10",
+      "content": "<p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">台北故宮博物院是世界上最具規模和影響力的博物館之一，擁有數以萬計的珍貴文物，讓每一位來到這裡的遊客都能感受到濃厚的文化氣息。故宮博物院成立於1965年，館內展示了中華五千年歷史的各類藝術品，這些藝術品涵蓋了書法、繪畫、陶瓷、銅器、玉器等各個領域，是瞭解中國古代文明的理想場所。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">博物院的藏品可追溯至數千年前的中國古代，最著名的要數「翠玉白菜」和「肉形石」這兩件展品。翠玉白菜是一件雕刻精緻的玉器，形狀仿佛一顆新鮮的白菜，而肉形石則是一塊天然石塊，經過巧妙雕刻，模仿豬肉的外觀，栩栩如生。這些展品代表了中國古代工藝的精湛技術，無論是材料的選擇還是雕刻的工藝，都展現了古人對藝術的追求。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">除了這些獨特的文物，故宮博物院的建築本身也值得一看。博物院坐落於台北市士林區，周圍環繞著美麗的山景與花園。館內的設計融合了中國傳統建築風格與現代元素，讓人感受到歷史與現代的交融。館內的展覽區分為不同的主題，無論你對哪個時期的中國歷史感興趣，都能找到相關的展示。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">除了常設展覽，故宮博物院還定期舉辦各類臨時展覽，這些展覽不僅涵蓋中國文化，還有來自世界各地的藝術品，使得每一次的參觀都能帶來新鮮的體驗。此外，博物院的研究機構也經常舉辦學術講座，吸引著來自各地的學者與愛好者。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">對於旅客來說，參觀台北故宮博物院不僅僅是一場藝術與文化的盛宴，也是一次穿越時光的旅程。從館內的每一件文物中，你都能看到中國古代文化的智慧與深邃，這些瑰寶無聲地講述著古人的生活與信仰，讓人深刻地體會到中華文化的博大精深。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">如果你有計劃來台北旅遊，台北故宮博物院絕對是一個不容錯過的景點。在這裡，你將收穫無限的文化知識與視覺享受，讓你在旅行中邊遊覽邊學習，豐富自己的歷史與文化素養。</span></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741016312/01_%E5%8F%B0%E5%8C%97%E6%95%85%E5%AE%AE%E5%8D%9A%E7%89%A9%E9%99%A2_ulhi3y.jpg",
+      "id": 2
     },
     {
       "id": 3,
       "title": "編織時光的草編藝術課程",
-      "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+      "content": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
       "date": "2025-01-23",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
     },
     {
       "id": 4,
       "title": "尋找味覺記憶的手作醬料體驗",
-      "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
+      "content": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
       "date": "2025-01-24",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
     },
     {
       "id": 5,
       "title": "染上屬於你的藍：靛藍染布體驗",
-      "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
+      "content": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     },
     {
       "id": 6,
       "title": "注入創新泉源的職人手做工作坊",
-      "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
+      "content": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
       "date": "2025-01-21",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
     },
     {
       "id": 7,
       "title": "喚醒感官的茶道體驗之旅",
-      "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
+      "content": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
       "date": "2025-01-22",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
     },
     {
-      "id": 8,
-      "title": "編織時光的草編藝術課程",
-      "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+      "title": "走進懷舊與美景的融合",
       "date": "2025-01-23",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
+      "content": "<p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">九份，這個位於台灣北部的山城，以其獨特的風情吸引了無數旅客的目光。九份的名字或許並不為人熟知，但其美麗的景色和深厚的歷史背景卻讓人一探再探。九份老街是這座小鎮的心臟，無論是白天的雜貨攤還是夜晚的燈火，都深深吸引著來自四面八方的遊客。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">九份的歷史可以追溯到19世紀，當時這裡是台灣最重要的金礦區之一。隨著金礦的開採，九份逐漸發展成為一個繁榮的城鎮。如今，雖然金礦已經不再是這裡的主要產業，但九份依然保持著其獨特的懷舊風情，吸引著喜愛歷史與美景的旅客。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">九份老街是遊覽這座小鎮的必經之地。這條街道上滿是傳統的台灣小吃、手工藝品店以及古老的茶樓。走在蜿蜒的小巷中，可以品嘗到各式各樣的台灣美食，如芋圓、草仔粿、紅龜粿等，這些地道的台灣小吃不僅味道鮮美，而且富有地方特色，讓人回味無窮。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">如果你來到九份老街，絕不能錯過的還有茶樓體驗。九份擁有數家具有歷史的茶樓，這些茶樓大多擁有寬闊的觀景平台，讓人可以在品茗的同時欣賞到周圍的山景和海景。特別是黃昏時分，夕陽映照在遠處的海面上，形成一幅美麗的畫面，這時在茶樓品茗，更能讓人感受到時間仿佛靜止的美好。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">九份的另一大特色便是其獨特的夜景。每當夜幕降臨，九份老街兩側的小燈籠便開始亮起，整個街道瞬間變得溫馨而迷人。夜晚的九份，彷彿是一幅電影中的場景，燈光與山城的輪廓交織，讓人感受到濃濃的懷舊氣息。這種特有的氛圍吸引了不少電影拍攝團隊，也因此讓九份成為了著名的電影拍攝地。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">此外，九份還擁有許多美麗的觀景點，可以遠眺整個基隆嶼和東北角的壯麗海景。在這裡，你可以享受大自然的美景，感受到山海交融的震撼。無論是白天還是夜晚，九份都能給你帶來無盡的驚喜和感動。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">如果你來到台灣，九份老街絕對是你不能錯過的經典景點。在這裡，你不僅可以品味傳統美食、品茗休憩，還能享受絕美的山海景觀，讓你的旅行充滿難忘的回憶。</span></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741016366/02_%E4%B9%9D%E4%BB%BD%E8%80%81%E8%A1%97_ppl1mi.jpg",
+      "id": 8
     },
     {
-      "id": 9,
-      "title": "尋找味覺記憶的手作醬料體驗",
-      "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
-      "date": "2025-01-24",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
+      "title": "歷史與文化的交匯點",
+      "date": "2025-01-31",
+      "content": "<p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">台南被譽為是台灣的「古都」，擁有豐富的歷史背景和文化遺產。而在台南眾多的歷史景點中，安平古堡無疑是最具代表性的之一。這座古堡坐落於台南市安平區，擁有悠久的歷史與獨特的建築風格，是了解台灣歷史發展的絕佳場所。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">安平古堡最初建於1624年，由荷蘭東印度公司所建，是當時荷蘭人在台灣的軍事據點。隨著時代變遷，這座古堡經歷了多次的修繕與改建，最終形成了今日的模樣。安平古堡的外觀呈現出典型的西式城堡風格，但與其他西方的古堡不同，它融合了當時荷蘭、漢人以及原住民的建築特色，形成一種獨特的風格。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">在安平古堡的園區內，遊客可以看到許多荷蘭時代的遺物和歷史資料，這些展示向人們講述了荷蘭人如何在台灣建立殖民地，以及當時台灣的社會與經濟狀況。古堡內的主要建築包括一座高塔，遊客可以登上塔樓，從高處俯瞰整個安平區及附近的海港。這裡的景觀不僅可以讓你一覽台南的歷史風貌，還能欣賞到壯麗的海景。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">除了古堡本身，安平周邊的街道與小巷也充滿了懷舊的氛圍。安平老街是當地著名的旅遊景點之一，這裡擁有許多傳統的台灣小吃店和手工藝品店，遊客可以在這裡品嘗到經典的台南小吃，如安平豆花、蝦餅等。走在古街巷弄間，彷彿穿越時空，回到了古老的台灣。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">安平古堡附近的安平樹屋也是一個不可錯過的景點。這個地方是一個被古老榕樹包圍的舊倉庫，樹木的根部和枝葉伸展出奇妙的形狀，創造出一個獨特的自然景觀。這裡不僅是一個享受大自然的場所，還是拍照的好地方。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">如果你對台灣的歷史與文化有興趣，安平古堡無疑是最值得一遊的景點之一。在這裡，你不僅能夠學習到台灣的歷史背景，還能體驗到濃厚的地方特色。無論是漫遊古堡，還是在附近的小街上品味美食，安平都能給你帶來一場難忘的歷史與文化之旅。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741016489/03_%E5%8F%B0%E5%8D%97%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1_ndzvbk.jpg",
+      "id": 9
     },
     {
-      "id": 10,
-      "title": "染上屬於你的藍：靛藍染布體驗",
-      "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
-      "date": "2025-01-25",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
+      "title": "台灣最美的湖泊",
+      "date": "2025-02-12",
+      "content": "<p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">日月潭，位於台中市南投縣，是台灣最著名的自然景點之一。它以其如詩如畫的美景吸引了來自世界各地的遊客，是台灣的名勝之一。日月潭的名字來自其特殊的形狀，湖面分為兩部分，一側形似太陽，另一側則像月亮，因此得名「日月潭」。這個自然奇觀與周圍的山脈、翠綠的湖水共同構成了一幅美麗的畫面，讓人心曠神怡。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">日月潭的風景四季皆美，每一個季節都有不同的景色。春天，湖邊的花朵競相開放，湖面上飄著輕柔的霧氣，給人一種夢幻般的感覺；夏天，湖面平靜，湖水清澈透明，適合划船與水上活動；秋冬時節，周圍的山林被色彩斑斕的紅葉覆蓋，湖水則呈現出迷人的金黃色，吸引著眾多攝影師來捕捉這一刻的美麗。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">除了自然景觀，日月潭還擁有深厚的文化底蘊。潭區周圍有多座寺廟與古跡，最著名的便是文武廟。這座廟宇融合了儒家和道家思想，供奉的是文神和武神，是當地信仰的重要場所。每年農曆三月，這裡還會舉行盛大的媽祖遶境活動，吸引了成千上萬的信徒和遊客前來參與。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">日月潭還是眾多水上活動愛好者的天堂。你可以在湖中乘船遊覽，欣賞四周的山水景致；也可以租用自行車，沿著日月潭的自行車道騎行，感受清新的空氣和壯麗的風景。對於愛好攝影的遊客來說，日月潭更是一個絕佳的拍攝場所，每一個角度都能捕捉到無比美麗的畫面。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">如果你對歷史和文化感興趣，可以參觀潭區的文學館，這裡展示了許多與日月潭相關的歷史資料和文物，讓人更加深入了解這個美麗湖泊的故事與意義。另一個受歡迎的景點是「魚池」，這裡擁有豐富的水生生物，也是釣魚愛好者的天堂。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">對於喜愛溫泉的遊客，日月潭周邊的溫泉飯店也是一個不錯的選擇。在這裡，你可以在悠閒的氛圍中泡溫泉，放鬆身心，享受大自然帶來的平靜與舒適。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">日月潭是台灣的自然瑰寶，無論是清晨的薄霧，還是黃昏的霞光，都會讓你陶醉其中。這裡的美景與文化，必定會成為你旅行中最美好的回憶。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741016542/04_%E5%8D%97%E6%8A%95%E6%97%A5%E6%9C%88%E6%BD%AD_nnhup0.webp",
+      "status": "",
+      "id": 10
+    },
+    {
+      "title": "生態與美景的完美結合",
+      "date": "2025-02-14",
+      "content": "<p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">台中高美濕地，位於台中市大甲區，是一個充滿自然生態的旅遊勝地。這片濕地不僅是生物的天堂，也是攝影愛好者和大自然愛好者的理想去處。高美濕地的美麗景觀與豐富的生態系統吸引了大量遊客，每年都有成千上萬的人來此觀察鳥類、拍攝美麗的日落，並且感受大自然的和諧。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">高美濕地最具特色的就是其獨特的潮間帶景觀。這裡的沙灘和泥灘交替出現，隨著潮汐的變化，展現出不同的景象。無論是潮退時露出的沙洲，還是潮漲時波光粼粼的海面，都構成了如詩如畫的自然景觀。遊客可以在這裡漫步於自然步道，享受濕地的寧靜，感受與大自然的親密接觸。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">高美濕地是鳥類觀察的理想場所。每年冬季，這裡吸引了大量的候鳥來此棲息，尤其是大批的白鷺、蒼鷺和黑面琵鷺等水鳥，成群結隊地出現，給濕地增添了無限的生機。這裡設有專門的觀鳥平台，遊客可以在這些平台上安靜地觀察鳥類的活動，並且拍攝到栩栩如生的鳥類照片。對於喜愛自然的旅客來說，高美濕地無疑是一個不可錯過的觀鳥天堂。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">此外，高美濕地還擁有一個知名的景點——高美大橋。這座大橋是連接濕地和海岸的主要通道，也是攝影師和遊客的熱門打卡地點。站在大橋上，可以遠眺整個濕地的美麗景色，尤其在夕陽西下時，夕陽映照在水面上，形成一幅壯麗的畫面，讓人驚嘆不已。這裡的日落景象尤其迷人，每當夕陽染紅天際，湖面與天空交相輝映，彷彿置身於仙境。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">對於喜愛騎行的遊客，濕地周圍也設有自行車道，遊客可以騎著自行車沿著濕地的邊緣騎行，欣賞沿途的自然風光。騎行過程中，您可以感受到微風拂面，聽著鳥鳴聲與海浪聲交織，這是一種與大自然融為一體的美妙體驗。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">另外，高美濕地的周邊還有一些當地的特色餐廳，提供新鮮的海鮮美食。來到這裡，除了享受自然美景外，品嘗一頓地道的台中海鮮，無疑會為您的旅行增添更多色彩。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">高美濕地是一個讓人心曠神怡的地方，不僅可以近距離接觸大自然，還能享受平靜和寧靜的時光。無論是與家人一同遊覽，還是獨自一人來此放鬆心情，這裡都能給你帶來一份與大自然親密接觸的珍貴體驗。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741016591/05_%E5%8F%B0%E4%B8%AD%E9%AB%98%E7%BE%8E%E6%BF%95%E5%9C%B0_h40uug.jpg",
+      "status": "",
+      "id": 11
+    },
+    {
+      "title": "大自然的雄偉畫卷",
+      "date": "2025-02-20",
+      "content": "<p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">花蓮的太魯閣國家公園，被譽為是台灣最壯麗的自然景點之一，擁有著令人驚嘆的山脈、峽谷和瀑布。這片國家公園位於花蓮縣，因為其獨特的地形和壯麗的景觀吸引了來自世界各地的遊客，是台灣最受歡迎的旅遊景點之一。太魯閣國家公園的名字來自當地的原住民—太魯閣族，這片大自然的寶地不僅展現了台灣的山脈美景，也是深具歷史和文化意義的地方。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">太魯閣國家公園的最大特色就是其壯觀的峽谷景觀。太魯閣大峽谷是台灣最著名的峽谷之一，這裡的溪流在千百年的侵蝕作用下，將岩石鑿出一道道深邃的溝壑，形成了極為壯觀的自然景象。走進這片峽谷，你可以感受到大自然的力量，並且被兩旁陡峭的岩壁和清澈的溪流所震撼。太魯閣大峽谷周圍環繞著雄偉的高山，這些山脈呈現出奇特的造型，讓人不禁讚嘆大自然的神奇。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">在太魯閣國家公園內，還有許多美麗的步道，適合各類型的遊客。最受歡迎的步道之一是「砂卡礑步道」，這條步道穿越在大峽谷中，遊客可以沿著步道漫遊，欣賞到兩側險峻的岩壁和湍急的溪流。步道末端有一個著名的觀景台，從這裡可以俯瞰到整個太魯閣大峽谷的壯麗景色，是攝影愛好者和自然愛好者的天堂。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">如果你對登山有興趣，太魯閣國家公園也提供了多條挑戰性的登山路線。其中，最具挑戰性的登山路線是「秀姑巒山」，這是一條需要較高登山技術的路線，適合有經驗的登山者。登上秀姑巒山頂後，您將能夠俯瞰整個太魯閣國家公園的美麗景色，這種壯闊的視野將讓你深刻體會到大自然的宏大與美麗。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">除了壯麗的山景和峽谷，太魯閣國家公園還擁有多處美麗的瀑布。例如「白楊瀑布」，這是一個高達50米的瀑布，水流從峭壁上飛流直下，形成了壯觀的水幕。遊客可以站在瀑布下方的觀景平台，聆聽著水流聲，感受清涼的水霧，這樣的體驗無疑讓人心曠神怡。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">此外，太魯閣國家公園也是台灣原住民文化的重要發源地之一。遊客可以在當地的原住民文化村了解太魯閣族的歷史與傳統，並且體驗他們的文化與生活方式。這不僅是一次自然之旅，也是一次文化的深度探索。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">太魯閣國家公園的美景無論是夏季的青翠山川，還是冬季的雪景，都是每個來此旅行的人所無法忘懷的回憶。這裡的壯麗景色和豐富的生態，無論是愛好大自然的旅客，還是熱愛挑戰的登山者，都是一個理想的旅行目的地。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741016615/06_%E8%8A%B1%E8%93%AE%E5%A4%AA%E9%AD%AF%E9%96%A3%E5%9C%8B%E5%AE%B6%E5%85%AC%E5%9C%92_ounbgj.jpg",
+      "status": "",
+      "id": 12
+    },
+    {
+      "title": "浪漫與靜謐的水上世界",
+      "date": "2025-02-25",
+      "content": "<p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">位於高雄市的蓮池潭，是台灣南部一個充滿詩意和浪漫氛圍的湖泊，以其寧靜的水面、優美的景色和豐富的文化景點而聞名。蓮池潭周圍有著濃厚的歷史和文化氛圍，無論是喜歡自然景觀的旅客，還是對歷史和宗教感興趣的遊客，都能在這裡找到自己的一片天地。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">蓮池潭的最大特色便是其湖泊中央所建的「蓮池潭龍虎塔」，這座塔是蓮池潭周邊最具代表性的建築之一。龍虎塔的外觀設計獨特，象徵著龍與虎兩種神獸。遊客可以進入塔內，沿著樓梯向上攀登，登上塔頂後，可以俯瞰整個蓮池潭的美麗景色，遠眺周圍的山脈和湖面，感受自然與人文的和諧交融。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">蓮池潭周圍有著許多以宗教和歷史為背景的景點，其中最著名的便是「慈濟宮」和「寶覺寺」。慈濟宮是供奉媽祖的廟宇，每年吸引著大批信徒前來朝拜。寶覺寺則是一座融合了佛教和道教元素的寺廟，這裡的建築精美，香火鼎盛，是當地居民信仰的重要場所。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">除了宗教景點，蓮池潭周邊還有許多適合散步和休閒的步道。沿著湖畔的步道漫遊，你可以感受到微風拂面，聆聽水鳥的啼聲，享受大自然的寧靜與美好。特別是在清晨和傍晚，湖面上會出現輕柔的霧氣，這時的蓮池潭彷彿變成了一個仙境，讓人陶醉其中。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">對於攝影愛好者來說，蓮池潭更是絕佳的拍攝場所。湖泊中的蓮花在夏季盛開，粉紅色的花朵與翠綠的葉片交相輝映，構成一幅幅美麗的畫面。這裡的日出和日落景象也極為迷人，湖面上的倒影與天空的變幻形成一種獨特的視覺效果，是每位遊客攝影的理想場所。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">除了美麗的自然景觀，蓮池潭附近還有許多小吃和特色餐廳。你可以在周邊的餐廳品嘗到當地的海鮮美食，或者在湖邊的茶樓享受一杯悠閒的下午茶，放鬆心情，感受這片水域的靜謐。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">蓮池潭不僅是一個自然景觀豐富的旅遊目的地，也是高雄市區內一個充滿人文氣息的休閒場所。無論是想要遠足健行，還是想要靜靜地享受湖邊的寧靜，這裡都能夠提供一個理想的場所，讓人暫時逃離都市的喧囂，沉浸在大自然的懷抱中。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741016648/07_%E9%AB%98%E9%9B%84%E8%93%AE%E6%B1%A0%E6%BD%AD_urfmow.jpg",
+      "status": "",
+      "id": 13
+    },
+    {
+      "title": "藝術與文化的奇幻之地",
+      "date": "2025-03-02",
+      "content": "<p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">台中市的彩虹眷村，是一個融合了藝術、創意和歷史的小村落，吸引了無數遊客前來觀光。這個村落原本是由退伍軍人及其家屬所居住，隨著時間的推移，漸漸變得老舊。然而，在2008年，這裡的居民之一，黃永砯先生開始將自己的繪畫熱情注入到這個村落，創作出色彩繽紛的街頭藝術，使這個村落成為台中市區一個獨特的文化亮點。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">彩虹眷村的特色就是其五彩繽紛的壁畫，這些壁畫並不僅僅是裝飾，更是黃先生用心創作的藝術作品，涵蓋了從日常生活到傳統文化、神話故事等各種題材。最著名的當屬「彩虹橋」，這條由多彩的圖案構成的圓形橋梁，象徵著希望與歡樂，成為了攝影愛好者和遊客們爭相拍照的地方。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">漫步在彩虹眷村的小巷裡，你會發現牆面上充滿了形狀各異、色彩斑斕的動物、人物和花卉圖案。每一幅畫背後，都蘊含著黃永砯先生的創作故事和生活哲學，讓人不禁為這些作品的生命力和創意所打動。這些壁畫並不是單純的裝飾，而是讓整個村落充滿了活力與故事感，遊客在其中流連忘返。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">彩虹眷村不僅是一個藝術景點，還是台灣眷村文化的重要象徵。這裡原本是台灣眷村的縮影，展示了當時軍人與家屬生活的點滴。如今，隨著藝術作品的融入，這個地方成為了台灣當代文化的代表之一，也是台中市的文化名片。遊客在參觀時，可以感受到歷史與現代藝術的完美結合，並深刻體會到台灣社會變遷中的一些重要片段。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">彩虹眷村的另一個特色是其深具地方特色的小店鋪。在村落周圍，你會找到一些手工藝品店，這些店鋪販售著當地的紀念品，讓人可以將彩虹眷村的記憶帶回家。無論是藝術創作的畫作，還是充滿創意的小飾品，都成為遊客收藏與送禮的熱門選擇。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">最適合在早晨或黃昏時分前來參觀，這時的光線更加柔和，五彩的畫作在陽光照射下顯得格外生動。這些色彩鮮豔的壁畫不僅為台中市增添了一抹亮麗的色彩，也讓人感受到濃厚的人情味和藝術氛圍。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">彩虹眷村不僅是台中最具代表性的旅遊景點之一，也是台灣本島一個獨特的文化符號。這裡結合了歷史、藝術和地方特色，無論是對藝術愛好者，還是對尋找台灣文化魅力的遊客，都是不可錯過的必訪景點。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741019068/09_%E5%8F%B0%E4%B8%AD%E5%BD%A9%E8%99%B9%E7%9C%B7%E6%9D%91_obrugf.webp",
+      "status": "",
+      "id": 14
+    },
+    {
+      "title": "品味台灣海港的夜生活",
+      "date": "2025-03-04",
+      "content": "<p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">基隆庙口夜市，位於基隆市區，是台灣北部最具代表性的夜市之一，也是當地居民與遊客不可錯過的美食天堂。這個夜市靠近基隆港，擁有獨特的地理位置，無論是海港氣息還是熱鬧的市場氛圍，都讓這裡成為了台灣最具特色的夜市之一。來到這裡，除了能品嚐到台灣的道地小吃，也能感受台灣北部濃厚的海港文化。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">庙口夜市的最大特色便是其多樣化的小吃選擇，其中最具代表性的是「基隆廟口紅燒牛肉麵」。這道麵食是當地的招牌美食，湯底濃郁，牛肉塊軟嫩，搭配彈牙的麵條，讓人一口接一口，停不下來。除了牛肉麵，「炸物」、「鹽水雞」、「烤魷魚」等傳統台灣小吃也是必嚐的美味，這些小吃在夜市中隨處可見，每一口都充滿了地道的台灣味。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">此外，基隆庙口夜市還有一些特別的小吃如「天婦羅」和「鳳梨酥」，這些都是當地居民和遊客喜愛的傳統台灣小吃。基隆的海港位置讓這裡的海鮮尤為新鮮，特別是生猛的海膽、鮮蝦和螃蟹，都可以在夜市裡輕鬆找到。這些海鮮大部分都是當地漁民當天捕獲的新鮮食材，讓人品嚐到最純粹的海洋鮮味。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">除了美食，基隆庙口夜市的文化氛圍也是一大亮點。夜市旁的基隆天后宮，是當地的信仰中心，每年吸引著眾多信徒來此朝聖。這座廟宇歷史悠久，供奉的是媽祖，是基隆港口守護神，與當地居民的生活息息相關。每年廟會的時候，會舉行盛大的慶典活動，帶來獨特的宗教與民俗體驗。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">基隆庙口夜市的熱鬧氣氛，配上周圍的老街和海港景色，讓每個來到這裡的遊客都能感受到台灣獨特的夜市文化。夜市的燈火通明，攤位琳瑯滿目，遊客可以邊品嚐美食，邊感受當地居民的熱情與好客。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">對於攝影愛好者而言，基隆庙口夜市也是一個絕佳的拍攝場所。從夜晚的燈光到美食的色彩，每一個角落都充滿了生動的畫面。尤其是在夕陽西下時，基隆港口的美景與夜市的熱鬧交織成為一幅獨特的畫面。</span></p><p><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">基隆庙口夜市，不僅是基隆市民的生活一部分，也是台灣文化的重要縮影。無論是品嚐美食，還是感受當地的生活氣息，這裡都能給你帶來一次難忘的旅行體驗。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741019095/10_%E5%9F%BA%E9%9A%86%E5%BA%99%E5%8F%A3%E5%A4%9C%E5%B8%82_eney46.jpg",
+      "status": "",
+      "id": 15
+    },
+    {
+      "title": "南台灣的陽光與海洋天堂",
+      "date": "2025-03-05",
+      "content": "<p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">位於台灣最南端的墾丁國家公園，是一個充滿熱帶風情和豐富自然景觀的旅遊勝地。這裡擁有美麗的海灘、翠綠的森林、以及各式各樣的生態系統，是喜愛大自然和戶外活動的遊客的天堂。不論是陽光、沙灘、海浪，還是多樣的水上活動，墾丁都是台灣最具代表性的度假地之一。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">墾丁國家公園以其寬廣的沙灘而聞名，其中最著名的當屬「白沙灣」和「南灣」。白沙灣是墾丁最具代表性的海灘之一，沙質潔白細緻，水質清澈，無論是嬉戲於海中還是躺在沙灘上放鬆，都能享受到難得的悠閒時光。南灣則是水上活動愛好者的天堂，這裡的海浪適中，是衝浪、滑水等水上運動的熱門場所。每年都吸引著大量的衝浪選手和遊客前來挑戰海浪，感受海風與陽光的洗禮。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">除了海灘，墾丁國家公園還擁有許多豐富的生態景點。例如，「墾丁大街」是當地最熱鬧的商業區，遊客可以在這裡購物、品嚐當地小吃，並且享受熱帶氣候下的愜意生活。這條街上有著眾多餐廳、咖啡廳和特色商店，無論是想買紀念品還是品味當地風味的小吃，這裡都能滿足你的需求。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">此外，墾丁國家公園的「鵝鑾鼻燈塔」也是必訪的景點。這座建於19世紀的燈塔，矗立於海角之上，是台灣最古老的燈塔之一，曾是船隻進出台灣海峽的導航依據。如今，燈塔旁的觀景平台提供了壯麗的海景，遊客可以在這裡眺望太平洋的浩瀚，感受海洋的壯麗與寧靜。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">喜愛徒步旅行的遊客，可以選擇「草地大草原步道」或「四重溪步道」，這些步道穿越墾丁的熱帶雨林，沿途不僅能享受涼爽的森林氣息，還可以觀察到各種熱帶植物和野生動物，如台灣獼猴和各類鳥類，讓整個旅程更加豐富多彩。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">墾丁的夜晚則是另一番風情。當太陽下山，夜幕低垂，墾丁大街上的夜市開始熱鬧起來。夜市中擁有各式台灣特色小吃，如「鹽酥雞」、「滷味」和「烤魷魚」等美食，每一口都帶著濃厚的台灣風味，讓人垂涎欲滴。</span></p><p><span style=\"background-color: transparent; color: rgb(0, 0, 0);\">墾丁國家公園不僅是海灘愛好者的天堂，也是一個讓人放鬆心情、享受大自然美景的理想場所。無論是單純想度假、還是參與各式戶外活動，這裡都能提供一個完美的度假體驗。帶著朋友或家人來到這裡，一定能享受無與倫比的陽光沙灘、自然風光以及熱帶島嶼的悠閒時光。</span></p><p><br></p><p><br></p>",
+      "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741019139/11_%E5%A2%BE%E4%B8%81%E5%9C%8B%E5%AE%B6%E5%85%AC%E5%9C%92_wrsr4z.jpg",
+      "status": "",
+      "id": 16
     }
-    
   ],
   "reviews": [
     {
       "id": 1,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
-        "name": "漩渦鳴人"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+      "name": "漩渦鳴人",
       "rating": 4.5,
-      "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！"
+      "activityTitle": "沉浸式 DIY 調製香水",
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476842/1716079740_XfME3_nzuegz.jpg",
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476846/003_bjukrk.jpg"
+      ],
+      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！!",
+      "activityId": 1
     },
     {
       "id": 2,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
-        "name": "奇犽"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
+      "name": "奇犽",
       "rating": 4.5,
-      "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。"
+      "activityTitle": "天送埤火車站 | 高空繩索體驗 ",
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476842/1716079740_XfME3_nzuegz.jpg",
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476846/003_bjukrk.jpg"
+      ],
+      "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。",
+      "activityId": 1
     },
     {
       "id": 3,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
-        "name": "酷拉皮卡"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
+      "name": "酷拉皮卡",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！"
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476842/1716079740_XfME3_nzuegz.jpg",
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476846/003_bjukrk.jpg"
+      ],
+      "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！",
+      "activityId": 1
     },
     {
       "id": 4,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
-        "name": "宇智波佐助"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
+      "name": "宇智波佐助",
       "rating": 4.5,
-      "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！"
+      "activityTitle": "天送埤火車站 | 高空繩索體驗 ",
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476842/1716079740_XfME3_nzuegz.jpg",
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476846/003_bjukrk.jpg"
+      ],
+      "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！",
+      "activityId": 1
     },
     {
       "id": 5,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
-        "name": "艾連·葉卡"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
+      "name": "艾連·葉卡",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~"
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476842/1716079740_XfME3_nzuegz.jpg",
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476846/003_bjukrk.jpg"
+      ],
+      "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~",
+      "activityId": 1
     },
     {
       "id": 6,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
-        "name": "米卡莎"
-      },
-      "rating": 4.5,
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+      "name": "米卡莎",
+      "rating": 4,
+      "activityTitle": "沉浸式 DIY 調製香水",
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476842/1716079740_XfME3_nzuegz.jpg",
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1740476846/003_bjukrk.jpg"
+      ],
+      "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
+      "activityId": 1
+    },
+    {
+      "reviewContent": "棒棒!!",
+      "rating": 5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。"
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741105594/%E8%8A%B1%E8%93%AE_%E5%8E%9F%E4%BD%8F%E6%B0%91%E6%96%99%E7%90%86%E9%AB%94%E9%A9%97%E5%BB%9A%E6%88%BF_gtoulf.jpg"
+      ],
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "name": "漩渦鳴人",
+      "eventType": "特色體驗",
+      "activityId": 2,
+      "id": 13
+    },
+    {
+      "reviewContent": "糖果盒好好玩～讚啦",
+      "rating": 5,
+      "activityTitle": "糖果盒乾燥花蠟燭DIY 手作體驗",
+      "imageFiles": [
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106391/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_vnyff4.jpg"
+      ],
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "name": "漩渦鳴人",
+      "eventType": "特色體驗",
+      "activityId": 8,
+      "id": 14
     }
   ],
-  "settings": [
+  "favorites": [
+    {
+      "activityId": 1,
+      "userId": 1,
+      "isFavorited": true,
+      "id": 1
+    },
+    {
+      "activityId": 3,
+      "userId": 1,
+      "isFavorited": true,
+      "id": 2
+    },
+    {
+      "activityId": 2,
+      "userId": 1,
+      "isFavorited": true,
+      "id": 3
+    },
+    {
+      "activityId": 1,
+      "userId": 2,
+      "isFavorited": true,
+      "id": 4
+    },
+    {
+      "activityId": 1,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 5
+    }
+  ],
+  "profiles": [
     {
       "id": 1,
-      "lastName": "Emily",
-      "firstName": "Hong",
-      "nickName": "CC",
-      "gender": "女",
-      "birthday": "2025-02-12",
+      "lastName": "AB",
+      "firstName": "ABC",
+      "nickName": "AA",
+      "gender": "女生",
+      "birthday": "2025-02-09",
+      "country": "台灣",
+      "countryCode": "+886",
+      "phoneNumber": "988000000",
+      "userId": 2
+    },
+    {
+      "id": 2,
+      "lastName": "Hong",
+      "firstName": "Sean",
+      "nickName": "豆豆",
+      "gender": "男生",
+      "birthday": "2025-02-18",
       "country": "台灣",
       "countryCode": "+886",
       "phoneNumber": "988123456",
-      "phone": "+886 ",
-      "userId": 3,
-      "user": {
-        "email": "aaa123@gmail.com",
-        "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
-        "id": 3
-      }
-    },
-    {
-      "lastName": "a",
-      "firstName": "b",
-      "nickName": "CC",
-      "gender": "男生",
-      "birthday": "2025-02-11",
-      "country": "韓國",
-      "countryCode": "+886",
-      "phoneNumber": "966123456",
-      "userId": 2,
-      "id": 2,
-      "user": {
-        "email": "sean@gmail.com",
-        "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
-        "id": 2
-      }
+      "userId": 1
     },
     {
       "id": 3,
-      "lastName": "Hong",
-      "firstName": "ssss",
-      "nickName": "uu",
-      "gender": "女生",
-      "birthday": "2025-02-03",
-      "country": "韓國",
-      "countryCode": "+82",
-      "phoneNumber": "966123456"
+      "lastName": "漩渦",
+      "firstName": "鳴人",
+      "nickName": "漩渦鳴人",
+      "gender": "男生",
+      "birthday": "2025-03-01",
+      "country": "日本",
+      "countryCode": "+886",
+      "phoneNumber": "010-888-011-22",
+      "userId": 3
+    }
+  ],
+  "tickets": [],
+  "reservations": [
+    {
+      "id": 1,
+      "2025-01-01": {
+        "price": 500,
+        "remaining": 10
+      }
     },
     {
       "id": 4,
-      "lastName": "hong",
-      "firstName": "uuu",
-      "nickName": "ss",
-      "gender": "男生",
-      "birthday": "2025-02-14",
-      "country": "日本",
-      "countryCode": "+1",
-      "phoneNumber": "99123456",
-      "userId": 4
+      "2025-03-22": {
+        "price": 800
+      }
+    },
+    {
+      "id": 5,
+      "2025-02-15": {
+        "price": 600
+      }
+    },
+    {
+      "id": 2,
+      "2025-02-01": {
+        "price": 2500
+      }
+    },
+    {
+      "id": 8,
+      "2025-02-18": {
+        "price": 900
+      }
     }
-  ]
+  ],
+  "orders": [
+    {
+      "userId": 3,
+      "activityId": 4,
+      "createdAt": "2025-03-03 09:56:40",
+      "contactName": "",
+      "activityName": "鳳梨酥 DIY 手作體驗",
+      "last_bookable_date": "2025-03-22",
+      "activityLocation": "台北",
+      "activityPeriod": {
+        "startDate": "2025-03-22",
+        "endDate": "2025-03-22"
+      },
+      "adultCount": 2,
+      "childCount": 4,
+      "adultPrice": "800",
+      "childPrice": 400,
+      "timeSlot": "09:00-17:00",
+      "totalAmount": 3200,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503030006",
+      "reservedStatus": "reserved",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977034/%E5%8F%B0%E5%8C%97%E5%A3%AB%E6%9E%97_%E9%B3%B3%E6%A2%A8%E9%85%A5DIY%E9%AB%94%E9%A9%97_uxa3at.webp",
+      "paymentData": {
+        "contactName": "user001",
+        "cardNumber": "1234-5678-0000-1111",
+        "expiryDate": "05/22",
+        "cvv": "999"
+      },
+      "id": "ORD202503030006"
+    },
+    {
+      "userId": 3,
+      "activityId": 5,
+      "createdAt": "2025-03-03 17:29:34",
+      "contactName": "",
+      "activityName": "月桃杯墊 DIY 手作體驗",
+      "last_bookable_date": "2025-02-15",
+      "activityLocation": "台東",
+      "activityPeriod": {
+        "startDate": "2025-02-15",
+        "endDate": "2025-02-15"
+      },
+      "adultCount": 3,
+      "childCount": 1,
+      "adultPrice": "600",
+      "childPrice": 300,
+      "timeSlot": "14:00-17:00",
+      "totalAmount": 2100,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503040007",
+      "reservedStatus": "reserved",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977094/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_dtfthy.jpg",
+      "paymentData": {
+        "contactName": "ben",
+        "cardNumber": "1234-5678-0000-1111",
+        "expiryDate": "05/25",
+        "cvv": "333"
+      },
+      "id": "ORD202503040007"
+    },
+    {
+      "userId": 3,
+      "activityId": 2,
+      "createdAt": "2025-03-03 17:51:48",
+      "contactName": "",
+      "activityName": "經典行程＆高美濕地一日遊",
+      "last_bookable_date": "2025-02-11",
+      "activityLocation": "台中",
+      "activityPeriod": {
+        "startDate": "2025-02-11",
+        "endDate": "2025-02-11"
+      },
+      "adultCount": 1,
+      "childCount": 1,
+      "adultPrice": "2500",
+      "childPrice": 1250,
+      "timeSlot": "14:00-17:00",
+      "totalAmount": 3750,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503040009",
+      "reservedStatus": "reserved",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740976990/%E5%8F%B0%E4%B8%AD_%E7%B6%93%E5%85%B8%E8%A1%8C%E7%A8%8B_%E9%AB%98%E7%BE%8E%E6%BF%95%E5%9C%B0%E4%B8%80%E6%97%A5%E9%81%8A_rzcyud.png",
+      "paymentData": {
+        "contactName": "ben2",
+        "cardNumber": "1234-5678",
+        "expiryDate": "05/30",
+        "cvv": "999"
+      },
+      "id": "ORD202503040009"
+    },
+    {
+      "userId": 1,
+      "activityId": 4,
+      "createdAt": "2025-03-03 17:53:32",
+      "contactName": "",
+      "activityName": "鳳梨酥 DIY 手作體驗",
+      "last_bookable_date": "2025-03-22",
+      "activityLocation": "台北",
+      "activityPeriod": {
+        "startDate": "2025-03-22",
+        "endDate": "2025-03-22"
+      },
+      "adultCount": 1,
+      "childCount": "1",
+      "adultPrice": "800",
+      "childPrice": 400,
+      "timeSlot": "09:00-12:00",
+      "totalAmount": 1200,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503040010",
+      "reservedStatus": "reserved",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977034/%E5%8F%B0%E5%8C%97%E5%A3%AB%E6%9E%97_%E9%B3%B3%E6%A2%A8%E9%85%A5DIY%E9%AB%94%E9%A9%97_uxa3at.webp",
+      "paymentData": {
+        "contactName": "admin",
+        "cardNumber": "1234",
+        "expiryDate": "05/30",
+        "cvv": "999"
+      },
+      "id": "ORD202503040010"
+    },
+    {
+      "userId": 3,
+      "activityId": 8,
+      "createdAt": "2025-03-04 16:43:24",
+      "contactName": "漩渦鳴人",
+      "activityName": "糖果盒乾燥花蠟燭DIY 手作體驗",
+      "last_bookable_date": "2025-02-18",
+      "activityLocation": "高雄市前金區市中一路204號2樓",
+      "activityPeriod": {
+        "startDate": "",
+        "endDate": ""
+      },
+      "adultCount": 1,
+      "childCount": 2,
+      "adultPrice": "900",
+      "childPrice": 450,
+      "timeSlot": "09:00-12:00",
+      "totalAmount": 1800,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503050011",
+      "type": "",
+      "status": "",
+      "reservedStatus": "reserved",
+      "qrCode": "",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106141/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_cfrwik.jpg",
+      "paymentData": {
+        "contactName": "炫風銘人",
+        "cardNumber": "1234-5678-0000-1111",
+        "expiryDate": "05/30",
+        "cvv": "999"
+      },
+      "id": "ORD202503050011"
+    }
+  ],
+  "payments": [],
+  "userStats": [
+    {
+      "id": 1,
+      "currentStreak": 1,
+      "longestStreak": 14,
+      "totalSignIns": 27,
+      "lastSignInDate": "2025-02-28",
+      "availableRewards": 1,
+      "claimedRewards": 3
+    }
+  ],
+  "vouchers": [
+    {
+      "id": 1,
+      "name": "台北一日遊票券",
+      "date": "2025-03-10",
+      "status": "已發送",
+      "earnedThrough": "活動點數3000"
+    },
+    {
+      "id": 2,
+      "name": "九份老街美食之旅票券",
+      "date": "2025-03-15",
+      "status": "待發送",
+      "earnedThrough": "活動點數5000"
+    }
+  ],
+  "rewards": {
+    "points": 2500,
+    "achievements": [
+      "完成第一次預訂",
+      "專屬VIP優惠"
+    ]
+  }
 }
