@@ -1,0 +1,74 @@
+/* 日期輸入框的樣式 */
+.custom-datepicker .date-input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  /* 點擊時的變化 */
+  .custom-datepicker .date-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* 日期選擇器的樣式 */
+  .custom-calendar {
+    border-radius: 10px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* 日期 hover 效果 */
+  .react-datepicker__day:hover {
+    background: $primary-color-4 !important;
+    color: $text-color-1 !important;
+    border-radius: 50% !important; 
+  }
+  
+  /* 被選中的日期 */
+  .react-datepicker__day--selected {
+    background: $primary-color-4 !important;
+    color: $text-color-1 !important;
+    border-radius: 50%;
+  }
+
+  .react-datepicker__day--keyboard-selected {
+    // border-radius: 0.3rem;
+    // background-color: rgb(186.25, 217.0833333333, 241.25);
+    // color: rgb(0, 0, 0);
+  }
+
+  .react-datepicker-popper {
+    z-index: 10000;
+  }
+
+  .react-datepicker-wrapper {
+    display: block;
+    .date-input {
+      // border-radius: 8px;
+      // border: 1px solid $text-color-9;
+      &:focus-visible{
+        outline: $text-color-7;
+        // color: $text-color-7
+      }
+    }
+  }
+  
+  /* 動畫效果 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

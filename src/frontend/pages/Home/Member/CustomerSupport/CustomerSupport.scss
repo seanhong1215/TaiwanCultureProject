@@ -1,0 +1,45 @@
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: #6c757d;
+  border-radius: 50%;
+  animation: typing-bounce 1.4s infinite ease-in-out;
+}
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typing-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.quick-reply-section .btn-outline-primary {
+  border: 1px solid #60B9BF;
+  color: #60B9BF;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.quick-reply-section .btn-outline-primary:hover, .quick-reply-section :not(.btn-check)+.btn:active {
+  color: white;
+  background-color: #60B9BF;
+  border-color: #60B9BF;
+}
+
+.quick-reply-section .btn:focus {
+  box-shadow: none;
+}
+
+.quick-reply-section .btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  color: $primary-color-5;
+}
+
+.quick-reply-section .btn:first-child:active {
+  background-color: #60B9BF;
+  border-color: #60B9BF;
+  color: white;
+}

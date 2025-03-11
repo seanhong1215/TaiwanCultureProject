@@ -1,0 +1,37 @@
+/* =================
+@ react-quill
+==================== */
+
+.ql-editor h2 {
+  font-size: 1.5rem !important;
+}
+
+.ql-editor h3 {
+  font-size: 1.3rem !important;
+}
+
+.ql-size-16px { font-size: 16px; }
+.ql-size-18px { font-size: 18px; }
+.ql-size-24px { font-size: 24px; }
+.ql-size-32px { font-size: 32px; }
+.ql-size-48px { font-size: 48px; }
+
+.ql-toolbar.ql-snow {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border: 1px solid #dee2e6;
+  border-bottom: 0;
+}
+
+.ql-container.ql-snow {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border: 1px solid #dee2e6;
+  min-height: 250px;
+}
+
+.ql-editor {
+  min-height: 250px;
+  font-size: 18px; /* ✅ 預設字體變大 */
+  color: #212529;
+}

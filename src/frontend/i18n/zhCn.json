@@ -1,0 +1,95 @@
+{
+    "websiteName": "體驗台灣好文化",
+    "websiteNameEn": "Culture in Taiwan",
+    "searchViewInfo": "立即搜索<br />全台特色景點資訊",
+    "activity": {
+        "popularEventTitle": "熱門活動",
+        "popularEventSubTitle": "體驗在地文化，暢遊台灣。 品嚐台灣道地美食！",
+        "moreEvents": "更多活動"
+    },
+    "journal": {
+        "title": "慢活日誌",
+        "subTitle": "放慢腳步，細品生活之美。"
+    },
+    "eventReviews": "活動好評",
+    "common": {
+        "btnBack": "上一步",
+        "btnPay": "付款",
+        "step1": "我的資料",
+        "step2": "付款方式",
+        "help": "求助",
+        "signIn": "登入",
+        "continue": "繼續",
+        "search": "搜尋",
+        "cancel": "取消",
+        "loading": "載入中...",
+        "noData": "目前沒有資料..."
+    },
+    "banner": {
+        "search": "搜尋",
+        "searchMore": "更多",
+        "searchPlacehoder": "搜尋關鍵字",
+        "taichung": "台中",
+        "taipei": "台北",
+        "kaohsiung": "高雄",
+        "tainan": "台南"
+    },
+    "choosing": {
+        "mainTitle": "為什麼選擇我們",
+        "content": {
+        "culturalExperienceTitle": "多元化的文化體驗",
+        "culturalExperienceText": "精選台灣各地的傳統工藝、節慶活動、美食之旅等豐富體驗，滿足不同旅遊需求。",
+        "reservationPlatformTitle": "一站式預約平台",
+        "reservationPlatformText": "整合體驗活動與觀光景點，方便快速預訂，免去繁瑣流程。",
+        "recommendationsTitle": "即時更新與推薦",
+        "recommendationsText": "獲取最新的活動資訊與熱門推薦，隨時掌握精彩的台灣文化活動。",
+        "DeepConnectionTitle": "在地文化深度連結",
+        "DeepConnectionText": "特別策劃與地方職人或文化團體合作，讓每次參與都充滿意義。"
+        }
+    },
+    "form": {
+        "login": "登入",
+        "loggingIn": "登入中...",
+        "register": "註冊",
+        "Registering": "註冊中...",
+        "email": "電子郵件",
+        "password": "密碼",
+        "confirmPassword": "確認密碼",
+        "ReEnterPassword": "再次輸入密碼",
+        "pleaseEnterYourEmail": "請輸入電子郵件",
+        "pleaseEnterYourPassword": "請輸入密碼",
+        "loginGoogle": "使用 Google 登入",
+        "notMember": "還不是會員？",
+        "isMember": "已經是會員了？",
+        "registerNow": "立即註冊",
+        "signInNow": "立即登入",
+        "searchMore": "搜尋更多",
+        "startDate": "開始日期",
+        "endDate": "結束日期",
+        "area": "地區",
+        "eventType": "類型",
+        "oneDayItinerary": "一日行程",
+        "featuredExperiences": "特色體驗",
+        "outdoorExploration": "戶外探索",
+        "price": "價格",
+        "keyword": "搜尋關鍵字"
+    },
+    "member": {
+        "center": "會員中心",
+        "orderList": "訂單列表",
+        "favoritesList": "收藏列表",
+        "signOut": "登出",
+        "signIn": "登入"
+    },
+    "lang": {
+        "zhCn": "繁體中文",
+        "en": "英文",
+        "jp": "日文"
+    },
+    "menu": {
+        "activityList": "所有活動",
+        "journal": "慢活日誌",
+        "lang": "繁體中文"
+    },
+    "copyright": "© Copyright 2025 Culture in Taiwan. All Rights Reserved"
+}

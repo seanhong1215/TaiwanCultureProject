@@ -1,0 +1,12 @@
+.swiper-wrapper .card-title {
+  white-space: nowrap;
+}
+
+// 設定多行文字
+.swiper-wrapper .card-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin-top: 4px;
+}

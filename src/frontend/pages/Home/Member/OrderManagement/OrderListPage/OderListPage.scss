@@ -1,0 +1,32 @@
+.order-list-page{
+  .nav-link.active{
+    color: $primary-color-5;
+    &:hover, &.active {
+      transition: all .3s;
+      color: $primary-color-5;
+    }
+  }
+}
+
+.order-list-page .nav-link {
+  color: $text-color-10;
+  &:hover {
+    transition: all .3s;
+    color: $primary-color-5;
+  }
+}
+
+
+.order-list-page .card-body {
+  button {
+    margin-left: 8px;
+    border-radius: 100px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+.order-img {
+  object-fit: cover;
+  height: 200px;
+}

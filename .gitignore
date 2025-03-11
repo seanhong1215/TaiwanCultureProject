@@ -49,6 +49,4 @@ npm-cache/
 .prettierignore
 .eslintcache
 
-# 靜態資源
-public/static
 

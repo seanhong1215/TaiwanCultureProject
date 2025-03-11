@@ -1,0 +1,39 @@
+/* 自訂麵包屑容器 */
+.homeLink {
+  color: #9E9E9E;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* 每個麵包屑項目 */
+.breadcrumbItem {
+  color: #9E9E9E; /* 預設顏色 */
+  /* 每個項目之間的分隔符 */
+  &::before {
+    content: " > ";  /* 設定為分隔符 */
+    margin:0px 8px;
+    color: #9E9E9E; /* 分隔符顏色 */
+  }
+
+  /* 去掉最後一個項目後的分隔符 */
+  &:last-child::after {
+    content: "";
+  }
+}
+ 
+/* 每個麵包屑項目的鏈接 */
+.breadcrumbLink {
+  color: #9E9E9E; /* 預設藍色 */
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* 當前頁面文字樣式 */
+.breadcrumbCurrent {
+  color: #4DAAB0; /* 深色，區分當前頁面 */
+}

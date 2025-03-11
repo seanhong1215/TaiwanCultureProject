@@ -1,0 +1,17 @@
+.single-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-review-management tr {
+  th,td {
+    white-space: nowrap;
+  }
+}
+
+.avatar-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+}

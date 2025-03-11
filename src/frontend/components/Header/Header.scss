@@ -1,0 +1,306 @@
+// 漢堡選單
+$navbar-toggler-icon-bg: url("data:image/svg+xml;utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+
+.header {    
+    padding: 32px 0;
+    transition: background 0.5s ease-in-out;
+
+    .header-logo-side {
+      background: url("@/frontend/assets/images/logo.svg");
+      height: 40px;
+      width: 164px;
+      &:hover {
+        opacity: 0.7;
+        transition: all .3s;
+      }
+    }
+
+    .navbar-toggler {
+      border:none !important;
+      background-color: transparent !important;
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: none !important;
+    }
+  
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+      padding: 0;
+    }
+  
+    #navbarNav.navbar-collapse.show {
+      margin: 32px 0;
+      .nav-link:hover, #navbarNav .dropdown-item:hover {
+        background-color: transparent;
+        color: $primary-color-2;
+        transition: all .3s;
+      }
+      .user-member-menu .member-item {
+        display: block;
+      }
+      .nav-item {
+        margin-left: 0px;
+        // padding-bottom: 32px;
+        width: 100%;
+      }
+
+      .navbar-nav {
+        align-items: flex-start;
+        // margin-top: 32px;
+        gap: 32px;
+        border-bottom: 1px solid rgb(238, 238, 238);
+        // border-top: 1px solid rgb(238, 238, 238);
+        margin-bottom: 24px;
+        .nav-link{
+          color: $text-color-1;
+          font-size: $text-font-header-5;
+          &:hover {
+            color: $primary-color-2;
+          }
+        }
+      }
+    }
+
+    #navbarNav.navbar-collapse.user-circle {
+ 
+      .user-circle-button {
+        display: block;
+        // display: none;
+        background-color: transparent;
+        color: $text-color-1;
+        cursor: auto;
+        pointer-events:none;
+        text-align: left;
+        padding: 0;
+        margin: 32px 0;
+      }
+      .navbar-nav {
+        border-top: 1px solid rgb(238, 238, 238);
+      }
+    }
+
+    #navbarNav .member-item {
+      display: none;
+    }
+
+    #navbarNav {
+      // margin: 32px 0;
+      .nav-link:hover{
+        background-color: transparent;
+        color: $primary-color-5;
+        transition: all .3s;
+      }
+    
+      .dropdown button:hover {
+        background-color: transparent;
+        color: $primary-color-5;
+      }
+      .user-circle-button {
+        display: none;
+      }
+    }
+
+    .dropdown-menu.show {
+      border: 1px solid $text-color-7;
+      .dropdown-item {
+        color: $text-color-7;
+        &:hover {
+          background-color: transparent;
+          color: $primary-color-2 !important;
+        }
+      }
+    }
+
+    .navbar{
+      padding: 0;
+      .nav-link {
+        padding: 0;
+        color: $text-color-7;
+      }
+    } 
+
+    .navbar-nav .nav-link.show{
+      color: $text-color-7;
+    }
+
+ 
+
+    .navbar-nav {
+      // border-bottom: 1px solid rgb(238, 238, 238);
+      // margin-bottom: 24px;
+    }
+  
+    .navbar .btn {
+      margin-left: 0px;
+      border-radius: 100px;
+      padding:14px 24px;
+      width: 100%;
+      margin-top: 20px;
+      background-color: $primary-color-5;
+      color: $text-color-1;
+      border: none;
+      &:hover {
+        transition: all .3s;
+        background-color: $primary-color-3;
+      }
+    }
+
+    .navbar .show .btn {
+      margin-top: 0;
+      background-color: $text-color-1;
+      color: $primary-color-5;
+      margin-left: 0;
+      &:hover {
+        background-color: $text-color-3;
+      }
+    } 
+
+    .header-logo-side {
+      font-size: 20px;
+      p {
+        font-size: 16px;
+        margin-bottom: 0;
+      }
+    }
+  
+    .dropdown-menu {
+      min-width: 120px;
+      border:none;
+    }
+
+    .dropdown {
+      .btn, .btn:first-child:active  {
+        background-color: transparent !important;
+        color: $text-color-9 !important;
+        border:none !important;
+        padding: 0 !important;
+      }
+      
+      
+      // .user-dropdown-menu {
+      //   margin-left: 24px;
+      // }
+    }
+
+    #userDropdown {
+      display: none;
+    }
+
+
+    form {
+      .btn-primary {
+        background-color: $primary-color-5;
+        border: none;
+      }
+      .btn-outline-secondary {
+        border-color: $primary-color-5;
+        color: $primary-color-5;
+        &:hover {
+          background-color: $primary-color-5;
+        }
+      }
+      .btn-link {
+        color: $primary-color-5;
+      }
+      .form-control:focus {
+        border-color: $primary-color-5;
+        box-shadow: 0 4px .25rem rgba(96, 185, 191, 0.24);
+      }
+    }
+}
+
+.menu-open {
+  background: url("/img/menu/background.png") no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+  background-color: $primary-color-5;
+  .header-logo-side {
+    background: url("@/frontend/assets/images/menu/logo.svg");
+    height: 40px;
+    width: 164px;
+  }
+  .navbar-toggler-icon {
+    background-image: $navbar-toggler-icon-bg;
+  }
+  .nav-item:last-child {
+    margin-bottom: 32px;
+  }
+  .nav-item:first-child {
+    margin-top: 32px;
+  }
+  .account-dropdown {
+    border-bottom: none;
+  }
+  .dropdown-menu.show {
+    background-color: transparent;
+    border: none;
+    .dropdown-item {
+      color: $text-color-1;
+    }
+  }
+
+  
+}
+
+
+
+
+/* 響應式設計 */
+@media (min-width: 768px) {
+    
+}
+
+@media (min-width: 991px) {
+  .header {    
+    .navbar .dropdown-user-header{
+      .dropdown-toggle {
+        padding: 0;
+        // margin-left: 32px;
+        background-color: transparent;
+        color: $text-color-9;
+      }
+      .dropdown-menu {
+        margin-top: 8px;
+      }
+    } 
+    .nav-item {
+      margin-left: 32px;
+    }
+    .navbar .btn {
+      margin-top: 0;
+      width: auto;
+      // margin-left: 32px;
+      padding: 8px 20px;
+      .navbar-toggler {
+        border:none;
+        background-color: transparent;
+      }
+    }
+    .dropdown-menu {
+      border:inherit;
+    }
+    .navbar-nav {
+      align-items: center;
+      margin-right: 32px;
+    }
+    #navbarNav.navbar-collapse.user-circle .user-circle-button {
+      display: none;
+    }
+    #navbarNav.navbar-collapse.user-circle .navbar-nav {
+      border-top: none;
+    }
+  }
+  #userDropdown {
+    display: block;
+  }
+  #navbarNav .dropdown-item:hover {
+    background-color: $primary-color-1;
+    color: $primary-color-4;
+  }
+}
+
+@media (min-width: 1200px) {
+  
+}

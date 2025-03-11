@@ -1,0 +1,13 @@
+.admin-page-section {
+  .nav-link ,.title  {
+    color: $text-color-1;
+    &:hover {
+      transition: all .3s;
+      opacity: 0.85;
+    }
+  }
+}
+
+.admin-page-section .logo svg{
+  color: $text-color-1 !important;
+}
