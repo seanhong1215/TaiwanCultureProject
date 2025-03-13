@@ -97,10 +97,7 @@ const Step3 = () => {
 
                 <Form.Group className="mb-3" controlId="cardNumber">
                   <Form.Label>信用卡號</Form.Label>
-                  <Form.Control type="text" placeholder="xxxx-xxxx-xxxx-xxxx" {...register("cardNumber", { required: "此欄位為必填" ,  pattern : {
-                  value : /^.{3,}$/ ,
-                  message : "至少3個字"
-                  } })} />
+                  <Form.Control type="text" placeholder="xxxx-xxxx-xxxx-xxxx" className={`form-label ${errors.cardNumber && "is-invalid"}`} {...register("cardNumber", { required: "此欄位為必填"  })} />
                   {errors.cardNumber && <div className="invalid-feedback text-start">{errors.cardNumber?.message}</div>}
                 </Form.Group>
 

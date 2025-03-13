@@ -25,7 +25,7 @@ const JournalListPage = () => {
       const navigate = useNavigate();
       const handleNavigate = (e , journal) => {
           e.preventDefault();
-          navigate(`/journal-list/${journal.id}`);
+          navigate(`/journal-list/${journal.id}`, { state: { journalData: journal } });
           window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
       };
 
@@ -62,7 +62,7 @@ const JournalListPage = () => {
     
 
   return (
-    <div className="test-container">
+    <div className="blog-container">
       <div className="content">
         <div className="container">
           {/* 麵包屑 */}

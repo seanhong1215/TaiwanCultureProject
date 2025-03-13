@@ -60,7 +60,7 @@ const HomePage = () => {
     const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false); // 控制地區下拉選單
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false); // 控制類型下拉選單
     
-    const cities = ["台北", "台中", "高雄"]; // 城市列表
+    const cities = ['宜蘭', '台北', '新竹', '苗栗', '台中', '雲林', '高雄', '墾丁', '屏東', '台東', '花蓮', '墾丁']; // 城市列表
     const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; // 活動類型列表
 
     // back to top
@@ -104,7 +104,7 @@ const HomePage = () => {
         try {
             const response  = await getActivityAll(); 
             const result = response.slice(0, 3); // 只取前三筆
-            setActivityData(result); 
+            setActivityData(response); 
             setFilteredData(result); // 預設顯示全部資料
         } catch (error) {
             setError('Error fetching activity:', error);
@@ -150,7 +150,9 @@ const HomePage = () => {
             return matchCity && matchEventType && matchDate && matchKeyword;
         });
 
-        setFilteredData(filteredResults);
+        const getThreeFilteredResults = filteredResults.slice(0, 3)
+        
+        setFilteredData(getThreeFilteredResults);
         setShowSearchModal(false);
         resetForm();
     };

@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 
 const PageNation = ({ totalPage, page, setPage }) => {
   const handlePageChange = (pageNumber) => {
-    if (pageNumber < 1 || pageNumber > totalPage) return;
     setPage(pageNumber);
   };
 

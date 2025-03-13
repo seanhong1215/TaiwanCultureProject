@@ -36,7 +36,7 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
           }).addTo(mapInstanceRef.current);
 
           L.marker([map.latitude, map.longitude]).addTo(mapInstanceRef.current)
-            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+            .bindPopup(`${activityDetailData[0].trip.title}`)
             .openPopup();
         }
       }
@@ -374,14 +374,14 @@ const submitDateClick = () => {
   if(selectedDate.length===0){
     Swal.fire({
         title: "請選擇預約日期",
-        icon: "error"
+        icon: "warning"
     })
     return
   }
   if(token===null){
     Swal.fire({
       title: "請登入會員",
-      icon: "error"})
+      icon: "warning"})
 
   setSelectedDate('')
   return

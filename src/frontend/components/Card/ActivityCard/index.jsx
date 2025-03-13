@@ -117,7 +117,7 @@ return (
                 <p className="card-text">{activity.eventType}</p>
                 <span className="rating">★ {activity.rating}</span>
                 </div>
-                <h5 className="card-title">{activity.content.title}</h5>
+                <h5 className="card-title">{activity.city}: {activity.content.title}</h5>
                 <p className="card-text">{activity.content.description}</p>
                 <span className='card-price'>{activity.price}</span>    
             
