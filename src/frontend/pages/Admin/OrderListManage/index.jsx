@@ -39,7 +39,6 @@ const OrderManagement = () => {
      setOrders(responsePage); 
 
 
-
   };
 
   const handleShow = (order = null) => {
@@ -66,9 +65,10 @@ const OrderManagement = () => {
   };
 
   const handleSave = async (order) => {
+    console.log(order);
     if (order.id){
       await updateOrder(order.id, order);
-      Swal.fire({ title: "新成功", icon: "success" });
+      Swal.fire({ title: "更新成功", icon: "success" });
     }else {
       await createOrder(order);
       Swal.fire({ title: "新增成功", icon: "success" });
@@ -105,6 +105,7 @@ const OrderManagement = () => {
           <tr>
             <th>訂單編號</th>
             <th>下單時間</th>
+            <th>預約姓名</th>
             <th>活動名稱</th>
             <th>活動期間</th>
             <th>預約狀態</th>
@@ -115,9 +116,11 @@ const OrderManagement = () => {
         </thead>
         <tbody>
           {orders.map((order) => (
+            // console.log(order),
             <tr key={order.id}>
               <td>{order.id}</td>
               <td>{order.createdAt}</td>
+              <td>{order.paymentData.contactName}</td>
               <td>{order.activityName}</td>
               <td>{order.last_bookable_date}</td>
               <td>{order.reservedStatus === "reserved" ? "預約中" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</td>

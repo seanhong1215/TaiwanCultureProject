@@ -12,7 +12,7 @@ import axios from "axios";
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwan-culture-project.onrender.com'
- : 'http://localhost:3002'
+ : 'http://localhost:3001'
 
 
  const MapComponent = ({ activityDetailData, loading }) => {

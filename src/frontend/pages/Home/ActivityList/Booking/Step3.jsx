@@ -10,12 +10,14 @@ import Swal from 'sweetalert2';
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwan-culture-project.onrender.com'
- : 'http://localhost:3002'
+ : 'http://localhost:3001'
 
 const Step3 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const submitData = location.state || {}; 
+
+  const userName = localStorage.getItem("userName");
 
   const {
       register,
@@ -26,7 +28,7 @@ const Step3 = () => {
       formState: { errors },
     } = useForm({
       defaultValues: {
-        contactName : '',
+        contactName : userName,
         cardNumber: '', 
         expiryDate: '', 
         cvv: '', 
@@ -40,11 +42,6 @@ const Step3 = () => {
       paymentData: data
     };
 
-
-
- 
-    
-    
     try {
       // const timeSlot = submitData.timeSlot;
       // 執行 POST 請求
@@ -87,7 +84,7 @@ const Step3 = () => {
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="mb-3" controlId="cardName">
                   <Form.Label>持卡人姓名</Form.Label>
-                  <Form.Control type="text" placeholder="輸入持卡人姓名" name="contactName" className={`form-label ${errors.contactName && "is-invalid"}`} {...register('contactName' , 
+                  <Form.Control type="text" placeholder="輸入持卡人姓名" disabled name="contactName" className={`form-label ${errors.contactName && "is-invalid"}`} {...register('contactName' , 
                   {required : '請輸入持卡人姓名', pattern : {
                   value : /^.{3,}$/ ,
                   message : "至少3個字"

@@ -7,10 +7,13 @@ import './OrderModal.scss';
 
 const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurrentOrder }) => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
 
   const [formData, setFormData] = useState(
     { 
+      paymentData: {},
       contactName: '',
       activityName: '',
       activityLocation: '',
@@ -26,9 +29,12 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
     });
 
     useEffect(() => {
+      console.log('Current Order changed:', currentOrder);
       if (currentOrder) {
         setFormData({
+          id: Number(currentOrder.id) || null,
           paymentData: currentOrder.paymentData || {},
+          contactName:currentOrder.paymentData?.contactName || '',
           activityName: currentOrder.activityName || '',
           activityLocation: currentOrder.activityLocation || '',
           last_bookable_date: currentOrder.last_bookable_date || '',
@@ -89,7 +95,12 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
   };
 
   const handleClick = () => {
-    handleSave(formData);
+    const updatedFormData = {
+      ...formData,
+      id: currentOrder?.id || formData.id, // 保證 id 被加入
+    };
+    console.log('Saved Data:', updatedFormData);
+    handleSave(updatedFormData);  // 傳遞帶有 id 的 formData
   }
 
   return (
@@ -102,7 +113,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
         <Modal.Body>
           <Form.Group>
             <Form.Label>聯絡人姓名</Form.Label>
-            <Form.Control name="contactName" value={formData.paymentData?.contactName} onChange={handleChange} />
+            <Form.Control name="contactName" value={formData.contactName} disabled />
           </Form.Group>
           <Form.Group>
             <Form.Label>活動名稱</Form.Label>
@@ -157,6 +168,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
 
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>取消</Button>
+            <Button variant="primary" type="submit">更新訂單</Button>
             { !currentOrder && (
             <Button variant="primary" type="submit">建立訂單</Button>
           ) }
@@ -171,7 +183,7 @@ OrderModal.propTypes = {
   handleClose: PropTypes.func.isRequired, // 關閉 Modal 的函數
   handleSave: PropTypes.func.isRequired, // 儲存資料的函數
   currentOrder: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.number,
       paymentData: PropTypes.object,
       activityName: PropTypes.string,
       activityLocation: PropTypes.string,

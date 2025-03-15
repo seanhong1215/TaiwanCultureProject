@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwan-culture-project.onrender.com'
- : 'http://localhost:3002'
+ : 'http://localhost:3001'
 
 
  // 註冊
