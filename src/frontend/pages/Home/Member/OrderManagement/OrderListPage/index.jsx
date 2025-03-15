@@ -34,7 +34,7 @@ const OrderListPage = () => {
 
     // 判斷是否應該變更狀態
     if (orderDateTime.isBefore(now, "day")) { // 若訂單時間在今天以前
-      console.log("✅ 訂單狀態變更為: ended (已結束)");
+      // console.log("✅ 訂單狀態變更為: ended (已結束)");
       return "ended"; // 已結束
     }
   
@@ -130,7 +130,7 @@ const OrderListPage = () => {
             // 如果狀態有變動，執行 API 更新
             try {
               await updateOrder(order.id, { reservedStatus: order.reservedStatus });
-              console.log(`訂單 ${order.id} 狀態已更新為: ${order.reservedStatus}`);
+              // console.log(`訂單 ${order.id} 狀態已更新為: ${order.reservedStatus}`);
             } catch (error) {
               console.error(`更新訂單 ${order.id} 狀態失敗:`, error);
             }

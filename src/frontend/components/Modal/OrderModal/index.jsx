@@ -29,7 +29,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
     });
 
     useEffect(() => {
-      console.log('Current Order changed:', currentOrder);
+      // console.log('Current Order changed:', currentOrder);
       if (currentOrder) {
         setFormData({
           id: Number(currentOrder.id) || null,
@@ -99,7 +99,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
       ...formData,
       id: currentOrder?.id || formData.id, // 保證 id 被加入
     };
-    console.log('Saved Data:', updatedFormData);
+    // console.log('Saved Data:', updatedFormData);
     handleSave(updatedFormData);  // 傳遞帶有 id 的 formData
   }
 

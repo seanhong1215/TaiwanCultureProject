@@ -376,21 +376,6 @@ export const updatedVouchers = async (ticket) => {
     return response.data; 
 };
 
-// 獎勵
-export const getRewards = async () => {
-    const response = await axios.get(`/api/rewards`);
-    return response.data; 
-};
-
-// 更新票獎勵
-export const updatedRewards = async (data) => {
-    const response = await axios.put(`/api/rewards`, data);
-    return response.data; 
-};
-
-
-
-
 
 //用戶管理
 export const getMemberAll = async () => {

@@ -213,7 +213,7 @@ const EventDetail = () => {
           }
         } else if (submitData.images[i].url !== originalImages[i]) {
           // 🆕 原始圖片 URL 變動，可能是手動修改
-          console.log(`圖片 ${i} 已變更，需更新：`, submitData.images[i].url);
+          // console.log(`圖片 ${i} 已變更，需更新：`, submitData.images[i].url);
           // 這裡可以加上額外處理，例如標記需要重新提交
         }
       }
@@ -230,7 +230,7 @@ const EventDetail = () => {
           }
         } else if (submitData.sections[i].image !== originalSectionImages[i]) {
           // 🆕 原始圖片 URL 變動，可能是手動修改
-          console.log(`圖片 ${i} 已變更，需更新：`, submitData.sections[i].image);
+          // console.log(`圖片 ${i} 已變更，需更新：`, submitData.sections[i].image);
           // 這裡可以加上額外處理，例如標記需要重新提交
         }
       }
