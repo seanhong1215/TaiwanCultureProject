@@ -364,17 +364,7 @@ export const signIn = async (userId, data) => {
     }
 };
 
-// 票券
-export const getVouchers = async () => {
-    const response = await axios.get(`/api/vouchers`);
-    return response.data; 
-};
 
-// 更新票券
-export const updatedVouchers = async (ticket) => {
-    const response = await axios.put(`/api/vouchers/${ticket.id}`, ticket);
-    return response.data; 
-};
 
 
 //用戶管理

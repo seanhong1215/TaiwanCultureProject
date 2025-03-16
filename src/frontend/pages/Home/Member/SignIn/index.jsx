@@ -1,85 +1,149 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import {getUserStats, signIn } from "@/frontend/utils/api.js";
+import { getMembers, updatedMembers } from "@/frontend/utils/api.js";
 import './Signin.scss';
+import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+
 
 const SignIn = () => {
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  dayjs.extend(isSameOrAfter);
+  const REWARD_DAYS = 7; // 每 7 天獲得獎勵
+  const REWARD_POINTS = 50;
+
+  const [user, setUser] = useState(null);
+  const [hasSignedInToday, setHasSignedInToday] = useState(false);
+  const [streak, setStreak] = useState(0);
+  const [stats, setStats] = useState({
+    currentStreak: 0,
+    points: 0,
+  });
+  
+  // 計算當月的年份、月份和今天的日期
+  const today = dayjs().format("YYYY-MM-DD");
+  const currentYear = dayjs().year();
+  const currentMonth = dayjs().month() + 1;  // 注意：month() 返回的是 0 - 11，所以要加 1
+  const firstDayOfMonth = dayjs(`${currentYear}-${String(currentMonth).padStart(2, "0")}-01`).day(); // 當月第一天的星期
+  const daysInMonth = dayjs(`${currentYear}-${String(currentMonth).padStart(2, "0")}`).daysInMonth(); // 當月的天數
+  
+  // 計算應該顯示的格子數量：需要 (當月的天數 + 首日星期數)，然後除以 7 來確定需要幾行
+  const totalCells = daysInMonth + firstDayOfMonth; // 當月天數 + 首日星期數
+  const totalRows = Math.ceil(totalCells / 7); // 總共有幾行
   const userId = Number(localStorage.getItem("userId"));
 
-  const today = new Date().toISOString().split("T")[0];
-  const hasSignedInToday = stats?.lastSignInDate === today;
-
-  const getDaysInMonth = (year, month) => new Date(year, month, 0).getDate();
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth() + 1;
-  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-  const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
-  const totalCells = Math.ceil((daysInMonth + firstDayOfMonth) / 7) * 7;
-
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const userStats = await getUserStats(userId);
-        if (userStats) {
-          setStats(userStats);
-        } else {
-          console.warn("首次簽到，初始化 stats...");
-          setStats({
-            availableRewards: 0,
-            claimedRewards: 0,
-            currentStreak: 0,
-            lastSignInDate: null,
-            longestStreak: 0,
-            totalSignIns: 0,
-            userId: userId,
-          });
-        }
-      } catch (error) {
-        console.error("無法獲取簽到數據", error);
-      }
-      setLoading(false);
-    };
-    fetchStats();
-  }, [userId]);
+    fetchUserData();
+  }, []);
 
-  const handleSignIn = async () => {
-    if (!stats) return;
-    
-    const today = new Date().toISOString().split("T")[0];
-    const lastSignIn = stats.lastSignInDate ? new Date(stats.lastSignInDate) : null;
-    const diffDays = lastSignIn ? Math.floor((Date.parse(today) - lastSignIn.getTime()) / (1000 * 60 * 60 * 24)) : null;
-    
-    const newStreak = diffDays === 1 ? stats.currentStreak + 1 : 1;
-    const newTotalSignIns = stats.totalSignIns + 1;
-    const newLongestStreak = Math.max(stats.longestStreak, newStreak);
-
-    const updatedStats = {
-      currentStreak: newStreak,
-      totalSignIns: newTotalSignIns,
-      longestStreak: newLongestStreak,
-      lastSignInDate: today,
-    };
-
+  const fetchUserData = async () => {
     try {
-      // await signIn(userId, updatedStats);
-      setStats((prevStats) => ({ ...prevStats, ...updatedStats }));
+      const data = await getMembers(userId);
+      // console.log("獲取的資料:", data); // 打印獲取到的資料
+  
+      if (!data) {
+        console.error("獲取的資料為空: data 是 undefined 或 null");
+        return;  // 如果 data 為 undefined 或 null，終止函數執行
+      }
+  
+      setUser(data);
+  
+      const today = dayjs().format("YYYY-MM-DD");
+      // console.log("今天的日期:", today);
 
-      Swal.fire({
-        icon: "success",
-        title: "簽到成功！",
-        showConfirmButton: false,
-        timer: 1500,
+      // 確保 signInHistory 是陣列，如果不是則初始化為空陣列
+      const signInHistory = Array.isArray(data.signInHistory) ? data.signInHistory : [];
+  
+      // 確認今天是否已簽到
+      const signedInToday = signInHistory.includes(today);
+      // console.log("用戶簽到歷史:", signInHistory); // 打印簽到歷史
+      setHasSignedInToday(signedInToday);
+  
+      // 計算連續簽到天數，並檢查 signInHistory 是否存在
+      const streakCount = Array.isArray(data.signInHistory) ? calculateStreak(data.signInHistory) : 0;
+      // console.log("連續簽到天數:", streakCount); // 打印連續簽到天數
+      setStreak(streakCount);
+  
+      // 更新 stats，檢查 rewards 是否存在且有效
+      if (data?.rewards) {
+        // console.log("用戶獎勳資料:", data.rewards); // 打印獎勳資料
+      } else {
+        console.warn("用戶未包含 rewards 資料");
+      }
+  
+      setStats({
+        currentStreak: streakCount,
+        points: data?.rewards?.points || 0,  // 檢查 rewards 是否存在
       });
+  
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "簽到失敗，請稍後再試！",
-      });
-      console.error(error.message);
+      console.error("獲取用戶數據失敗", error);
     }
   };
+  
+  
+
+  const handleSignIn = async () => {
+    if (hasSignedInToday) return;
+  
+    // 確保 signInHistory 是陣列
+    const signInHistory = Array.isArray(user?.signInHistory) ? user.signInHistory : [];
+  
+    const updatedHistory = [...signInHistory, today];
+  
+    // 計算連續簽到天數
+    const streakCount = calculateStreak(updatedHistory);
+  
+    // 計算累積獎勳點數
+    let updatedPoints = user.points;
+    if (streakCount % REWARD_DAYS === 0) {
+      updatedPoints += REWARD_POINTS; // 簽到 7 天送 50 點
+    }
+  
+    // 更新資料，保留 rewards 內的其他屬性
+    const updatedUser = {
+      ...user,
+      signInHistory: updatedHistory,
+      rewards: {
+        ...user.rewards, // 保留 rewards 內的其他屬性
+        points: updatedPoints, // 更新 points
+      },
+      currentStreak: streakCount,
+    };
+  
+    try {
+      // 更新資料
+      await updatedMembers(userId, updatedUser);
+  
+      // 更新 UI
+      setUser(updatedUser);
+      setHasSignedInToday(true);
+      setStreak(streakCount);
+  
+      // 更新 stats
+      setStats({
+        currentStreak: streakCount,
+        points: updatedUser.rewards.points,
+      });
+  
+    } catch (error) {
+      console.error("更新簽到狀態失敗", error);
+    }
+  };
+  
+  // 計算連續簽到天數
+  const calculateStreak = (history) => {
+    let streak = 0;
+    let prevDate = dayjs().format("YYYY-MM-DD");
+  
+    // 從今天開始往回推，計算連續簽到
+    while (history.includes(prevDate)) {
+      streak++;
+      prevDate = dayjs(prevDate).subtract(1, "day").format("YYYY-MM-DD");
+    }
+  
+    return streak;
+  };
+  
 
   return (
     <div className="page-container">
@@ -125,25 +189,35 @@ const SignIn = () => {
             </tr>
           </thead>
           <tbody>
-            {[...Array(totalCells / 7)].map((_, weekIndex) => (
-              <tr key={weekIndex}>
-                {[...Array(7)].map((_, dayIndex) => {
-                  const dayNum = weekIndex * 7 + dayIndex - firstDayOfMonth + 1;
-                  const dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(dayNum).padStart(2, "0")}`;
-                  return dayNum > 0 && dayNum <= daysInMonth ? (
-                    <td
-                      key={dayIndex}
-                      className={dateStr === today ? "bg-custom-primary text-white" : ""}
-                    >
-                      {dayNum}
-                    </td>
-                  ) : (
-                    <td key={dayIndex} className="bg-light"></td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
+  {[...Array(totalRows)].map((_, weekIndex) => (
+    <tr key={weekIndex}>
+      {[...Array(7)].map((_, dayIndex) => {
+        const dayNum = weekIndex * 7 + dayIndex - firstDayOfMonth + 1; // 計算當前週的日期
+        const currentDate = dayjs().year(currentYear).month(currentMonth - 1).date(dayNum); // 用 day.js 建立日期
+        const dateStr = currentDate.format("YYYY-MM-DD"); // 轉換為 "YYYY-MM-DD" 格式的字串
+        const isSignedIn = Array.isArray(user?.signInHistory) && user.signInHistory.includes(dateStr); // 檢查該日期是否已簽到
+
+        return dayNum > 0 && dayNum <= daysInMonth ? (
+          <td
+            key={dayIndex}
+            className={
+              dateStr === today
+                ? "bg-custom-primary text-white"
+                : isSignedIn
+                ? "bg-success text-white"
+                : ""
+            }
+          >
+            {dayNum}
+          </td>
+        ) : (
+          <td key={dayIndex} className="bg-light"></td>
+        );
+      })}
+    </tr>
+  ))}
+</tbody>
+
         </table>
       </div>
     </div>

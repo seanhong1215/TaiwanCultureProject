@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from 'react';
-import { getOrderAll, getMembers, getVouchers, updatedVouchers} from '@/frontend/utils/api';
+import { getOrderAll, getMembers, updatedMembers} from '@/frontend/utils/api';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Center.scss';
@@ -50,75 +50,114 @@ const Center = () => {
   }
 
   const fetchTicketsData = async () => {
-    const response = await getVouchers();
-    setTickets(response);  
+    try {
+      // 獲取會員資料
+     const responseTickets = await getMembers(userId);
+
+      // 更新rewards資料
+      const userTickets = responseTickets.tickets; 
+      setTickets(userTickets); 
+    } catch (error) {
+      console.error('無法獲取會員資料', error);
+    }
   }
 
-    // 檢查積分是否達標，並自動發送票券
-    const checkAndRewardTicket = async (rewardsData) => {
-      let newTickets = [...tickets]; // 假設tickets是當前已經擁有的票券陣列
-      let rewardMessage = "";
-    
-      // 檢查是否達到3000積分
-      if (rewardsData.points >= 3000 && !newTickets.some(ticket => ticket.name === "台北一日遊票券")) {
-        newTickets.push({
-          id: newTickets.length + 1,
-          name: "台北一日遊票券",
-          date: "2025-03-10",
-          status: "尚未使用",
-        });
-        rewardMessage = "恭喜您達成3000積分，已獲得免費票券！";
-      }
-    
-      // 檢查是否達到5000積分
-      if (rewardsData.points >= 5000 && !newTickets.some(ticket => ticket.name === "九份老街美食之旅票券")) {
-        newTickets.push({
-          id: newTickets.length + 1,
-          name: "九份老街美食之旅票券",
-          date: "2025-03-15",
-          status: "尚未使用",
-        });
-        rewardMessage = "恭喜您達成5000積分，已獲得免費票券！";
-      }
-    
-      // 更新積分資料
-      setRewards({
-        ...rewardsData,
-        points: rewardsData.points, // 保持積分資料
-      });
-      
-      // 更新票券資料
-      setTickets(newTickets);
-    
-      // 顯示成功提示訊息
-      if (rewardMessage) {
-        Swal.fire({
-          title: "獲得新獎勳！",
-          text: rewardMessage,
-          icon: "success",
-          confirmButtonText: "確認"
-        });
-      }
-    
-    
-      // 更新票券資料
-      newTickets.forEach(ticket => {
-        updatedVouchers(ticket.id, ticket); // 更新每張票券
-      });
-    };
-    
-    
-  
 
+  // 檢查積分是否達標，並自動發送票券
+  const checkAndRewardTicket = async (rewardsData) => {
+    let newTickets = [...tickets]; // 假設tickets是當前已經擁有的票券陣列
+    let rewardMessage = "";
+    let rewardSent = false; // 用來標記是否發送過通知
+    let updatedRewardsData = { ...rewardsData }; // 複製用戶資料，後續會更新
+
+      // 確保 reward_alert_sent 屬性存在，若不存在則初始化為空陣列
+      if (!updatedRewardsData.reward_alert_sent) {
+        updatedRewardsData.reward_alert_sent = [];
+      }
+
+  
+  // 根據積分發送對應的獎勳和票券
+  if (rewardsData.points >= 10000 && !updatedRewardsData.reward_alert_sent.includes(10000)) {
+    newTickets.push({
+      id: newTickets.length + 1,
+      name: "免費四日遊",
+      date: "2025-03-20",
+      status: "尚未使用",
+    });
+    rewardMessage = "恭喜您達成10000積分，已獲得免費四日遊！";
+    updatedRewardsData.reward_alert_sent.push(10000); // 更新已發送過的通知 
+    rewardSent = true;
+  } else if (rewardsData.points >= 8000 && !updatedRewardsData.reward_alert_sent.includes(8000)) {
+    newTickets.push({
+      id: newTickets.length + 1,
+      name: "免費三日遊",
+      date: "2025-03-18",
+      status: "尚未使用",
+    });
+    rewardMessage = "恭喜您達成8000積分，已獲得免費三日遊！";
+    updatedRewardsData.reward_alert_sent.push(8000); // 更新已發送過的通知 
+    rewardSent = true;
+  } else if (rewardsData.points >= 5000 && !updatedRewardsData.reward_alert_sent.includes(5000)) {
+    newTickets.push({
+      id: newTickets.length + 1,
+      name: "免費二日遊",
+      date: "2025-03-15",
+      status: "尚未使用",
+    });
+    rewardMessage = "恭喜您達成5000積分，已獲得免費二日遊！";
+    updatedRewardsData.reward_alert_sent.push(5000); // 更新已發送過的通知 
+    rewardSent = true;
+  } else if (rewardsData.points >= 3000 && !updatedRewardsData.reward_alert_sent.includes(3000)) {
+    newTickets.push({
+      id: newTickets.length + 1,
+      name: "免費一日遊",
+      date: "2025-03-10",
+      status: "尚未使用",
+    });
+    rewardMessage = "恭喜您達成3000積分，已獲得免費一日遊！";
+    updatedRewardsData.reward_alert_sent.push(3000); // 更新已發送過的通知 
+    rewardSent = true;
+  } else if (rewardsData.points >= 2000 && !updatedRewardsData.reward_alert_sent.includes(2000)) {
+    newTickets.push({
+      id: newTickets.length + 1,
+      name: "專屬VIP點數",
+      date: "2025-03-05",
+      status: "已贈送",
+    });
+    rewardMessage = "恭喜您達成2000積分，已獲得專屬VIP點數！";
+    updatedRewardsData.reward_alert_sent.push(2000); // 更新已發送過的通知 
+    rewardSent = true;
+  }
+
+    // 更新票券資料
+    setTickets(newTickets); // 在這裡更新新的票券資料
+  
+    // 顯示成功提示訊息，確保只顯示一次
+    if (rewardSent && rewardMessage) {
+      Swal.fire({
+        title: "獲得新獎勳！",
+        text: rewardMessage,
+        icon: "success",
+        confirmButtonText: "確認"
+      });
+    }
+  
+    // 更新用戶資料，更新票券
+    await updatedMembers(userId, {
+      tickets: newTickets,
+      rewards: {  // 更新獎勳資料，並且只更新 reward_alert_sent
+        ...rewardsData,  // 保留其他獎勳資料
+        reward_alert_sent: updatedRewardsData.reward_alert_sent  // 只更新已發送通知的資料
+      }
+    });
+
+  };
+    
   useEffect(() => {
     fetchTripData();
     fetchRewardsData();
     fetchTicketsData();
   }, []);
-
-
-
-  
 
 
   return (
@@ -170,6 +209,7 @@ const Center = () => {
                 {/* 檢查是否有票券資料 */}
                 <tbody>
                 {tickets && tickets.length > 0 ? (
+                  
                   <>
                   {tickets.map((ticket) => (
                     <tr key={ticket.id}>
