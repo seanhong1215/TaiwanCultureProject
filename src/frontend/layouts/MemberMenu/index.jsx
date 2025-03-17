@@ -115,11 +115,6 @@ const Menu = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/member-center/activity-review" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
-            <span className="material-icons">star_rate</span>活動評價
-          </NavLink>
-        </li>
-        <li>
           <NavLink to="/member-center/collection-list" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
             <span className="material-icons">favorite</span>收藏清單
           </NavLink>

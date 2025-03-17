@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { getOrderAll, getActivityAll, updateOrder } from '@/frontend/utils/api';
 import './OderListPage.scss';
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
+import EventReviewForm from '@/frontend/components/form/EventReviewForm';
 import dayjs from "dayjs";
 
 const OrderListPage = () => {
@@ -11,39 +12,91 @@ const OrderListPage = () => {
   const [userOrders, setUserOrders] = useState([]); // 用來存儲過濾後的使用者訂單
   const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [totalPage , setTotalPage] = useState(1);
-  const [activeTab, setActiveTab] = useState('已預約');
+  const [activeTab, setActiveTab] = useState('全部訂單');
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 5;
   const currentUserId = Number(localStorage.getItem("userId"));
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  // 搜尋功能
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredOrders, setFilteredOrders] = useState([]); // 筛选后的订单数据
+  const ordersToRender = filteredOrders.length > 0 ? filteredOrders : userOrders;
+  const showNoResults = filteredOrders.length === 0 && searchTerm !== "";
+  // 排序功能
+  const [sortOption, setSortOption] = useState("排序: 最近日期");
+
+
+
+    // 處理搜尋
+    const handleSearch = () => {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+      console.log("🔍 搜索關鍵字:", lowerCaseSearchTerm);
+      console.log("📦 當前 userOrders:", userOrders);
+    
+      const result = userOrders.filter(order => {
+        const activityName = order.activityName?.toLowerCase() || "";
+        const orderNumber = order.id?.toString().toLowerCase() || "";
+    
+        return activityName.includes(lowerCaseSearchTerm) || orderNumber.includes(lowerCaseSearchTerm);
+      });
+    
+      console.log("✅ 篩選結果:", result);
+      setFilteredOrders(result);
+    };
+
+    const handleSearchInputChange = (event) => {
+      console.log(event.target.value);
+      setSearchTerm(event.target.value); // 更新搜索框的值
+    };
+
+    const handleKeyDown = (event) => {
+      console.log(event.key);
+      if (event.key === "Enter") {
+        handleSearch(); // 按下 Enter 键时触发搜索
+      }
+    };
+  
+
+    // 處理排序選項變化
+    const handleSortChange = (event) => {
+      const selectedOption = event.target.value;
+      setSortOption(selectedOption); // 更新排序选项
+    };
+
+  // 控制評價Modal顯示
+  const handleReview = (order) => {
+      setSelectedOrder(order); // 確保傳遞當前點擊的 order
+      console.log(order.id);
+      setShowModal(true); // 顯示評價 Modal
+  };
+
+  // 關閉 Modal
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedOrder(null); // 清除已選擇的 order 避免干擾
+  };
+
   // ✅ 更新訂單狀態的函式
   const getOrderStatus = (last_bookable_date, timeSlot, reservedStatus) => {
     const now = dayjs();
-    // 從 timeSlot 取出開始時間（如 "18:00"）
+    // 從 timeSlot 取出開始時間
     const startTime = timeSlot.split("-")[0];
 
     // 轉換成完整日期時間格式
     const orderDateTime = dayjs(`${last_bookable_date} ${startTime}`, "YYYY-MM-DD HH:mm");
 
-    // console.log("🚀 訂單狀態檢查:");
-    // console.log("🔹 last_bookable_date:", last_bookable_date);
-    // console.log("🔹 timeSlot:", timeSlot);
-    // console.log("🔹 解析出的開始時間:", startTime);
-    // console.log("🔹 計算出的訂單時間:", orderDateTime.format("YYYY-MM-DD HH:mm"));
-    // console.log("🔹 現在時間:", now.format("YYYY-MM-DD HH:mm"));
-
     // 判斷是否應該變更狀態
     if (orderDateTime.isBefore(now, "day")) { // 若訂單時間在今天以前
-      // console.log("✅ 訂單狀態變更為: ended (已結束)");
-      return "ended"; // 已結束
+      return "finished"; // 已結束
     }
   
     if (reservedStatus === "reserved" && orderDateTime.isBefore(now)) {
-      // console.log("✅ 訂單狀態變更為: in_progress (進行中)");
       return "in_progress"; // 變更為進行中
     }
 
-    // console.log("🚫 訂單狀態保持不變:", reservedStatus);
     return reservedStatus;
 
   };
@@ -116,7 +169,7 @@ const OrderListPage = () => {
         if (activeTab === "已預約") return order.reservedStatus === "reserved";
         if (activeTab === "進行中") return order.reservedStatus === "in_progress";
         if (activeTab === "已取消") return order.reservedStatus === "cancel";
-        if (activeTab === "已結束") return order.reservedStatus === "ended";
+        if (activeTab === "已完成") return order.reservedStatus === "finished";
         return true;
       });
 
@@ -164,6 +217,23 @@ const OrderListPage = () => {
     }
   };
 
+  // 在排序选项变化时执行排序
+  useEffect(() => {
+    const sortedOrders = [...userOrders]; // 复制一份当前的订单数据
+    console.log(sortedOrders);
+
+    if (userOrders.length === 0) return; // 如果没有订单数据，直接返回
+
+    // 按照預約時間排序
+    if (sortOption === "排序: 最近日期") {
+      sortedOrders.sort((a, b) => new Date(b.last_bookable_date) - new Date(a.last_bookable_date)); // 按日期降序
+    } else if (sortOption === "排序: 最早日期") {
+      sortedOrders.sort((a, b) => new Date(a.last_bookable_date) - new Date(b.last_bookable_date)); // 按日期升序
+    }
+
+    setUserOrders(sortedOrders); // 更新排序后的订单列表
+  }, [sortOption]); // 依赖于 sortOption
+
   // ✅ `useEffect` 初始化時獲取資料
   useEffect(() => {
     if (currentUserId) {
@@ -178,17 +248,11 @@ const OrderListPage = () => {
         prevOrders.map((order) => {
           const startTime = order.timeSlot.split("-")[0];
           const orderDateTime = dayjs(`${order.last_bookable_date} ${startTime}`, "YYYY-MM-DD HH:mm");
-          // console.log("📌 訂單 ID:", order.id);
-          // console.log("🔹 訂單時間:", orderDateTime.format("YYYY-MM-DD HH:mm"));
-          // console.log("🔹 現在時間:", dayjs().format("YYYY-MM-DD HH:mm"));
-
 
           if (order.reservedStatus === "reserved" && orderDateTime.isBefore(dayjs())) {
-            // console.log("✅ 訂單狀態變更為: in_progress");
             return { ...order, reservedStatus: "in_progress" };
           }
 
-          // console.log("🚫 訂單狀態未變更:", order.reservedStatus);
           return order;
         })
       );
@@ -197,6 +261,7 @@ const OrderListPage = () => {
     return () => clearInterval(interval);
   }, [orders]); // 依賴 `orders`，確保最新的資料被檢查
 
+
   return (
     <div className="page-container order-list-page">
       <div className="container">
@@ -204,7 +269,7 @@ const OrderListPage = () => {
         
         {/* 標籤導航 */}
         <ul className="nav nav-tabs mb-4">
-          {['已預約', '進行中', '已結束', '已取消'].map(tab => (
+          {['全部訂單','已預約', '進行中', '已完成', '已取消'].map(tab => (
             <li className="nav-item" key={tab}>
               <button 
                 className={`nav-link ${activeTab === tab ? 'active' : ''}`}
@@ -215,12 +280,38 @@ const OrderListPage = () => {
             </li>
           ))}
         </ul>
+
+        {/* 篩選和搜尋 */}
+      <div className="d-flex justify-content-between mb-4">
+      <select 
+          className="form-select w-auto"
+          value={sortOption}
+          onChange={handleSortChange}
+        >
+          <option>排序: 最近日期</option>
+          <option>排序: 最早日期</option>
+        </select>
+
+        <div className="input-group w-auto">
+          <input 
+            type="text" 
+            className="form-control" 
+            placeholder="搜尋訂單編號或活動名稱"
+            value={searchTerm}
+            onChange={handleSearchInputChange} // 設置搜尋條件
+            onKeyDown={handleKeyDown}
+          />
+          <button className="btn btn-primary" onClick={handleSearch}>
+            <span className="material-icons">search</span>
+          </button>
+        </div>
+      </div>
         
         {/* 訂單列表 */}
         <div className="row">
           {/* 根據 activeTab 篩選並顯示對應狀態的訂單 */}
-          {userOrders.length > 0 ? (
-            userOrders.map(order => (
+          {!showNoResults ? (
+            ordersToRender.map(order => (
               <div className="col-lg-12 mb-4" key={order.id}>
                 <div className="card h-100 shadow-sm">
                   <div className="row g-0">
@@ -240,6 +331,12 @@ const OrderListPage = () => {
                           預約時間: {order.last_bookable_date} {order.timeSlot}
                         </p>
                         <p className="card-text mb-2">訂單編號: {order.id}</p>
+                         {/* 只有完成狀態且未評價的訂單才顯示評價獎勵提示 */}
+                         {order.reservedStatus === 'finished' && !order.reviewed && (
+                          <div className="text-warning mb-2 small fw-bold">
+                            ✨ 評價此活動可獲得 50 點會員積分
+                          </div>
+                        )}
                         <div className="mt-auto text-center text-md-end">
                           <Link
                             to={`/member-center/order-management/detail/${order.id}`}
@@ -250,12 +347,20 @@ const OrderListPage = () => {
                          {order.reservedStatus === "reserved" && (
                             <button className="btn btn-danger" onClick={() => handleCancel(order.id)}>取消訂單</button>
                           )}
+                          {order.reservedStatus === "finished" && !order.reviewed && (
+                            <button className="btn btn-success text-white" onClick={() => handleReview(order)}>活動評價</button>
+                          )}
                         </div>
+
+                       
                       </div>
                     </div>
                   </div>
+                  {/* 顯示評價 Modal */}
+                  {showModal && selectedOrder && <EventReviewForm order={selectedOrder} onClose={handleClose} />}
                 </div>
               </div>
+              
             ))
           ) : (
             <div className="col-12 text-center py-5">
@@ -270,6 +375,8 @@ const OrderListPage = () => {
             {totalPage > 1 && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
           </div>
         </div>
+
+        
       </div>
     </div>
   );

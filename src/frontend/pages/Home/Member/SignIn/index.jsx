@@ -204,8 +204,7 @@ const SignIn = () => {
               dateStr === today
                 ? "bg-custom-primary text-white"
                 : isSignedIn
-                ? "bg-success text-white"
-                : ""
+                
             }
           >
             {dayNum}

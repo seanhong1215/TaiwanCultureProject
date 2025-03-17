@@ -6,6 +6,19 @@
       color: $primary-color-5;
     }
   }
+  .input-group {
+    input.form-control{
+      height: 40px;
+    }
+    button {
+      margin: 0;
+      padding: 12px;
+      height: 40px;
+      .material-icons {
+        font-size: 18px;
+      }
+    }
+  }
 }
 
 .order-list-page .nav-link {

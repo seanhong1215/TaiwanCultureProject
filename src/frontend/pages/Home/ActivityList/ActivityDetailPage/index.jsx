@@ -8,7 +8,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css';
 import { Outlet, useParams , Link , useNavigate , useLocation} from "react-router-dom";
 import axios from "axios";
-
+import PropTypes from "prop-types";
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwan-culture-project.onrender.com'
@@ -66,6 +66,20 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
   }
 
   return <div ref={mapContainerRef} style={{ height: '500px' }}></div>;
+};
+MapComponent.propTypes = {
+  activityDetailData: PropTypes.arrayOf(
+    PropTypes.shape({
+      trip: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+      }).isRequired,
+      map: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 
@@ -125,7 +139,13 @@ const ReviewBars = ({ reviewData }) => {
     </div>
   );
 };
-
+ReviewBars.propTypes = {
+  reviewData: PropTypes.arrayOf(
+    PropTypes.shape({
+      rating: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 const ActivityDetailPage = () => {
 
@@ -155,10 +175,6 @@ const ActivityDetailPage = () => {
       "activityName": "",
       "last_bookable_date": "",
       "activityLocation": "",
-      "activityPeriod": {
-        "startDate": "",
-        "endDate": ""
-      },
       "adultCount": null,
       "childCount": null,
       "adultPrice": 150,
@@ -168,7 +184,8 @@ const ActivityDetailPage = () => {
       "paymentStatus": "PAID",
       "orderId": "",
       "reservedStatus": "reserved",
-      "actImage" : ""
+      "actImage" : "",
+      "reviewed": false
   });
 
   const [error, setError] = useState(null);
