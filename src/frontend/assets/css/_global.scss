@@ -69,9 +69,21 @@ a {
   background-color: #60B9BF !important;
 }
 
+.btn-custom-outline-primary, .bg-custom-outline-primary {
+  border-color: #60B9BF !important;
+  color: #60B9BF !important;
+  background-color: transparent;
+  &:hover {
+    color: #fff !important;
+    background-color: #60B9BF !important;
+    transition: all .3s;
+  }
+}
+
 .custom-primary {
   color: #60B9BF;
 }
+
 
 
 
@@ -320,7 +332,7 @@ a {
   }
   .page-container{
     margin-top: 0;
-    min-height: 735px;
+    min-height: 623px;
   }
 }
 

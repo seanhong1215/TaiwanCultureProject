@@ -335,6 +335,7 @@
     padding-bottom: 60px;
   }
   .swiper-slide {
+    cursor: pointer;
     &:hover {
       transition: all .3s;
       opacity: 0.7;
@@ -342,9 +343,22 @@
     img {
       margin-bottom: 8px;
       width: 100%;
-      min-height: 258px;
+      min-height: 240px;
       border-radius: 40px;
       object-fit: cover;
+    }
+    .card-title {
+      white-space: nowrap;
+      overflow: hidden; /* 隱藏超出範圍的文字 */
+      text-overflow: ellipsis; /* 超過範圍後顯示省略號 */
+    }
+    .card-text {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      margin-top: 4px;
+      color: $text-color-9;
     }
   }
   .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after,
@@ -392,6 +406,7 @@
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
       overflow: hidden;
+      color: $text-color-9;
     }
   }
   h2 {

@@ -43,7 +43,7 @@ const OrderDetailPage = () => {
             <div className="order-info-box order-detail">
                 <div className="order-detail-info">
                     <h3 className="order-title">訂單資訊</h3>
-                    <div className="reservation">{order.reservedStatus === "reserved" ? "已預約" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</div>
+                    <div className="reservation">{order.reservedStatus === "reserved" ? "已預約" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : "已完成"}</div>
                 </div>
                 <table>
                     <tbody>

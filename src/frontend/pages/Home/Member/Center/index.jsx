@@ -182,7 +182,7 @@ const Center = () => {
                     <tr key={trip.id}>
                       <td>{trip.activityName}</td>
                       <td>{trip.last_bookable_date}</td>
-                      <td>{trip.reservedStatus === "reserved" ? "已預約" : trip.reservedStatus === "in_progress" ? "進行中" : trip.reservedStatus === "cancel" ? "已取消" : "已結束"}</td>
+                      <td>{trip.reservedStatus === "reserved" ? "已預約" : trip.reservedStatus === "in_progress" ? "進行中" : trip.reservedStatus === "cancel" ? "已取消" : "已完成"}</td>
                       <td>
                         <Link to={`/member-center/order-management/detail/${trip.id}`} className="btn btn-custom-primary btn-sm">查看詳情</Link>
                       </td>

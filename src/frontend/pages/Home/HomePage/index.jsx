@@ -2,7 +2,7 @@ import { ReviewCard } from '@/frontend/components/Card/ReviewCard';
 import { BlogCard } from '@/frontend/components/Card/BlogCard';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getActivityAll, getJournalAll, getReviewAll } from '@/frontend/utils/api';
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -47,14 +47,15 @@ const HomePage = () => {
     };
     
     const [showSearchModal, setShowSearchModal] = useState(false);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [activityDate, setActivityDate] = useState("");
     const [selectedCity, setSelectedCity] = useState("");  // 存放選擇的城市
     const [selectedType, setSelectedType] = useState(""); // 存放選擇的活動類型
     const [price, setPrice] = useState("");
     const [keyword, setKeyword] = useState("");
     const [filteredData, setFilteredData] = useState([]); // 篩選後的資料
     const [loading, setLoading] = useState(false);  
+
+    const sectionRef = useRef(null); // 取得區塊的 ref
     
     // dropdown
     const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false); // 控制地區下拉選單
@@ -88,7 +89,7 @@ const HomePage = () => {
     
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []); // 空陣列表示只在組件加載時呼叫一次
+    }, []); 
 
     useEffect(() => {
         if (showSearchModal) {
@@ -139,14 +140,8 @@ const HomePage = () => {
         const filteredResults = activityData.filter((item) => {
             const matchCity = selectedCity ? item.city.includes(selectedCity) : true;
             const matchEventType = selectedType ? item.eventType.includes(selectedType) : true;
-            const matchDate =
-            startDate || endDate
-                ? new Date(item.date) >= new Date(startDate || "1970-01-01") &&
-                new Date(item.date) <= new Date(endDate || "2099-12-31")
-                : true;
-            const matchKeyword =
-            keyword ? item.content.title.includes(keyword) || item.content.description.includes(keyword) : true;
-
+            const matchDate = activityDate ? new Date(item.date).toDateString() === new Date(activityDate).toDateString() : true;
+            const matchKeyword = keyword ? item.content.title.includes(keyword) || item.content.description.includes(keyword) : true;
             return matchCity && matchEventType && matchDate && matchKeyword;
         });
 
@@ -155,12 +150,26 @@ const HomePage = () => {
         setFilteredData(getThreeFilteredResults);
         setShowSearchModal(false);
         resetForm();
+
+        if (sectionRef.current) {
+            sectionRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
     };
 
     const handleInputChange = (e) => {
         const value = e.target.value;
         setKeyword(value);
     };
+
+        // 點擊篩選
+        const handleFilterSearch = (city) => {
+            console.log(city);
+            setKeyword(city); // 設定 input 的值
+        };
 
     // 切換地區選單
     const toggleDropdownCity = () => {
@@ -190,8 +199,7 @@ const HomePage = () => {
     const resetForm = () => {
         setSelectedCity("");
         setSelectedType("");
-        setStartDate("");
-        setEndDate("");
+        setActivityDate("");
         setPrice("");
         setKeyword("");
     };
@@ -218,6 +226,7 @@ const HomePage = () => {
                                     placeholder={t('banner.searchPlacehoder')}
                                     value={keyword}
                                     onChange={handleInputChange}
+                                    onKeyDown={(e) => e.key === "Enter" && handleSearch()} // 監聽 Enter 鍵
                                     />
                             </div>
                             <div className="search-button-more-wrap" onClick={handleOpenModalSearch}>
@@ -225,12 +234,19 @@ const HomePage = () => {
                             </div>
                             <span className="material-icons search-button" onClick={handleSearch}>search</span>
                         </div>
+                        {/* 快速篩選區塊，使用 i18n 來顯示城市名稱 */}
                         <div className="quick-filters">
-                            <span className="quick-filter">{t('banner.taichung')}</span>
-                            <span className="quick-filter">{t('banner.taipei')}</span>
-                            <span className="quick-filter">{t('banner.kaohsiung')}</span>
-                            <span className="quick-filter">{t('banner.tainan')}</span>
+                            {["taichung", "taipei", "kaohsiung", "tainan"].map((cityKey) => (
+                                <span
+                                    key={cityKey}
+                                    className="quick-filter"
+                                    onClick={() => handleFilterSearch(t(`banner.${cityKey}`))}
+                                >
+                                    {t(`banner.${cityKey}`)}
+                                </span>
+                            ))}
                         </div>
+
                     </div>
                     {/* 搜尋彈窗 */}
                     {showSearchModal && (
@@ -245,21 +261,10 @@ const HomePage = () => {
                                 <div className="mb-3 modal-body-list">
                                     <span className="material-icons">today</span>
                                     <DatePicker
-                                        selected={startDate}
-                                        onChange={(date) => setStartDate(date)}
+                                        selected={activityDate}
+                                        onChange={(date) => setActivityDate(date)}
                                         dateFormat="yyyy-MM-dd"
-                                        placeholderText={t('form.startDate')}
-                                        className="date-input"
-                                        calendarClassName="custom-calendar"
-                                    />
-                                </div>
-                                <div className="mb-3 modal-body-list">
-                                    <span className="material-icons">today</span>
-                                    <DatePicker
-                                        selected={endDate}
-                                        onChange={(date) => setEndDate(date)}
-                                        dateFormat="yyyy-MM-dd"
-                                        placeholderText={t('form.endDate')}
+                                        placeholderText={t('form.activityDate')}
                                         className="date-input"
                                         calendarClassName="custom-calendar"
                                     />
@@ -338,7 +343,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <section className="section popular-event-section">
+            <section className="section popular-event-section" ref={sectionRef}>
                 <div className="container">
                     <div className="main-text text-center">
                         <h2 className="section-title">{t('activity.popularEventTitle')}</h2>
@@ -473,7 +478,7 @@ const HomePage = () => {
                             </Swiper>
                         ) : (
                             journalData.map((item) => (
-                            <div className="col-custom">
+                            <div className="col-custom" key={item.id}>
                                 <div className="blog-item">
                                     <img src={item.images} alt={item.title} />
                                     <p className="card-date">{item.date}</p>

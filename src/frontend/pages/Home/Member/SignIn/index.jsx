@@ -204,7 +204,8 @@ const SignIn = () => {
               dateStr === today
                 ? "bg-custom-primary text-white"
                 : isSignedIn
-                
+                ? "bg-success"  // 如果已簽到，顯示 bg-success
+                : ""            // 如果未簽到，保持為空字串
             }
           >
             {dayNum}

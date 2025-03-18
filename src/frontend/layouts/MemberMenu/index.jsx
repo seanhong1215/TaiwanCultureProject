@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef  } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import './Menu.scss';
 import { getMembers, updatedMembers, uploadImageToCloudinary } from '@/frontend/utils/api';
 
 
 const Menu = () => {
+      const location = useLocation();
+      // 檢查當前路徑是否以 'member-center/order-management/' 開頭
+      const isActiveLink = location.pathname.startsWith('/member-center/order-management/');
+  
       const userId = Number(localStorage.getItem("userId")); // 取得 userId
       const userName = localStorage.getItem("userName"); // 取得 userName
       const [ userData, setUserData ] = useState({});
@@ -110,7 +114,10 @@ const Menu = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/member-center/order-management/list" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
+            <NavLink
+            to="/member-center/order-management/list"
+            className={({ isActive }) => `nav-link-item ${isActive || isActiveLink ? 'active' : ''}`}
+          >
             <span className="material-icons">receipt_long</span>訂單資訊
           </NavLink>
         </li>

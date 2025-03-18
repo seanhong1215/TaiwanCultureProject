@@ -68,7 +68,7 @@ const handleDeleteImage = (setPreviewImage) => {
 
 // 提交評價
 const handleSubmit = async() => {
-  console.log("🔹 檢查送出資料:", reviewData);
+  // console.log("🔹 檢查送出資料:", reviewData);
 
   // 直接從 `reviewData` 讀取數據
   const { rating, reviewContent } = reviewData;
@@ -111,7 +111,7 @@ const handleSubmit = async() => {
     return;
   }
 
-  console.log("上傳圖片 URL:", uploadedImageUrls);
+  // console.log("上傳圖片 URL:", uploadedImageUrls);
 
   const updatedReviewData = {
     ...reviewData,
@@ -122,11 +122,11 @@ const handleSubmit = async() => {
    try {
       if(updatedReviewData.imageFiles.length > 0){
 
-        console.log(updatedReviewData);
+        // console.log(updatedReviewData);
         const res = await addReviews(updatedReviewData);
 
         const orderId = order.id;
-        console.log(orderId);
+        // console.log(orderId);
         if(res){
           await updateOrder(orderId, {reviewed: true});
           await getOrders(orderId);

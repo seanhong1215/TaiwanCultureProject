@@ -157,7 +157,7 @@ const handleActivityChange = (e) => {
                 onChange={(e) => setCurrentEvent({ ...currentEvent, status: e.target.value })}
               >
                 <option value="進行中">進行中</option>
-                <option value="已結束">已結束</option>
+                <option value="已完成">已完成</option>
               </Form.Select>
             </Form.Group>
         </Modal.Body>
@@ -178,7 +178,7 @@ EventModal.propTypes = {
   handleSave: PropTypes.func.isRequired, // 儲存資料的函數
   currentEvent: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 活動 ID
-    status: PropTypes.oneOf(["進行中", "已結束"]).isRequired, // 活動狀態
+    status: PropTypes.oneOf(["進行中", "已完成"]).isRequired, // 活動狀態
   }).isRequired,
   setCurrentEvent: PropTypes.func.isRequired, // 設定活動資料的函數
   newReview: PropTypes.object.isRequired,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import "./Breadcrumb.scss";
-import { getActivitys } from "@/frontend/utils/api"; // 假設有 API 可查詢活動名稱
+import { getActivitys, getJournals } from "@/frontend/utils/api"; // 假設有 API 可查詢活動名稱
 
 const pathNameMap = {
   "activity-list": "所有活動",
@@ -13,12 +13,28 @@ const Breadcrumb = () => {
   const pathnames = location.pathname.split("/").filter((x) => x);
   const { id } = useParams(); // 獲取活動 ID
   const [activityName, setActivityName] = useState("");
+  const [journalName, setJournalName] = useState("");
 
   useEffect(() => {
     if (id) {
-        getActivitys(id).then((data) => setActivityName(data.content.title));
+      const fetchData = async () => {
+        try {
+          // Check the pathname to fetch either activity or journal data
+          if (location.pathname.includes("activity")) {
+            const activityData = await getActivitys(id);
+            setActivityName(activityData.content.title);
+          } else if (location.pathname.includes("journal")) {
+            const journalData = await getJournals(id);
+            setJournalName(journalData.title);
+          }
+        } catch (error) {
+          console.error("Error fetching data", error);
+        }
+      };
+
+      fetchData(); // 呼叫異步函數
     }
-  }, [id]);
+  }, [id, location.pathname]); // Re-fetch if pathname or id changes
   
   return (
     <nav className="breadcrumb">
@@ -26,14 +42,25 @@ const Breadcrumb = () => {
       {pathnames.map((name, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
         const isLast = index === pathnames.length - 1;
-        const displayName = pathNameMap[name] || (id && activityName ? activityName : decodeURIComponent(name));
-
+       // 根據頁面類型選擇顯示活動名稱或日誌名稱
+       let displayName = pathNameMap[name] || decodeURIComponent(name);
+       // 如果是最後一個元素，顯示對應的活動名稱或日誌名稱
+       if (isLast) {
+        if (location.pathname.includes("activity") && activityName) {
+          displayName = activityName;
+        } else if (location.pathname.includes("journal") && journalName) {
+          displayName = journalName;
+        }
+      }
+       
         return (
           <span key={routeTo} className="breadcrumbItem">
             {isLast ? (
               <span className="breadcrumbCurrent">{displayName}</span>
             ) : (
-              <Link to={routeTo} className="breadcrumbLink">{displayName}</Link>
+              <Link to={routeTo} className="breadcrumbLink">
+                {displayName}
+              </Link>
             )}
           </span>
         );

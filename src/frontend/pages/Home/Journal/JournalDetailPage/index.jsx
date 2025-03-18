@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { getJournalAll } from '@/frontend/utils/api';
 import './JournalDetail.scss';
+import Breadcrumb from "@/frontend/components/Breadcrumb"
 
 const JournalDetailPage = () => {
   const location = useLocation();
@@ -47,9 +48,11 @@ const JournalDetailPage = () => {
 
   return (
     <div className="blog-post-container">
-      
+       
       {/* Main Content */}
       <div className="container blog-container mt-5">
+        {/* 麵包屑 */}
+        <Breadcrumb />
         <div className="row">
           {/* Main Content Column */}
           <div className="col-lg-12">

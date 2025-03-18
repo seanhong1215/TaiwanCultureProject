@@ -1,151 +1,11 @@
 import "./ActivityDetailPage.scss";
-import React from "react";
-import Breadcrumb from "@/frontend/components/Breadcrumb"
-import { getActivitys , getMembers } from '@/frontend/utils/api';
-import { useState , useEffect , useRef } from 'react'; 
+import Breadcrumb from "@/frontend/components/Breadcrumb";
+import ReviewBars from "@/frontend/components/Progress";
+import ActivityMap from "@/frontend/components/ActivityMap";
+import { getActivitys, getReservations, addReservations, getReviewsActivityId, getReviewsActivityIdPage } from '@/frontend/utils/api';
+import { useState , useEffect } from 'react'; 
 import Swal from 'sweetalert2';
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css';
-import { Outlet, useParams , Link , useNavigate , useLocation} from "react-router-dom";
-import axios from "axios";
-import PropTypes from "prop-types";
-
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'
- ? 'https://taiwan-culture-project.onrender.com'
- : 'http://localhost:3001'
-
-
- const MapComponent = ({ activityDetailData, loading }) => {
-  // Ref for the map container and the map instance
-  const mapContainerRef = useRef(null);
-  const mapInstanceRef = useRef(null);
-
-  // Always call hooks regardless of conditions
-  useEffect(() => {
-    // Ensure that we have the necessary data before proceeding
-    if (activityDetailData && activityDetailData.length > 0) {
-      const { map } = activityDetailData[0] || {};
-
-      if (map && map.latitude && map.longitude) {
-        // Initialize the map only if it hasn't been initialized already
-        if (!mapInstanceRef.current) {
-          mapInstanceRef.current = L.map(mapContainerRef.current).setView([map.latitude, map.longitude], 13);
-
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          }).addTo(mapInstanceRef.current);
-
-          L.marker([map.latitude, map.longitude]).addTo(mapInstanceRef.current)
-            .bindPopup(`${activityDetailData[0].trip.title}`)
-            .openPopup();
-        }
-      }
-    }
-
-    // Cleanup function to remove the map on unmount or before running the effect again
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-    };
-  }, [activityDetailData]); // Run when activityDetailData changes
-
-  // Conditional rendering for loading and missing data
-  if (loading) {
-    return <p style={{ marginLeft: 'auto' }}>找不到活動資訊</p>;
-  }
-
-  if (!activityDetailData || activityDetailData.length === 0) {
-    return <p style={{ marginLeft: 'auto' }}>找不到活動資訊</p>;
-  }
-
-  const { map } = activityDetailData[0] || {};
-  if (!map || !map.latitude || !map.longitude) {
-    return <p style={{ marginLeft: 'auto' }}>地圖資訊不可用</p>;
-  }
-
-  return <div ref={mapContainerRef} style={{ height: '500px' }}></div>;
-};
-MapComponent.propTypes = {
-  activityDetailData: PropTypes.arrayOf(
-    PropTypes.shape({
-      trip: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-      }).isRequired,
-      map: PropTypes.shape({
-        latitude: PropTypes.number.isRequired,
-        longitude: PropTypes.number.isRequired,
-      }).isRequired,
-    })
-  ).isRequired,
-  loading: PropTypes.bool.isRequired,
-};
-
-
-  
-const ReviewBars = ({ reviewData }) => {
-  const [reviewPercentage , setReviewPercentage] = useState([])
-  
-  useEffect(()=>{
-    const ratingCounts = {};
-    const totalReviews = reviewData.length;
-
-
-    reviewData.length===0 ? {0:0} :   reviewData.map((item)=>{
-      if ( !ratingCounts[item.rating] ) {
-        ratingCounts[item.rating] = 1;
-      }else{
-        ratingCounts[item.rating] += 1
-      }
-    })
-    
-    const calculatedReviewData = Object.entries(ratingCounts).map(([rating, count]) => ({
-      
-      rating: Number(rating),
-      percentage: totalReviews > 0 ? (count / totalReviews) * 100 : 0,
-    }));
-
-  setReviewPercentage(calculatedReviewData.reverse())
-  },[reviewData])
-
-
-  return (
-    <div className="progress-wrap" style={{ width: "100%" }}>
-      {reviewPercentage.map(({ rating, percentage }, index) => {
-        return (
-          <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "6px" }}>
-            <span style={{ width: "50%", textAlign: "right", marginRight: "8px", whiteSpace: 'nowrap' }}>
-              {rating} ⭐
-            </span>
-            <div
-              className="progress"
-              style={{ width: "200px", height: "12px", backgroundColor: "#e9ecef", borderRadius: "4px" , marginBottom:'0px'}}
-            >
-              <div
-                className="progress-bar bg-warning"
-                role="progressbar"
-                style={{ width: `${percentage}%`,
-                height: "100%",
-                }}
-                aria-valuenow={percentage}
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-ReviewBars.propTypes = {
-  reviewData: PropTypes.arrayOf(
-    PropTypes.shape({
-      rating: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-};
+import { useParams , useNavigate } from "react-router-dom";
 
 const ActivityDetailPage = () => {
 
@@ -155,14 +15,21 @@ const ActivityDetailPage = () => {
   const [activityData, setActivityData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
   const [activityDetailDataSection, setActivityDetailDataSection] = useState([]);
-  const [activityDetailData, setActivityDetailData] = useState({});
+  const [activityDetailData, setActivityDetailData] = useState([]);
   const [showMainImage, setShowMainImage] = useState("");
   const [getReservationData , setGetReservationData] = useState({})
   const [selectedDate, setSelectedDate] = useState('');
+
+  // 日期選擇
+  const [selectedActDate, setSelectedActDate] = useState(null);
+  const [currentActDate, setCurrentActDate] = useState(new Date());
+
   const [selectedData, setSelectedData] = useState(null);
   const [RatingstarAll , setRatingStarAll] = useState([])
   const [Ratingstar , setRatingStar] = useState(0)
   const [avgRatingstar , setAvgRatingStar] = useState(0)
+
+
   const [totalPage , setTotalPage] = useState(0)
   const [page, setPage] = useState(1); // 頁數狀態
   const [isFirstEffectDone, setIsFirstEffectDone] = useState(false);
@@ -196,8 +63,7 @@ const ActivityDetailPage = () => {
   const { id } = param
   
 
-  const getReservationDate = async(activityData) => {
-    
+const getReservationDate = async (activityData) => {
     const result = { id: activityData.id };
     const startDate = new Date(activityData.startDate);
     const endDate = new Date(activityData.endDate);
@@ -205,50 +71,47 @@ const ActivityDetailPage = () => {
 
     let currentDate = new Date(startDate);
 
+    // 使用更簡潔的日期格式化
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    // 計算從開始日期到結束日期的所有日期
     while (currentDate <= endDate) {
-        const formattedDate = currentDate.toISOString().split('T')[0];
-
-        // 這裡的價格可以改成你的計算方式，目前是隨機價格
-        result[formattedDate] = { price: price };
-
+        const formattedDate = formatDate(currentDate);
+        result[formattedDate] = { price };  // 添加價格
         currentDate.setDate(currentDate.getDate() + 1);
     }
-    
-      
+
     try {
-      const existingResponse = await axios.get(`/api/reservations/${activityData.id}`, {
-        validateStatus: (status) => status === 200 // 只在 200 時視為成功，其他狀況不拋出錯誤
-    });
-      if (existingResponse.data && Object.keys(existingResponse.data).length > 0) {
-          return;
-      }
-      } catch (error) {
-          if (error.response && error.response.status === 404) {
-            console.log(error);
-          }
-      }
-      
-      // 發送 POST 請求
-      try {
-          const response = await axios.post(`/api/reservations`, result);
-      } catch (postError) {
-        console.log(postError);
-      }
-  }
-  
+        // 檢查是否已經存在該活動的預約資料
+        const existingResponse = await getReservations(activityData.id);
+
+        if (existingResponse && Object.keys(existingResponse).length === 0) {
+            // 如果不存在，添加新的預約資料
+            await addReservations(result);
+        }
+    } catch (error) {
+        // 錯誤處理，針對不同的錯誤情況進行處理
+        if (error.response && error.response.status === 404) {
+            console.log('Reservations not found:', error);
+        } else {
+            console.error('Error processing reservation:', error);
+        }
+    }
+};
+
   const getReverseData = async() => {
     try{
-      const response = await axios.get(`/api/reservations/${id}`)
-      setGetReservationData(response.data) 
+      const response = await getReservations(id)
+      setGetReservationData(response) 
     }catch(error){
       console.log(error);
     }
   }
 
   const getReviewsAll = async (id) => {
-    const response = await axios.get(`/api/reviews?activityId=${id}`);
-    setTotalPage(Math.ceil(response.data.length/limit))
-    setRatingStarAll(response.data)
+    const response = await getReviewsActivityId(id);
+    setTotalPage(Math.ceil(response.length/limit))
+    setRatingStarAll(response)
     
 };
 
@@ -278,12 +141,6 @@ useEffect(() => {
 }, [page]); // 監聽 page 變數，變更時重新獲取數據
 
 
-const getReviews = async (id , page = 1, limit = 2) => {
-  const response = await axios.get(`/api/reviews?activityId=${id}&_page=${page}&_limit=${limit}`);
-  return response.data;
-};
-  
-
   useEffect(() => {
     async function fetchData() {
       await fetchGetActivity(id);
@@ -301,18 +158,17 @@ const getReviews = async (id , page = 1, limit = 2) => {
   }, [id, isFirstEffectDone]);
 
 
-
-  const fetchGetReview = async (id, page = 1, limit) => {
-    setLoading(true);
-    setError(null);
-    try {
-        const response = await getReviews(id, page, limit) // 傳入當前頁數與每頁顯示數量
-        setReviewData(response);
-    } catch (error) {
-        setError(error);
-    } finally {
-        setLoading(false);
-    }
+const fetchGetReview = async (id, page = 1, limit) => {
+  setLoading(true);
+  setError(null);
+  try {
+      const response = await getReviewsActivityIdPage(id, page, limit) // 傳入當前頁數與每頁顯示數量
+      setReviewData(response);
+  } catch (error) {
+      setError(error);
+  } finally {
+      setLoading(false);
+  }
 };
 
 useEffect(()=>{
@@ -320,7 +176,7 @@ useEffect(()=>{
   RatingstarAll.length === 0 ? setAvgRatingStar(0) : setAvgRatingStar((RatingstarAll.reduce((sum , item)=> sum + item.rating, 0) / Number(RatingstarAll.length)).toFixed(1))
 },[reviewData , RatingstarAll])
 
-  const fetchGetActivity = async (id) => {
+const fetchGetActivity = async (id) => {
     setLoading(true);
     setError(null);
     try {
@@ -366,7 +222,6 @@ const renderStars = (rating) => {
   );
 };
 
-
 const handleDateClick = (date) => {
 
   setSelectedDate(date);
@@ -410,42 +265,67 @@ const submitDateClick = () => {
     }, 300); // 帶著資料跳轉到預約頁面
 };
 
-const date = new Date(activityData.startDate);
+// ********************日期選擇*********************
+useEffect(() => {
+  // To update the modal when the selected date changes
+  if (selectedActDate) {
+    const formattedDate = `${selectedActDate.getFullYear()}-${selectedActDate.getMonth() + 1}-${selectedActDate.getDate()}`;
+    console.log('Selected Date:', formattedDate);
+  }
+}, [selectedActDate]);
 
-const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2)}月`;
-const formattedMonth = `${(date.getMonth() + 1).toString().padStart(2,"0")}`;
+const renderCalendarDays = () => {
+  const daysInMonth = new Date(currentActDate.getFullYear(), currentActDate.getMonth() + 1, 0).getDate();
+  const days = [...Array(daysInMonth)].map((_, index) => renderDay(index + 1));
+  return days;
+};
+
+// Update formatted date when currentDate changes
+const formattedDate = `${currentActDate.getFullYear()}年${(currentActDate.getMonth() + 1).toString().padStart(2, '0')}月`;
+const formattedMonth = `${(currentActDate.getMonth() + 1).toString().padStart(2, '0')}`;
+
+// Function to handle month change (next and previous)
+const handleMonthChange = (increment) => {
+  const newDate = new Date(currentActDate);
+  newDate.setMonth(currentActDate.getMonth() + increment);
+  setCurrentActDate(newDate);
+};
+
 const renderDay = (day) => {
+  const formattedDay = day < 10 ? `0${day}` : day; // Ensure day is two digits
+  const fullDate = `${currentActDate.getFullYear()}-${formattedMonth}-${formattedDay}`; // Create the full date string in YYYY-MM-DD format
   
-  const date = `2025-${formattedMonth}-${day < 10 ? `0${day}` : day}`;
-  if (!getReservationData) return null; // 確保有資料
-  const reservation = getReservationData[date];
-  
-  const isAvailable = !!reservation; 
+  if (!getReservationData) return null; // Ensure there is reservation data
+
+  const reservation = getReservationData[fullDate];
+  const isAvailable = !!reservation; // Check if there's a reservation for this date
+
   return (
-    <div className="day" key={day} >
-      <button 
-        onClick={isAvailable ? () => handleDateClick(date) : null }
-        disabled={!isAvailable}
+    <div className="day" key={day}>
+      <button
+        onClick={isAvailable ? () => handleDateClick(fullDate) : null} // Handle date click if available
+        disabled={!isAvailable} // Disable button if no reservation data available
         style={{
-          backgroundColor: selectedDate === date ? '#4DAAB0' : 'transparent', // 當前選中的日期顯示背景顏色
-          color: selectedDate === date ? 'white' : 'black', // 當前選中的日期顯示文字顏色
-          borderRadius: '8px', // 圓角
+          backgroundColor: selectedDate === fullDate ? '#4DAAB0' : 'transparent', // Highlight selected date
+          color: selectedDate === fullDate ? 'white' : 'black', // Change text color if selected
+          borderRadius: '8px',
           fontSize: '14px',
           display: 'inline-block',
-          cursor: isAvailable ? 'pointer' : 'not-allowed', // 如果有資料，游標為指針，否則為禁止符號
-          opacity: isAvailable ? 1 : 0.5
+          cursor: isAvailable ? 'pointer' : 'not-allowed', // Pointer cursor for available dates
+          opacity: isAvailable ? 1 : 0.5, // Dim unavailable dates
         }}
       >
-        {day}
+        {day} {/* Display day */}
         {reservation && (
-          <div style={{color:selectedDate === date ? 'white' : '#616161'}}>
-            <small>價格 :{reservation.price}</small>
+          <div style={{ color: selectedDate === fullDate ? 'white' : '#616161' }}>
+            <small>價格 : {reservation.price}</small> {/* Show reservation price */}
           </div>
         )}
       </button>
     </div>
   );
 };
+
 
 return (
 <div className="activity-detail-page container">
@@ -479,9 +359,6 @@ return (
         ) : (
           <p>Loading...</p>
       )}
-
-
-
       </div>
       <div className="mainContent">
       <div className="row g-0" >
@@ -509,16 +386,14 @@ return (
                         
                   </div>
                   <hr/>
-                    
                 </div>
-
                 <div className="card-body actTitleBody">
                   <div className='siteContent'>
                       <div className='actContentTitle site'>
                         <p>地點</p>
                       </div>
                       <div className="siteMap">
-                        <MapComponent activityDetailData={activityDetailData} />
+                        <ActivityMap activityDetailData={activityDetailData} />
                       </div>
                   </div>
                   <hr/>
@@ -578,11 +453,9 @@ return (
                           <div className="w-50" style={{marginLeft:"32px",height:'121px'}}>
                             <ReviewBars reviewData={reviewData} />
                           </div>
-
-                       
                       </div>
                        {/*評論區塊 */}  
-                       <div >
+                      <div >
                           {(reviewData.length > 0) ? (reviewData.map((item,index)=>
                                 
                             <div className="row reviewRow g-0" key={index}>
@@ -600,10 +473,8 @@ return (
                                   <div className='singleRating'>
                                   {renderStars(item.rating)}
                                   </div>
-                     
                                 </div>
                                 <p>{item.reviewContent}</p>
-                                
                               </div>
                               <div className="ratingImage">
                               { item.imageFiles.map((image,index) => 
@@ -613,11 +484,8 @@ return (
                                 )}
                                 </div>
                             </div>
-                            
-                            
                           )) : (<p>No review found.</p> )}
                               <div className="pagenation" >
-
                               <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
                               <span className="material-icons">
                               chevron_left
@@ -632,7 +500,6 @@ return (
                               </div>
                         </div>
                 </div>
-
                 {/*最上面的2個DIV*/ }
                 </div>
               </div>
@@ -648,9 +515,7 @@ return (
                 </div>
               </div>
             </div>
-            
       </div>
-
       <div className="mobileView">
         <div className="card-body actTitleMobile">
           <h2 className="">NT${activityData.price}起</h2>
@@ -661,40 +526,36 @@ return (
         </div>
         </div>
       </div>
-
   </div>
-
-
-
-<div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <div className="modalBody">
-              <div className="getActDate" >
-                      <div className="calendar">
-                        <div className="calendar-header">
-                            <p>{formattedDate}</p>
-                        </div>
-                        <div className="week-days">
-                            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
-                        </div>
-                        <div className="days">
-                        {[...Array(31)].map((_, index) => renderDay(index + 1))}
-                        </div>
-                      </div>      
+    <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-body">
+            <div className="getActDate">
+              <div className="calendar">
+              <div className="calendar-header">
+                <button onClick={() => handleMonthChange(-1)} className="btn btn-custom-outline-primary">Prev</button>
+                <p>{formattedDate}</p> {/* Show the current month */}
+                <button onClick={() => handleMonthChange(1)} className="btn btn-custom-outline-primary">Next</button>
+              </div>
+                <div className="week-days">
+                  <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+                </div>
+                <div className="days">
+                  {renderCalendarDays()}
+                </div>
               </div>
             </div>
-            <div className="getActDateFooter">
-              <button type="button" data-bs-dismiss="modal" onClick={submitDateClick}>預約行程</button>
-            </div>
+          </div>
+          <div className="getActDateFooter">
+            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={submitDateClick}>
+              預約行程
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 </div>
-
-
-                
-</div>
-
   );
 };
   

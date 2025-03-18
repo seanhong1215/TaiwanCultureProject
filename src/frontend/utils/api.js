@@ -69,6 +69,11 @@ export const getJournalAll = async () => {
     return response.data; 
 };
 
+export const getJournals = async (id) => {
+    const response = await axios.get(`/api/journal/${id}`);
+    return response.data; 
+};
+
 export const getJournalPage = async (page, limit) => {
     const response = await axios.get(`/api/journal?_page=${page}&_limit=${limit}`);
     return response.data; 
@@ -171,6 +176,16 @@ export const updateReviews = async (id, data) => {
 
 export const deleteReviews = async (id) => {
     const response = await axios.delete(`/api/reviews/${id}`);
+    return response.data;
+};
+
+export const getReviewsActivityId = async (id) => {
+    const response = await axios.get(`/api/reviews?activityId=${id}`);
+    return response.data;
+};
+
+export const getReviewsActivityIdPage = async (id , page = 1, limit = 2) => {
+    const response = await axios.get(`/api/reviews?activityId=${id}&_page=${page}&_limit=${limit}`);
     return response.data;
 };
 
