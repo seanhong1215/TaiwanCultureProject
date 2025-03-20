@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { useTranslation } from 'react-i18next';
 
 
-const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLogin, handleRegister, error, loading, loginData, setLoginData, registerData, setRegisterData }) => {
+const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLogin, handleGoogleLogin, handleFacebookLogin, handleRegister, error, loading, loginData, setLoginData, registerData, setRegisterData }) => {
     const { t } = useTranslation();
+
 
     // 表單輸入處理
     const handleInputChange = (e, isLoginForm) => {
@@ -21,6 +22,8 @@ const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLog
             });
         }
     };
+
+
 
     return (
         <>
@@ -59,6 +62,10 @@ const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLog
                                                 onChange={(e) => handleInputChange(e, true)}
                                                 placeholder={t('form.pleaseEnterYourPassword')}
                                                 required />
+                                        </div>
+                                        <div className="d-flex mb-3 gap-3">
+                                            <button className="btn btn-primary w-50" onClick={handleGoogleLogin}>使用 Google 登入</button>
+                                            <button className="btn btn-primary w-50" onClick={handleFacebookLogin}>使用 Facebook 登入</button>
                                         </div>
                                         <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.loggingIn') : t('form.login')}</button>
 
@@ -141,6 +148,8 @@ AuthModal.propTypes = {
     isLogin: PropTypes.bool.isRequired,
     setIsLogin: PropTypes.func.isRequired,
     handleLogin: PropTypes.func.isRequired,
+    handleGoogleLogin: PropTypes.func.isRequired,
+    handleFacebookLogin: PropTypes.func.isRequired,
     handleRegister: PropTypes.func.isRequired,
     // t: PropTypes.func.isRequired,
     error: PropTypes.string,

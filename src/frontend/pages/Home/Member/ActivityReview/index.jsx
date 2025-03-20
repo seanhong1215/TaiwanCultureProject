@@ -12,7 +12,7 @@ const ActivityReview = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const userName = localStorage.getItem("userName");
-    const userAvator = localStorage.getItem("userAvator");
+    const userAvatar = localStorage.getItem("userAvatar");
 
     const [activities, setActivities] = useState([]);
     const [newReview, setNewReview] = useState({
@@ -20,7 +20,7 @@ const ActivityReview = () => {
         rating: 5,
         activityTitle: "",
         imageFiles: [],
-        avatar: userAvator,
+        avatar: userAvatar,
         name: userName
     });
 
@@ -40,7 +40,7 @@ const ActivityReview = () => {
                 rating: 5,
                 activityTitle: "",
                 imageFiles: [],
-                avatar: userAvator,
+                avatar: userAvatar,
                 name: userName
             });
 

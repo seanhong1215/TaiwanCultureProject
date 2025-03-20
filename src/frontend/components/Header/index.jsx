@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Header.scss';
-import { register, login } from '@/frontend/utils/api';
+import { register, login, loginGoogle, loginFacebook, createMember, existingUser } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
 import AuthModal from '@/frontend/components/Modal/AuthModal';
+import { auth, googleProvider, facebookProvider, signInWithPopup, signOut } from "@/frontend/assets/js/firebaseConfig.js";
+
 
 const Header = () => {
     // 設定語言
@@ -14,9 +16,14 @@ const Header = () => {
     const navigate = useNavigate();
 
     // 用戶
-    const [userData, setUserData] = useState({}); 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const [userData, setUserData] = useState({
+        name: localStorage.getItem("userName") || "",
+        image: localStorage.getItem("userAvatar") || "",
+    });
+    const token = localStorage.getItem("token");
 
   //登入註冊邏輯
     const [showModal, setShowModal] = useState(false);
@@ -32,7 +39,7 @@ const Header = () => {
             password: "",
             name: "",
             role: "",
-            avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg",
+            avatar: "",
         }
     );
 
@@ -51,13 +58,16 @@ const Header = () => {
         try {
             const response = await login(loginData); 
             setIsLoggedIn(true);
+            console.log(response.user);
+            
             localStorage.setItem("userId", response.user.id);
+            localStorage.setItem("email", response.user.email);
             localStorage.setItem("userName", response.user.name);
             localStorage.setItem("userRole", response.user.role);
             if(!response.user.avatar){
-                localStorage.setItem("userAvator", "https://mighty.tools/mockmind-api/content/human/119.jpg");
+                localStorage.setItem("userAvatar", "https://mighty.tools/mockmind-api/content/human/119.jpg");
             } else {
-                localStorage.setItem("userAvator", response.user.avatar);
+                localStorage.setItem("userAvatar", response.user.avatar);
             }
             updateUserData({
                 name: response.user.name,
@@ -100,26 +110,172 @@ const Header = () => {
     };
 
     // 登出函式
-    const handleLogout = () => {
-        // 清除 token
-        localStorage.removeItem("token");
+    const handleLogout = async() => {
 
-        // 更新登入狀態
-        setIsLoggedIn(false);
+        try {
+            // 🟢 使用 Firebase signOut()
+            await signOut(auth);
 
-        updateUserData({});
+             // 清除 localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userRole");
+            localStorage.removeItem("userAvatar");
+            localStorage.removeItem("email");
 
-        // 顯示登出成功訊息
-        Swal.fire({
-            title: "登出成功！",
-            icon: "success"
-        })
+            // 清除 state
+            setUserData({});
+            setIsLoggedIn(false);
+            updateUserData({});
 
-        navigate("/");
+            // 顯示登出成功訊息
+            Swal.fire({
+                title: "登出成功！",
+                icon: "success"
+            });
+            navigate("/");
 
-        // 關閉 modal
-        handleCloseModal();
+            // 關閉 modal
+            handleCloseModal();
+        } catch (error) {
+            console.error("Google 登出失敗:", error);
+            Swal.fire({
+                title: "登出失敗",
+                text: "請重試或檢查網路連線",
+                icon: "error"
+            });
+        }
     };
+
+    // **********************************
+
+    const generateRandomPassword = () => {
+        // 這裡簡單生成一個隨機的密碼
+        return Math.random().toString(36).slice(-8);
+      };
+
+        // Google 登入
+        const handleGoogleLogin = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const idToken = await result.user.getIdToken(); // 取得 JWT Token
+                
+                // 傳送 Token 給 json-server
+                const response = await loginGoogle(idToken);
+                setIsLoggedIn(true);
+                const user = response.user;
+
+                console.log(user);
+                localStorage.setItem("userName", user.name);
+                localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
+                localStorage.setItem(
+                    "userAvatar",
+                    user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
+                );
+
+
+                // 檢查該 email 是否已經存在
+                // const existingUserResponse = existingUser(response.user.email);
+                // if (existingUserResponse.length === 0) {
+                    // 生成隨機密碼
+                    // const randomPassword = generateRandomPassword();
+                    // const newUser = {
+                    //     email: user.email,
+                    //     name: user.name,
+                    //     avatar: user.picture, 
+                    //     password: randomPassword,
+                    // };
+                //     const res = await createMember(newUser);
+                //     console.log("新用戶創建成功:", res.user.id);
+                //     localStorage.setItem("userId", res.user.id);
+                //     localStorage.setItem("userName", user.name);
+                //     localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
+                //     localStorage.setItem(
+                //         "userAvatar",
+                //         user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
+                //     );
+                //   } 
+
+                // 🔹 設定 userData（Google 用戶）
+                setUserData({
+                    name: user.name,
+                    image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
+                });
+
+                updateUserData({
+                    name: user.name,
+                    image: user.picture, 
+                });
+
+                Swal.fire({
+                    title: "Google 登入成功!",
+                    icon: "success"
+                });
+
+                handleCloseModal();
+        
+            } catch (error) {
+                setError("Google 登入失敗");
+                console.error("Google 登入失敗:", error);
+            }finally {
+                setLoading(false);
+            }
+        };
+        
+        // Facebook 登入
+        const handleFacebookLogin = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const result = await signInWithPopup(auth, facebookProvider);
+                const idToken = await result.user.getIdToken(); // 取得 JWT Token
+                console.log("Facebook Token:", idToken);
+                
+                // 傳送 Token 給 json-server
+                const response = await loginFacebook(idToken); 
+                setIsLoggedIn(true);
+                const user = response.user;
+        
+                console.log(user);
+                
+                // localStorage.setItem("userId", user.uid);
+                localStorage.setItem("userName", user.name);
+                localStorage.setItem("userRole", "Facebook"); // 給 Facebook 用戶標記
+                localStorage.setItem(
+                    "userAvatar",
+                    user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
+                );
+                setUserData({
+                    name: user.name,
+                    image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
+                });
+
+                updateUserData({
+                    name: user.name,
+                    image: user.picture, 
+                });
+
+                Swal.fire({
+                    title: "Facebook 登入成功!",
+                    icon: "success"
+                });
+
+                handleCloseModal();
+                
+            }catch (error) {
+                setError("Facebook 登入失敗");
+                console.error("Facebook 登入失敗:", error);
+            }finally {
+                setLoading(false);
+            }
+        };
+        
+
+    // **********************************
+
 
     // 更新用戶資料
     const updateUserData = (data) => {
@@ -153,25 +309,22 @@ const Header = () => {
 
     }, [showModal]); // 僅在 `showModal` 狀態改變時執行
 
-   // 檢查是否有 token，若有則表示已登入
+    // 初始化時根據 token 設定登入狀態與 userData
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        const userNmae = localStorage.getItem("userName");
-        const userAvator = localStorage.getItem("userAvator");
         if (token) {
             setIsLoggedIn(true);
             setUserData({
-                name: userNmae,
-                image: userAvator, // 使用者圖片的 URL
+                name: localStorage.getItem("userName") || "",
+                image: localStorage.getItem("userAvatar") || "",
             });
         } else {
             setIsLoggedIn(false);
             setUserData({
                 name: "",
-                image: "", // 使用者圖片的 URL
+                image: "",
             });
         }
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -187,6 +340,24 @@ const Header = () => {
           window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+            // console.log("userAvatar 更新了，重新載入頭像");
+            setUserData((prev) => ({
+            ...prev,
+            image: localStorage.getItem("userAvatar") || "",
+            name: localStorage.getItem("userName") || "",
+            }));
+        };
+
+        // ✅ 監聽 custom event
+        window.addEventListener("storageChange", handleStorageChange);
+
+        return () => {
+            window.removeEventListener("storageChange", handleStorageChange);
+        };
+        }, []);
 
     return (
         <header className={`header ${menuOpen ? "menu-open" : ""}`}>
@@ -310,6 +481,8 @@ const Header = () => {
                 isLogin={isLogin}
                 setIsLogin={setIsLogin}
                 handleLogin={handleLogin}
+                handleGoogleLogin={handleGoogleLogin}
+                handleFacebookLogin={handleFacebookLogin}
                 handleRegister={handleRegister}
                 loginData={loginData}
                 setLoginData={setLoginData}

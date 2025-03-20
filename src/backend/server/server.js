@@ -4,7 +4,8 @@ import fs from 'fs';
 import jsonServer from 'json-server';
 import jsonServerAuth from 'json-server-auth';
 import express from 'express';
-import * as jwtDecode from 'jwt-decode';
+// import * as jwtDecode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import cors from 'cors';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
@@ -12,6 +13,18 @@ import axios from 'axios';
 import FormData from 'form-data';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
+// Firebase Admin
+import firebaseAdmin from 'firebase-admin';
+
+// 初始化 Firebase Admin SDK
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert({
+    projectId: process.env.PROJECT_ID,
+    privateKey: process.env.PRIVATE_KEY,
+    clientEmail: process.env.CLIENT_EMAIL,
+  }),
+});
 
 // 讀取 .env 檔案
 dotenv.config();
@@ -47,14 +60,17 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-
 // 創建 Express 應用
 const app = express();
+
+// 允許 json 解析
+app.use(express.json()); 
+
+// 允許跨域請求
+app.use(cors()); 
+
 // 設定 Multer 存儲配置（記憶體存儲）
 const upload = multer({ storage: storage });
-
-app.use(cors()); // 允許跨域請求
-app.use(express.json()); // 允許 json 解析
 
 // 創建 JSON Server
 const router = jsonServer.router("src/backend/json/db.json");
@@ -62,9 +78,73 @@ const middlewares = jsonServer.defaults();
 
 // 使用 json-server 相關 middleware
 app.use(middlewares);
-app.use("/api", jsonServer.bodyParser);
-app.use("/api", jsonServerAuth); 
+
+// 驗證 Firebase Token
+app.post("/api/auth", async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).send({ message: "No token provided" });
+  }
+  try {
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
+    console.log("解碼後的 Token:", decodedToken);
+    // 確保 decodedToken 包含 uid 和 email
+    if (decodedToken.uid && decodedToken.email) {
+      const user = {
+        uid: decodedToken.uid,
+        email: decodedToken.email,
+        name: decodedToken.name || "", // 使用者名稱
+        picture: decodedToken.picture || "", // 🔹 Google 頭像
+      };
+      res.status(200).json({ message: "Token verified", user });
+    } else {
+      res.status(400).json({ message: "Token does not contain expected fields" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "Token 無效", error });
+  }
+});
+
+// 🔹 設定 JSON Server 
+app.use("/api", jsonServerAuth);
 app.use("/api", router);
+
+// 資料庫設定
+app.db = router.db;
+
+// 設定 JWT 權限保護
+app.use((req, res, next) => {
+  if (req.method === "POST") {
+    const token = req.header("Authorization")
+      ? req.header("Authorization").replace("Bearer ", "")
+      : null;
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const intSub = Number(decoded.sub);
+        req.body.userId = intSub;
+        return next();
+      } catch (err) {
+        console.error("Invalid Token:", err.message);
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+    }
+  }
+  next();
+});
+
+// 設定權限
+const rules = jsonServerAuth.rewriter({
+  // Permission rule
+  users: 644,
+  userStats: 666,
+  signIns: 644,
+  // Other rules
+  // '/posts/:category': '/posts?category=:category',
+});
+app.use(rules);
+
 
 // 取得上傳簽名
 app.get('/get-signature', (req, res) => {
@@ -128,42 +208,6 @@ app.post('/upload-to-cloudinary', upload.single('file'), async (req, res) => {
 // json-server 網站首頁
 app.get('/', (req, res) => {
   res.send('Welcome to the JSON Server!');
-});
-
-// 設定權限
-const rules = jsonServerAuth.rewriter({
-  // Permission rule
-  users: 644,
-  userStats: 666,
-  signIns: 644,
-  // Other rules
-  // '/posts/:category': '/posts?category=:category',
-});
-app.use(rules);
-
-// 資料庫設定
-app.db = router.db;
-
-// 設定 JWT 權限保護
-app.use((req, res, next) => {
-  if (req.method === "POST") {
-    const token = req.header("Authorization")
-      ? req.header("Authorization").replace("Bearer ", "")
-      : null;
-
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const intSub = Number(decoded.sub);
-        req.body.userId = intSub;
-        return next();
-      } catch (err) {
-        console.error("Invalid Token:", err.message);
-        return res.status(401).json({ error: "Unauthorized" });
-      }
-    }
-  }
-  next();
 });
 
 // 啟動伺服器

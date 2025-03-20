@@ -35,32 +35,24 @@ const Center = () => {
     }
   };
 
-  const fetchRewardsData = async () => {
+  const fetchMemberData = async () => {
     try {
-      // 獲取會員資料
-     const responseRewards = await getMembers(userId);
+      // 獲取會員資料，同時包含 rewards 和 tickets
+      const response = await getMembers(userId);
 
-      // 更新rewards資料
-      const userRewards = responseRewards.rewards; 
-      setRewards(userRewards); 
-      checkAndRewardTicket(userRewards);  // 檢查是否達標
+      // 從響應中提取 rewards 和 tickets
+      const { rewards, tickets } = response;
+  
+      // 更新 rewards 資料
+      setRewards(rewards);
+      checkAndRewardTicket(rewards);  // 檢查是否達標
+
+      // 更新 tickets 資料
+      setTickets(tickets);
     } catch (error) {
-      console.error('無法獲取會員資料', error);
+      console.error('無法獲取會員資料或票據資料', error);
     }
-  }
-
-  const fetchTicketsData = async () => {
-    try {
-      // 獲取會員資料
-     const responseTickets = await getMembers(userId);
-
-      // 更新rewards資料
-      const userTickets = responseTickets.tickets; 
-      setTickets(userTickets); 
-    } catch (error) {
-      console.error('無法獲取會員資料', error);
-    }
-  }
+  };
 
 
   // 檢查積分是否達標，並自動發送票券
@@ -155,8 +147,7 @@ const Center = () => {
     
   useEffect(() => {
     fetchTripData();
-    fetchRewardsData();
-    fetchTicketsData();
+    fetchMemberData();
   }, []);
 
 

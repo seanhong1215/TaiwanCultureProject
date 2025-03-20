@@ -22,7 +22,7 @@ import {
   const AdminHeader = () => {
     const { toggleSidebar, toggleMobileNav, mobileNavOpen } = useContext(AdminContext);
     const userName = localStorage.getItem("userName");
-    const userAvator = localStorage.getItem("userAvator");
+    const userAvatar = localStorage.getItem("userAvatar");
 
     // 登出函式
     const handleLogout = () => {
@@ -66,7 +66,7 @@ import {
                 <div className="dropdown">
                   <button className="admin-btn btn btn-link text-dark d-flex align-items-center" data-bs-toggle="dropdown">
                     <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center">
-                          <img src={userAvator} alt="User" className="rounded-circle"  width="40" height="40" />                     
+                          <img src={userAvatar} alt="User" className="rounded-circle"  width="40" height="40" />                     
                     </div>
                     <span className="ms-2">{userName}</span>
                     <ChevronDown size={16} className="ms-2" />  

@@ -9,12 +9,12 @@ import Swal from 'sweetalert2';
 const PersonalData = () => {
 const userId = Number(localStorage.getItem("userId")); // 取得 userId
 const countries = ["台灣", "日本", "韓國", "歐美"]; // 國家
-const genders = ["男生", "女生"]; // 性別
+const genders = ["男生", "女生", "秘密"]; // 性別
 const countryCodes = ["+886", "+1", "+81", "+82"]; //國碼
 const [formData, setFormData] = useState({
-    id: "", // 預設為空
-    lastName: "",
-    firstName: "",
+    id: null, // 預設為空
+    userName: localStorage.getItem("userName"),
+    email: localStorage.getItem("email"),
     nickName: "",
     gender: "",
     birthday: null,
@@ -108,6 +108,10 @@ const handleSubmit = async (e) => {
     if (formData.id) {
         try {
             await updateUsers(formData.id, formData);
+            localStorage.setItem("nickName", formData.nickName);
+            localStorage.setItem("userName", formData.userName);
+            // ✅ 觸發 custom event，通知 Header 更新
+            window.dispatchEvent(new Event("storageChange"));
             Swal.fire({
                 title: "設定更新成功",
                 icon: "success"
@@ -155,24 +159,13 @@ return (
                 <form onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-lg-4 form-group-field">
-                        <label htmlFor="lastName" className="form-label">姓</label>
+                        <label htmlFor="userName" className="form-label">使用者姓名</label>
                         <input
                             type="text"
-                            id="lastName"
+                            id="userName"
                             className="form-control"
-                            placeholder="Last Name"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                        />
-                        </div>
-                        <div className="col-lg-4 form-group-field">
-                        <label htmlFor="firstName" className="form-label">名</label>
-                        <input
-                            type="text"
-                            id="firstName"
-                            className="form-control"
-                            placeholder="First Name"
-                            value={formData.firstName}
+                            placeholder="User name"
+                            value={formData.userName}
                             onChange={handleChange}
                         />
                         </div>
@@ -185,6 +178,18 @@ return (
                             placeholder="Nick name"
                             value={formData.nickName}
                             onChange={handleChange}
+                        />
+                        </div>
+                        <div className="col-lg-4 form-group-field">
+                        <label htmlFor="email" className="form-label">電子郵件</label>
+                        <input
+                            type="text"
+                            id="email"
+                            className="form-control"
+                            placeholder="Email"
+                            value={formData.email}
+                            disabled
+                            style={{cursor:'not-allowed', opacity: '0.9'}}
                         />
                         </div>
                     </div>

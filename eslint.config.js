@@ -18,11 +18,12 @@ export default [
       },
     },
     settings: { react: { version: '18.3' } },
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
+    plugins: [
+      'react',
+      'react-hooks',
+      'react-refresh',
+      'import', // 添加 import 插件
+    ],
     rules: {
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
@@ -35,6 +36,13 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      "import/no-unresolved": "off"  // 根據需要調整或關閉某些規則
     },
+    extends: [
+      'eslint:recommended',
+      'plugin:react/recommended',
+      'plugin:react-hooks/recommended',
+      'plugin:import/recommended', // 添加 import 的推薦配置
+    ],
   },
 ]

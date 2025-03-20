@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef  } from 'react'
 import { NavLink, useLocation } from 'react-router-dom';
 import './Menu.scss';
-import { getMembers, updatedMembers, uploadImageToCloudinary } from '@/frontend/utils/api';
-
+import { updatedMembers, uploadImageToCloudinary } from '@/frontend/utils/api';
 
 const Menu = () => {
       const location = useLocation();
@@ -11,8 +10,8 @@ const Menu = () => {
   
       const userId = Number(localStorage.getItem("userId")); // 取得 userId
       const userName = localStorage.getItem("userName"); // 取得 userName
-      const [ userData, setUserData ] = useState({});
-
+      const [nickName, setNickName] = useState(localStorage.getItem("nickName") || ""); // 取得 nickName
+      const [userAvatar, setUserAvatar] = useState(localStorage.getItem("userAvatar")); // 取得 userAvatar
       const [error, setError] = useState("");
       const fileInputRef = useRef(null); // 引用 input
 
@@ -29,7 +28,6 @@ const Menu = () => {
         if (!file) return alert("請選擇圖片！");
         
         const reader = new FileReader();
-        reader.onloadend = () => setUserData({image: reader.result}); // 預覽圖片
         reader.readAsDataURL(file);
 
       // 檢查文件類型
@@ -46,38 +44,37 @@ const Menu = () => {
 
       try {
         const imageUrl = await uploadImageToCloudinary(file);
-
         if (!imageUrl) setError('無法取得圖片 URL');
-        
         await updatedMembers(userId, {avatar: imageUrl});
+        localStorage.setItem("userAvatar", imageUrl);
+        setUserAvatar(imageUrl); // 更新狀態，讓畫面即時變更
 
-
-        setUserData((prev) => ({
-          ...prev,
-          avatar: imageUrl, // 更新的圖片
-          name: userName
-        }));
-
-        await getUsersAvatar();
-        localStorage.setItem("userAvator", imageUrl);
-        window.location.reload();
+        // ✅ 觸發 custom event，通知 Header 更新
+        window.dispatchEvent(new Event("storageChange"));
       } catch (error) {
         setError('Upload failed:', error);
       }
-      
     };
 
-      const getUsersAvatar = async () => {
-        try{
-          const getMember = await getMembers(userId);
-          setUserData({...getMember});
-        } catch(error){
-            console.log(error);
-        }
-      }
+    // 監聽 localStorage 變化並更新 state
+    useEffect(() => {
+      setUserAvatar(localStorage.getItem("userAvatar"));
+    }, []);
 
-      useEffect(() => {
-        getUsersAvatar();
+    useEffect(() => {
+      const handleStorageChange = () => {
+        const updatedNickName = localStorage.getItem("nickName");
+        if (updatedNickName !== null) {
+            setNickName(updatedNickName); // 更新狀態
+        }
+    };
+
+      // ✅ 監聽 custom event
+      window.addEventListener("storageChange", handleStorageChange);
+
+      return () => {
+          window.removeEventListener("storageChange", handleStorageChange);
+      };
       }, []);
 
 
@@ -94,7 +91,7 @@ const Menu = () => {
                 className="d-none"
               />
                 <img
-                  src={userData.avatar || "https://mighty.tools/mockmind-api/content/human/119.jpg"}
+                  src={userAvatar}
                   alt="User Avatar"
                   className="rounded-circle img-hover"
                   width="100"
@@ -104,7 +101,7 @@ const Menu = () => {
                 <span className="material-icons camera-icon">photo_camera</span>
               </div>
             </label>
-            <p className="mt-2">{userData.name}</p>
+            <p className="mt-2">{nickName || userName}</p>
         </div>
 
       <ul className="menu-item-wrap">

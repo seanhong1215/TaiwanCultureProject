@@ -9,7 +9,7 @@ const EventReviewForm = ({ order, onClose }) => {
 
   const [error, setError] = useState('');
   const userName = localStorage.getItem("userName");
-  const userAvator = localStorage.getItem("userAvator");
+  const userAvatar = localStorage.getItem("userAvatar");
   const userId = Number(localStorage.getItem("userId"));
 
   const [hoverRating, setHoverRating] = useState(0);
@@ -27,7 +27,7 @@ const EventReviewForm = ({ order, onClose }) => {
     rating: 0,
     activityTitle: order?.activityName || "", // 避免 order 未定義時出錯
     imageFiles: [],
-    avatar: userAvator,
+    avatar: userAvatar,
     name: userName,
   });
 

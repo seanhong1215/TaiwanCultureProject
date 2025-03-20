@@ -8,6 +8,7 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
 
  // 註冊
 export const register = async (data) => {
+    console.log(data);
     const response = await axios.post(`/api/register`, {
         email: data.email,
         password: data.password,
@@ -22,12 +23,32 @@ export const register = async (data) => {
 // 登入
 export const login = async (data) => {
 const response = await axios.post(`/api/signin`, data);
+console.log(response);
 if (response.data.accessToken) {
     localStorage.setItem('token', response.data.accessToken); // 存 Token
     // localStorage.setItem('user', JSON.stringify(response.data.user)); // 存 User
 }
 return response.data; 
 };
+
+// Google登入
+export const loginGoogle = async (idToken) => {
+    const response = await axios.post("api/auth", { token: idToken });
+    if (idToken) {
+        localStorage.setItem('token', idToken); // 存 Token
+    }
+    return response.data; 
+};
+
+// Facebook登入
+export const loginFacebook = async (idToken) => {
+    const response = await axios.post("api/auth", { token: idToken });
+    if (idToken) {
+        localStorage.setItem('token', idToken); // 存 Token
+    }
+    return response.data; 
+};
+    
 
 
 // 活動管理
@@ -403,3 +424,16 @@ export const updatedMembers = async (id, data) => {
     return response.data; 
 };
 
+export const createMember = async (data) => {
+    const response = await axios.post(`/api/users`, data);
+    return response.data; 
+};
+
+export const existingUser = async (email) => {
+    const response = await axios.get(`api/users`, {
+        params: {
+          email: email
+        }
+      });
+    return response.data; 
+};
