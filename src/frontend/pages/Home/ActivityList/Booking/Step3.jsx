@@ -84,11 +84,7 @@ const Step3 = () => {
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="mb-3" controlId="cardName">
                   <Form.Label>持卡人姓名</Form.Label>
-                  <Form.Control type="text" placeholder="輸入持卡人姓名" disabled name="contactName" className={`form-label ${errors.contactName && "is-invalid"}`} {...register('contactName' , 
-                  {required : '請輸入持卡人姓名', pattern : {
-                  value : /^.{3,}$/ ,
-                  message : "至少3個字"
-                  }})}/>
+                  <Form.Control type="text" placeholder="輸入持卡人姓名" disabled name="contactName" className={`form-label ${errors.contactName && "is-invalid"}`} />
                   {errors.contactName && <div className="invalid-feedback text-start">{errors.contactName?.message}</div>}
                 </Form.Group>
 

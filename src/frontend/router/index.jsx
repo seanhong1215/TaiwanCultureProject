@@ -20,6 +20,10 @@ import ActivityPoints from '@/frontend/pages/Home/Member/ActivityPoints';
 import CustomerSupport from '@/frontend/pages/Home/Member/CustomerSupport';
 import Center from '@/frontend/pages/Home/Member/Center';
 
+import ActivityManager from '@/frontend/pages/Home/Member/ActivityManager';
+import EvaluationManager from '@/frontend/pages/Home/Member/EvaluationManager';
+import MessageManager from '@/frontend/pages/Home/Member/MessageManager';
+
 import Login from '@/frontend/pages/Admin/Login';
 import Dashboard from '@/frontend/pages/Admin/Dashboard';
 import MemberManage from '@/frontend/pages/Admin/MemberManage';
@@ -28,6 +32,7 @@ import BlogManage from '@/frontend/pages/Admin/BlogManage';
 import ActivityManageListPage from '@/frontend/pages/Admin/ActivityManage/ActivityManageListPage';
 import ActivityManageDetailPage from '@/frontend/pages/Admin/ActivityManage/ActivityDetailPage';
 import EvaluationManage from '@/frontend/pages/Admin/EvaluationManage';
+
 
 import AdminLayout from '@/frontend/layouts/AdminLayout';
 import FrontendLayout from '@/frontend/layouts/FrontendLayout';
@@ -116,6 +121,18 @@ const router = createHashRouter(
         {
           path: 'center',
           element: <Center />,
+        },
+        {
+          path: 'activity-manager',
+          element: <ActivityManager />,
+        },
+        {
+          path: 'evaluation-manager',
+          element: <EvaluationManager />,
+        },
+        {
+          path: 'message-manager',
+          element: <MessageManager />,
         }
       ]
     },

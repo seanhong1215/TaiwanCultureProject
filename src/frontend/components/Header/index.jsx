@@ -2,13 +2,17 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Header.scss';
-import { register, login, loginGoogle, loginFacebook, createMember, existingUser } from '@/frontend/utils/api';
+import { register, login, loginGoogle, loginFacebook, createMember  } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
 import AuthModal from '@/frontend/components/Modal/AuthModal';
 import { auth, googleProvider, facebookProvider, signInWithPopup, signOut } from "@/frontend/assets/js/firebaseConfig.js";
-
+import { useUser } from "@/frontend/components/UserContext/Users";
 
 const Header = () => {
+    const {getUsers} = useUser();
+
+    const userRole = localStorage.getItem("userRole"); // 取得 userRole
+
     // 設定語言
     const { t } = useTranslation();
     const { i18n } = useTranslation();
@@ -155,123 +159,131 @@ const Header = () => {
         return Math.random().toString(36).slice(-8);
       };
 
-        // Google 登入
-        const handleGoogleLogin = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                const idToken = await result.user.getIdToken(); // 取得 JWT Token
-                
-                // 傳送 Token 給 json-server
-                const response = await loginGoogle(idToken);
-                setIsLoggedIn(true);
-                const user = response.user;
+    // Google 登入
+    const handleGoogleLogin = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const idToken = await result.user.getIdToken(); // 取得 JWT Token
+            
+            // 傳送 Token 給 json-server
+            const response = await loginGoogle(idToken);
+            setIsLoggedIn(true);
+            const user = response.user;
+            console.log(user);
 
-                console.log(user);
-                localStorage.setItem("userName", user.name);
-                localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
-                localStorage.setItem(
-                    "userAvatar",
-                    user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
-                );
+            const randomPassword = generateRandomPassword();
+            const newUser = {
+                uuid: user.uid,
+                email: user.email,
+                name: user.name,
+                avatar: user.picture, 
+                password: randomPassword,
+            };
 
+            const userId = Number(getUsers.id); // 取得使用者ID
+            console.log(userId);
 
-                // 檢查該 email 是否已經存在
-                // const existingUserResponse = existingUser(response.user.email);
-                // if (existingUserResponse.length === 0) {
-                    // 生成隨機密碼
-                    // const randomPassword = generateRandomPassword();
-                    // const newUser = {
-                    //     email: user.email,
-                    //     name: user.name,
-                    //     avatar: user.picture, 
-                    //     password: randomPassword,
-                    // };
-                //     const res = await createMember(newUser);
-                //     console.log("新用戶創建成功:", res.user.id);
-                //     localStorage.setItem("userId", res.user.id);
-                //     localStorage.setItem("userName", user.name);
-                //     localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
-                //     localStorage.setItem(
-                //         "userAvatar",
-                //         user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
-                //     );
-                //   } 
+            const res = await createMember(newUser);
+            localStorage.setItem("userId", userId);
+            localStorage.setItem("userName", user.name);
+            localStorage.setItem("userEmail", user.email);
+            localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
+            localStorage.setItem(
+                "userAvatar",
+                user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
+            );
 
-                // 🔹 設定 userData（Google 用戶）
-                setUserData({
-                    name: user.name,
-                    image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
-                });
+            console.log("新用戶創建成功:", res);
 
-                updateUserData({
-                    name: user.name,
-                    image: user.picture, 
-                });
+            setUserData({
+                name: user.name,
+                image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
+            });
 
-                Swal.fire({
-                    title: "Google 登入成功!",
-                    icon: "success"
-                });
+            updateUserData({
+                name: user.name,
+                image: user.picture, 
+            });
 
-                handleCloseModal();
-        
-            } catch (error) {
-                setError("Google 登入失敗");
-                console.error("Google 登入失敗:", error);
-            }finally {
-                setLoading(false);
-            }
-        };
-        
-        // Facebook 登入
-        const handleFacebookLogin = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const result = await signInWithPopup(auth, facebookProvider);
-                const idToken = await result.user.getIdToken(); // 取得 JWT Token
-                console.log("Facebook Token:", idToken);
-                
-                // 傳送 Token 給 json-server
-                const response = await loginFacebook(idToken); 
-                setIsLoggedIn(true);
-                const user = response.user;
-        
-                console.log(user);
-                
-                // localStorage.setItem("userId", user.uid);
-                localStorage.setItem("userName", user.name);
-                localStorage.setItem("userRole", "Facebook"); // 給 Facebook 用戶標記
-                localStorage.setItem(
-                    "userAvatar",
-                    user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
-                );
-                setUserData({
-                    name: user.name,
-                    image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
-                });
+            Swal.fire({
+                title: "Google 登入成功!",
+                icon: "success"
+            });
 
-                updateUserData({
-                    name: user.name,
-                    image: user.picture, 
-                });
+            handleCloseModal();
+    
+        } catch (error) {
+            setError("Google 登入失敗");
+            console.error("Google 登入失敗:", error);
+        }finally {
+            setLoading(false);
+        }
+    };
+    
+    // Facebook 登入
+    const handleFacebookLogin = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const result = await signInWithPopup(auth, facebookProvider);
+            const idToken = await result.user.getIdToken(); // 取得 JWT Token
+            console.log("Facebook Token:", idToken);
+            
+            // 傳送 Token 給 json-server
+            const response = await loginFacebook(idToken); 
+            setIsLoggedIn(true);
+            const user = response.user;
+    
+            console.log(user);
 
-                Swal.fire({
-                    title: "Facebook 登入成功!",
-                    icon: "success"
-                });
+            const randomPassword = generateRandomPassword();
+            const newUser = {
+                uuid: user.uid,
+                email: user.email,
+                name: user.name,
+                avatar: user.picture, 
+                password: randomPassword,
+            };
+            const userId = Number(getUsers.id); // 取得使用者ID
+            console.log(userId);
 
-                handleCloseModal();
-                
-            }catch (error) {
-                setError("Facebook 登入失敗");
-                console.error("Facebook 登入失敗:", error);
-            }finally {
-                setLoading(false);
-            }
-        };
+            const res = await createMember(newUser);
+            localStorage.setItem("userId", userId);
+            localStorage.setItem("userName", user.name);
+            localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
+            localStorage.setItem(
+                "userAvatar",
+                user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
+            );
+
+            console.log("新用戶創建成功:", res);
+            
+            setUserData({
+                name: user.name,
+                image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
+            });
+
+            updateUserData({
+                name: user.name,
+                image: user.picture, 
+            });
+
+            Swal.fire({
+                title: "Facebook 登入成功!",
+                icon: "success"
+            });
+
+            handleCloseModal();
+            
+        }catch (error) {
+            setError("Facebook 登入失敗");
+            console.error("Facebook 登入失敗:", error);
+        }finally {
+            setLoading(false);
+        }
+    };
         
 
     // **********************************
@@ -388,6 +400,18 @@ const Header = () => {
                         <span className="ms-2">{userData.name}</span>
                     </button>
                     <ul className={`navbar-nav ms-auto ${isLoggedIn ? "user-member-menu" : ""}`}>
+                    {userRole === "ACTIVITY_MANAGER" ? (
+                        <>
+                        {/* <li className="nav-item member-item">
+                        <Link className="nav-link" to="/member-center/center" onClick={closeMenu}>{t('member.center')}</Link>
+                        </li> */}
+                        <li className="nav-item member-item">
+                            <Link className="nav-link" to="/member-center/activity-manager" onClick={closeMenu}>活動管理</Link>
+                        </li>
+                       
+                        </>
+                    ) :(
+                        <>
                         <li className="nav-item member-item">
                             <Link className="nav-link" to="/member-center/center" onClick={closeMenu}>{t('member.center')}</Link>
                         </li>
@@ -397,6 +421,9 @@ const Header = () => {
                         <li className="nav-item member-item">
                             <Link className="nav-link" to="/member-center/collection-list" onClick={closeMenu}>{t('member.favoritesList')}</Link>
                         </li>
+                        </>
+                    )}
+                        
                         <li className="nav-item">
                             <Link className="nav-link" to="/activity-list" onClick={closeMenu}>{t('menu.activityList')}</Link>
                         </li>
@@ -448,6 +475,18 @@ const Header = () => {
                                         <span className="ms-2">{userData.name}</span>
                                     </button>
                                     <ul className="dropdown-menu user-member-menu" aria-labelledby="user-dropdown-circle">
+                                    {userRole === "ACTIVITY_MANAGER" ? (
+                                        <>
+                                        {/* <li>
+                                            <Link className="dropdown-item" to="/member-center/center">{t('member.center')}</Link>
+                                        </li> */}
+                                        <li>
+                                            <Link className="dropdown-item" to="/member-center/activity-manager">活動管理</Link>
+                                        </li>
+                                    
+                                        </>
+                                    ) :(
+                                        <>
                                         <li>
                                             <Link className="dropdown-item" to="/member-center/center">{t('member.center')}</Link>
                                         </li>
@@ -457,6 +496,11 @@ const Header = () => {
                                         <li>
                                             <Link className="dropdown-item" to="/member-center/collection-list">{t('member.favoritesList')}</Link>
                                         </li>
+                                        </>
+                                    )}
+
+
+                                        
                                         <li>
                                             <Link className="dropdown-item" href="#" onClick={handleLogout}>
                                                 {t('member.signOut')}

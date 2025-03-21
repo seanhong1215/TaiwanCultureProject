@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import PropTypes from "prop-types";
 import { useTranslation } from 'react-i18next';
-
+import './AuthModal.scss';
+import Facebook from '@/frontend/assets/images/Facebook-logo.svg';
+import Google from '@/frontend/assets/images/google-logo.svg';
 
 const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLogin, handleGoogleLogin, handleFacebookLogin, handleRegister, error, loading, loginData, setLoginData, registerData, setRegisterData }) => {
     const { t } = useTranslation();
@@ -63,11 +65,19 @@ const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLog
                                                 placeholder={t('form.pleaseEnterYourPassword')}
                                                 required />
                                         </div>
-                                        <div className="d-flex mb-3 gap-3">
-                                            <button className="btn btn-primary w-50" onClick={handleGoogleLogin}>使用 Google 登入</button>
-                                            <button className="btn btn-primary w-50" onClick={handleFacebookLogin}>使用 Facebook 登入</button>
-                                        </div>
                                         <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.loggingIn') : t('form.login')}</button>
+                                        <p className='login-methods'>其他登入方式</p>
+                                        <div className="d-flex mb-3 gap-3 justify-content-center align-items-center">
+                                            <button className="btn btn-Google" onClick={handleGoogleLogin}>
+                                                <img src={Google} alt="Google-logo" />
+                                            </button>
+                                            <button className="btn btn-Facebook" onClick={handleFacebookLogin}>
+                                                <img src={Facebook}  alt="Facebook-logo" />
+                                            </button>
+                                            <button className="btn btn-Facebook" onClick={handleFacebookLogin}>
+                                                <img src={Facebook}  alt="Facebook-logo" />
+                                            </button>
+                                        </div>
 
                                         <div className="text-center mt-3">
                                             <span>{t('form.notMember')}</span>{" "}

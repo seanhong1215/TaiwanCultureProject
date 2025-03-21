@@ -1,37 +1,37 @@
-// ApiContext
-import { createContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getMemberAll } from '@/frontend/utils/api';
 
-// 建立 Context
-const ApiContext = createContext();
+const UserContext = createContext();
 
-export const ApiProvider = ({ children }) => {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+export const UserProvider = ({ children }) => {
+  const [getUsers, setGetUsers] = useState(null);
 
-    useEffect(() => {
-    const fetchData = async () => {
-        try {
-        const response = await getMemberAll();
-        setData(response);
-        } catch (err) {
-        setError(err);
-        } finally {
-        setLoading(false);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const loggedInEmail = localStorage.getItem("userEmail"); 
+        if (!loggedInEmail) return;
+
+        const users = await getMemberAll();
+        const user = users.find(user => user.email === loggedInEmail);
+        if (user) {
+          setGetUsers(user);
+        } else {
+          console.warn("找不到對應的使用者");
         }
+      } catch (error) {
+        console.error("獲取使用者資料失敗:", error);
+      }
     };
 
-    fetchData();
-    }, []);
+    fetchUser();
+  }, []);
 
-    return (
-    <ApiContext.Provider value={{ data, loading, error }}>
-        {children}
-    </ApiContext.Provider>
-    );
+  return (
+    <UserContext.Provider value={{ getUsers }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
-export default ApiContext;
-
-
+export const useUser = () => useContext(UserContext);

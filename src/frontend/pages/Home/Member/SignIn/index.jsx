@@ -94,21 +94,24 @@ const SignIn = () => {
     const streakCount = calculateStreak(updatedHistory);
   
     // 計算累積獎勳點數
-    let updatedPoints = user.points;
-    if (streakCount % REWARD_DAYS === 0) {
-      updatedPoints += REWARD_POINTS; // 簽到 7 天送 50 點
+    let updatedPoints = user?.rewards?.points || 0;
+    updatedPoints += 10; // 每次簽到 +10 點
+    if (streakCount % 7 === 0) {
+      updatedPoints += 50; // 連續 7 天額外 +50 點
     }
+
   
-    // 更新資料，保留 rewards 內的其他屬性
-    const updatedUser = {
-      ...user,
-      signInHistory: updatedHistory,
-      rewards: {
-        ...user.rewards, // 保留 rewards 內的其他屬性
-        points: updatedPoints, // 更新 points
-      },
-      currentStreak: streakCount,
-    };
+  // 更新用戶資料
+  const updatedUser = {
+    ...user,
+    signInHistory: updatedHistory,
+    rewards: {
+      ...user.rewards, // 保留 rewards 內的其他屬性
+      points: updatedPoints, // 更新 points
+      date: new Date().toISOString(), // 更新簽到時間
+    },
+    currentStreak: streakCount,
+  };
   
     try {
       // 更新資料
@@ -200,13 +203,7 @@ const SignIn = () => {
         return dayNum > 0 && dayNum <= daysInMonth ? (
           <td
             key={dayIndex}
-            className={
-              dateStr === today
-                ? "bg-custom-primary text-white"
-                : isSignedIn
-                ? "bg-success"  // 如果已簽到，顯示 bg-success
-                : ""            // 如果未簽到，保持為空字串
-            }
+            className={dateStr === today ? "bg-custom-primary text-white" : ""}
           >
             {dayNum}
           </td>

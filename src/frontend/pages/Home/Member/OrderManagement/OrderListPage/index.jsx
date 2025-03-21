@@ -22,13 +22,14 @@ const OrderListPage = () => {
 
   // 搜尋功能
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredOrders, setFilteredOrders] = useState([]); // 筛选后的订单数据
+  const [filteredOrders, setFilteredOrders] = useState([]); // 篩選後的訂單
+
+  // 篩選出符合條件的訂單
   const ordersToRender = filteredOrders.length > 0 ? filteredOrders : userOrders;
   const showNoResults = filteredOrders.length === 0 && searchTerm !== "";
+
   // 排序功能
   const [sortOption, setSortOption] = useState("排序: 最近日期");
-
-
 
     // 處理搜尋
     const handleSearch = () => {
@@ -150,7 +151,6 @@ const OrderListPage = () => {
         (order) => order.userId === currentUserId
       );
 
-
       // 根據 `activityId` 更新每個訂單的活動資料
       const updatedOrders = userFilteredOrders.map((order) => {
         const activity = responseActivity.find((act) => act.id === order.activityId) || {};
@@ -173,8 +173,6 @@ const OrderListPage = () => {
         return true;
       });
 
-      // console.log("🔍 篩選後的訂單數量:", filteredByTab.length);
-
        // ✅ 儲存更新狀態到資料庫
        const saveUpdatedStatusToDatabase = async (updatedOrdersWithStatus) => {
         await Promise.all(updatedOrdersWithStatus.map(async (order) => {
@@ -190,7 +188,6 @@ const OrderListPage = () => {
           }
         }));
       };
-
 
       // 設定狀態
       setOrders(filteredByTab);
@@ -309,64 +306,70 @@ const OrderListPage = () => {
         
         {/* 訂單列表 */}
         <div className="row">
-          {/* 根據 activeTab 篩選並顯示對應狀態的訂單 */}
-          {!showNoResults ? (
-            ordersToRender.map(order => (
-              <div className="col-lg-12 mb-4" key={order.id}>
-                <div className="card h-100 shadow-sm">
-                  <div className="row g-0">
-                    <div className="col-lg-5">
-                      <div className="h-100 d-flex align-items-center justify-content-center">
-                        <img
-                          src={order.actImage}
-                          alt={order.activityName}
-                          className="card-img order-img"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-lg-7">
-                      <div className="card-body d-flex flex-column h-100">
-                        <h5 className="card-title">{order.activityName}</h5>
-                        <p className="card-text mb-1">
-                          預約時間: {order.last_bookable_date} {order.timeSlot}
-                        </p>
-                        <p className="card-text mb-2">訂單編號: {order.id}</p>
-                         {/* 只有完成狀態且未評價的訂單才顯示評價獎勵提示 */}
-                         {order.reservedStatus === 'finished' && !order.reviewed && (
-                          <div className="text-warning mb-2 small fw-bold">
-                            ✨ 評價此活動可獲得 50 點會員積分
-                          </div>
-                        )}
-                        <div className="mt-auto text-center text-md-end">
-                          <Link
-                            to={`/member-center/order-management/detail/${order.id}`}
-                            className="btn btn-sm custom-btn"
-                          >
-                            查看詳情
-                          </Link>
-                         {order.reservedStatus === "reserved" && (
-                            <button className="btn btn-danger" onClick={() => handleCancel(order.id)}>取消訂單</button>
-                          )}
-                          {order.reservedStatus === "finished" && !order.reviewed && (
-                            <button className="btn btn-success text-white" onClick={() => handleReview(order)}>活動評價</button>
-                          )}
-                        </div>
 
-                       
+        {/* 顯示沒有搜尋結果的訊息 */}
+        {showNoResults && (
+          <div className="col-12 text-center py-5">
+            <p className="text-muted">沒有符合 "{searchTerm}" 的結果</p>
+          </div>
+        )}
+
+        {/* 顯示沒有資料的訊息 */}
+        {orders.length === 0 && !showNoResults && (
+          <div className="col-12 text-center py-5">
+            <p className="text-muted">目前沒有 {activeTab} 的訂單</p>
+          </div>
+        )}
+
+        {/* 有資料時顯示訂單 */}
+        {orders.length > 0 && !showNoResults && ordersToRender.map((order) => (
+            <div className="col-lg-12 mb-4" key={order.id}>
+              <div className="card h-100 shadow-sm">
+                <div className="row g-0">
+                  <div className="col-lg-5">
+                    <div className="h-100 d-flex align-items-center justify-content-center">
+                      <img
+                        src={order.actImage}
+                        alt={order.activityName}
+                        className="card-img order-img"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-lg-7">
+                    <div className="card-body d-flex flex-column h-100">
+                      <h5 className="card-title">{order.activityName}</h5>
+                      <p className="card-text mb-1">
+                        預約時間: {order.last_bookable_date} {order.timeSlot}
+                      </p>
+                      <p className="card-text mb-2">訂單編號: {order.id}</p>
+                        {/* 只有完成狀態且未評價的訂單才顯示評價獎勵提示 */}
+                        {order.reservedStatus === 'finished' && !order.reviewed && (
+                        <div className="text-warning mb-2 small fw-bold">
+                          ✨ 評價此活動可獲得 50 點會員積分
+                        </div>
+                      )}
+                      <div className="mt-auto text-center text-md-end">
+                        <Link
+                          to={`/member-center/order-management/detail/${order.id}`}
+                          className="btn btn-sm custom-btn"
+                        >
+                          查看詳情
+                        </Link>
+                        {order.reservedStatus === "reserved" && (
+                          <button className="btn btn-danger" onClick={() => handleCancel(order.id)}>取消訂單</button>
+                        )}
+                        {order.reservedStatus === "finished" && !order.reviewed && (
+                          <button className="btn btn-success text-white" onClick={() => handleReview(order)}>活動評價</button>
+                        )}
                       </div>
                     </div>
                   </div>
-                  {/* 顯示評價 Modal */}
-                  {showModal && selectedOrder && <EventReviewForm order={selectedOrder} onClose={handleClose} />}
                 </div>
+                {/* 顯示評價 Modal */}
+                {showModal && selectedOrder && <EventReviewForm order={selectedOrder} onClose={handleClose} />}
               </div>
-              
-            ))
-          ) : (
-            <div className="col-12 text-center py-5">
-              <p className="text-muted">目前沒有 {activeTab} 的訂單</p>
             </div>
-          )}
+        ))}
         </div>
   
         <div className="row">

@@ -98,12 +98,9 @@ const Step1 = () => {
                   <Form.Group className="mb-2">
                     <Form.Control disabled value={formattedDate} />
                   </Form.Group>
-                  <div className="mb-2">
-                    <Form.Control disabled value="景點/票券" />
-                  </div>
-                  <div className="mb-2">
+                  {/* <div className="mb-2">
                     <Form.Control disabled value="票券當日有效" />
-                  </div>
+                  </div> */}
                   <Form.Group className="mb-2">
                     <Form.Control disabled value={`成人 ${submitData.adultPrice} / 張， 兒童 ${submitData.childPrice} / 張`} />
                   </Form.Group>
@@ -137,7 +134,7 @@ const Step1 = () => {
                     <Form.Select
                       className={`form-control ${errors.childCount ? "is-invalid" : ""}`}
                       {...register("childCount", { 
-                        validate: (value) => (!value || isNaN(value) || value < 0) ? "兒童人數需為 0 或以上" : true,
+                        validate: (value) => (!value || isNaN(value) || value < 1) ? "兒童人數需大於等於 1" : true,
                         onChange: (e) => {
                           const value = e.target.value;
                           setValue("childCount", value, { shouldValidate: true });
@@ -145,7 +142,7 @@ const Step1 = () => {
                       })} 
                     >
                       <option value="" disabled>請選擇兒童人數</option>
-                      {[0, 1, 2, 3, 4, 5].map(num => <option key={num} value={num}>{num} 人</option>)}
+                      {[1, 2, 3, 4, 5].map(num => <option key={num} value={num}>{num} 人</option>)}
                     </Form.Select>
                   </OverlayTrigger>
                   {errors.childCount && <div className="invalid-feedback d-block text-start">{errors.childCount?.message}</div>}

@@ -3,13 +3,42 @@ import { getOrderAll, getMembers, updatedMembers} from '@/frontend/utils/api';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Center.scss';
+import dayjs from 'dayjs';  // 引入 day.js
+
+// 獎勵條件設定
+const rewardConditions = [
+  { points: 10000, name: "免費四日遊", daysOffset: 0 },
+  { points: 8000, name: "免費三日遊", daysOffset: 0 },
+  { points: 5000, name: "免費二日遊", daysOffset: 0 },
+  { points: 3000, name: "免費一日遊", daysOffset: 0 },
+];
+
+// 取得今天日期（格式 YYYY-MM-DD）
+const getFormattedDate = (daysOffset = 0, rewardPoints = 0) => {
+  let today = dayjs();
+
+  // 如果是 3000 點數，使用1個月期限
+  if (rewardPoints === 3000) {
+    today = today.add(1, 'month');  // 一個月
+  } else {
+    today = today.add(3, 'month');  // 預設其他積分加三個月
+  }
+
+  // 返回格式化日期 (YYYY-MM-DD)
+  return today.format('YYYY-MM-DD');
+};
+
 
 const Center = () => {
+
   const userId = Number(localStorage.getItem("userId")); // 取得使用者ID
 
   const [trips, setTrips] = useState([]);
 
-  const [rewards, setRewards] = useState(null);
+  const [rewards, setRewards] = useState({
+    reward: [],
+    points: 2000,
+  });
 
   const [tickets, setTickets] = useState([]);
 
@@ -45,7 +74,6 @@ const Center = () => {
   
       // 更新 rewards 資料
       setRewards(rewards);
-      checkAndRewardTicket(rewards);  // 檢查是否達標
 
       // 更新 tickets 資料
       setTickets(tickets);
@@ -54,101 +82,83 @@ const Center = () => {
     }
   };
 
+// 發送票券（根據當天積分）
+const checkAndRewardTicket = async (rewardsData) => {
+  if (!rewardsData) return;
 
-  // 檢查積分是否達標，並自動發送票券
-  const checkAndRewardTicket = async (rewardsData) => {
-    let newTickets = [...tickets]; // 假設tickets是當前已經擁有的票券陣列
-    let rewardMessage = "";
-    let rewardSent = false; // 用來標記是否發送過通知
-    let updatedRewardsData = { ...rewardsData }; // 複製用戶資料，後續會更新
+  let newTickets = Array.isArray(tickets) ? [...tickets] : []; // 確保 tickets 是陣列
+  let rewardMessage = "";
+  let rewardSent = false;
+  let updatedRewardsData = { ...rewardsData };
 
-      // 確保 reward_alert_sent 屬性存在，若不存在則初始化為空陣列
-      if (!updatedRewardsData.reward_alert_sent) {
-        updatedRewardsData.reward_alert_sent = [];
-      }
-
-  
-  // 根據積分發送對應的獎勳和票券
-  if (rewardsData.points >= 10000 && !updatedRewardsData.reward_alert_sent.includes(10000)) {
-    newTickets.push({
-      id: newTickets.length + 1,
-      name: "免費四日遊",
-      date: "2025-03-20",
-      status: "尚未使用",
-    });
-    rewardMessage = "恭喜您達成10000積分，已獲得免費四日遊！";
-    updatedRewardsData.reward_alert_sent.push(10000); // 更新已發送過的通知 
-    rewardSent = true;
-  } else if (rewardsData.points >= 8000 && !updatedRewardsData.reward_alert_sent.includes(8000)) {
-    newTickets.push({
-      id: newTickets.length + 1,
-      name: "免費三日遊",
-      date: "2025-03-18",
-      status: "尚未使用",
-    });
-    rewardMessage = "恭喜您達成8000積分，已獲得免費三日遊！";
-    updatedRewardsData.reward_alert_sent.push(8000); // 更新已發送過的通知 
-    rewardSent = true;
-  } else if (rewardsData.points >= 5000 && !updatedRewardsData.reward_alert_sent.includes(5000)) {
-    newTickets.push({
-      id: newTickets.length + 1,
-      name: "免費二日遊",
-      date: "2025-03-15",
-      status: "尚未使用",
-    });
-    rewardMessage = "恭喜您達成5000積分，已獲得免費二日遊！";
-    updatedRewardsData.reward_alert_sent.push(5000); // 更新已發送過的通知 
-    rewardSent = true;
-  } else if (rewardsData.points >= 3000 && !updatedRewardsData.reward_alert_sent.includes(3000)) {
-    newTickets.push({
-      id: newTickets.length + 1,
-      name: "免費一日遊",
-      date: "2025-03-10",
-      status: "尚未使用",
-    });
-    rewardMessage = "恭喜您達成3000積分，已獲得免費一日遊！";
-    updatedRewardsData.reward_alert_sent.push(3000); // 更新已發送過的通知 
-    rewardSent = true;
-  } else if (rewardsData.points >= 2000 && !updatedRewardsData.reward_alert_sent.includes(2000)) {
-    newTickets.push({
-      id: newTickets.length + 1,
-      name: "專屬VIP點數",
-      date: "2025-03-05",
-      status: "已贈送",
-    });
-    rewardMessage = "恭喜您達成2000積分，已獲得專屬VIP點數！";
-    updatedRewardsData.reward_alert_sent.push(2000); // 更新已發送過的通知 
-    rewardSent = true;
+  // 確保 updatedRewardsData.reward_alert_sent 存在
+  if (!updatedRewardsData.reward_alert_sent) {
+    updatedRewardsData.reward_alert_sent = [];
   }
 
-    // 更新票券資料
-    setTickets(newTickets); // 在這裡更新新的票券資料
-  
-    // 顯示成功提示訊息，確保只顯示一次
-    if (rewardSent && rewardMessage) {
-      Swal.fire({
-        title: "獲得新獎勳！",
-        text: rewardMessage,
-        icon: "success",
-        confirmButtonText: "確認"
-      });
-    }
-  
-    // 更新用戶資料，更新票券
-    await updatedMembers(userId, {
-      tickets: newTickets,
-      rewards: {  // 更新獎勳資料，並且只更新 reward_alert_sent
-        ...rewardsData,  // 保留其他獎勳資料
-        reward_alert_sent: updatedRewardsData.reward_alert_sent  // 只更新已發送通知的資料
-      }
+  // 檢查用戶積分並發送對應獎勵
+rewardConditions.forEach((reward) => {
+  const ticketExists = newTickets.some(ticket => ticket.name === reward.name);
+
+  if (
+    rewardsData.points >= reward.points && 
+    !updatedRewardsData.reward_alert_sent.includes(Number(reward.points)) &&
+    !ticketExists // 這裡確保不會重複新增
+  ) {
+    const ticketDate = getFormattedDate(0, reward.points);  // 設定票券日期
+
+    newTickets.push({
+      id: newTickets.length + 1,
+      name: reward.name,
+      date: ticketDate,
+      status: "尚未使用",
     });
 
-  };
-    
+    rewardMessage = `恭喜您達成 ${reward.points} 積分，已獲得 ${reward.name}！`;
+    updatedRewardsData.reward_alert_sent.push(reward.points);
+    rewardSent = true;
+  }
+});
+
+// 如果有發送獎勵，更新 UI 並顯示通知
+if (rewardSent) {
+  setTickets(newTickets);
+
+  // 確保 alert 只會在新增獎勵時出現
+  if (!sessionStorage.getItem("rewardAlertShown")) {
+    Swal.fire({
+      title: "獲得新獎勵！",
+      text: rewardMessage,
+      icon: "success",
+      confirmButtonText: "確認",
+    });
+  
+    sessionStorage.setItem("rewardAlertShown", "true");
+  }
+
+  // 更新後端用戶資料
+  await updatedMembers(userId, {
+    tickets: newTickets,
+    rewards: {
+      ...rewardsData,
+      reward_alert_sent: updatedRewardsData.reward_alert_sent,
+    },
+  });
+}
+};
+
   useEffect(() => {
     fetchTripData();
     fetchMemberData();
   }, []);
+
+  // 監聽 rewards 變化，檢查是否要發送票券
+  useEffect(() => {
+    console.log("最新 rewards:", rewards);
+    if (rewards) {
+      checkAndRewardTicket(rewards);
+    }
+  }, [rewards]);
 
 
   return (
@@ -168,17 +178,24 @@ const Center = () => {
                     <th>操作</th>
                   </tr>
                 </thead>
+                {/* 檢查是否有行程資料 */}
                 <tbody>
-                  {trips.map((trip) => (
-                    <tr key={trip.id}>
-                      <td>{trip.activityName}</td>
-                      <td>{trip.last_bookable_date}</td>
-                      <td>{trip.reservedStatus === "reserved" ? "已預約" : trip.reservedStatus === "in_progress" ? "進行中" : trip.reservedStatus === "cancel" ? "已取消" : "已完成"}</td>
-                      <td>
-                        <Link to={`/member-center/order-management/detail/${trip.id}`} className="btn btn-custom-primary btn-sm">查看詳情</Link>
-                      </td>
-                    </tr>
-                  ))}
+                {trips && trips.length > 0 ? (
+                    <>
+                    {trips.map((trip) => (
+                      <tr key={trip.id}>
+                        <td>{trip.activityName}</td>
+                        <td>{trip.last_bookable_date}</td>
+                        <td>{trip.reservedStatus === "reserved" ? "已預約" : trip.reservedStatus === "in_progress" ? "進行中" : trip.reservedStatus === "cancel" ? "已取消" : "已完成"}</td>
+                        <td>
+                          <Link to={`/member-center/order-management/detail/${trip.id}`} className="btn btn-custom-primary btn-sm">查看詳情</Link>
+                        </td>
+                      </tr>
+                    ))}
+                    </>
+                  ) : (
+                    <tr><td colSpan="4" className="text-center">目前沒有預約行程。</td></tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -189,7 +206,6 @@ const Center = () => {
               <div className="card-body">
                 <h5 className="card-title">我的票券</h5>
                 <table className="table table-bordered table-responsive">
-                  
                 <thead>
                   <tr>
                     <th>行程名稱</th>
@@ -243,12 +259,18 @@ const Center = () => {
                 </div>
 
                 {/* 獎勳列表 */}
-                    <h6>已獲得的獎勳</h6>
-                    <div className="d-flex flex-wrap">
-                      {rewards.reward.map((achievement, index) => (
-                        <span key={index} className="badge badge-custom bg-custom-primary m-1">{achievement}</span>
-                      ))}
-                    </div>
+                <h6>已獲得的獎勳</h6>
+                {rewards.reward && rewards.reward.length > 0 ? (
+                  <div className="d-flex flex-wrap">
+                    {rewards.reward.map((achievement, index) => (
+                      <span key={index} className="badge badge-custom bg-custom-primary m-1">
+                        {achievement}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p>目前尚未獲得任何獎勳</p> // 若無獎勳顯示的提示訊息
+                )}
               </div>
             </div>
           )}

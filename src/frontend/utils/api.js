@@ -424,16 +424,23 @@ export const updatedMembers = async (id, data) => {
     return response.data; 
 };
 
-export const createMember = async (data) => {
-    const response = await axios.post(`/api/users`, data);
-    return response.data; 
-};
-
-export const existingUser = async (email) => {
-    const response = await axios.get(`api/users`, {
-        params: {
-          email: email
-        }
+export const createMember = async (user) => {
+  try {
+      // 1. 先檢查用戶是否已存在
+      const { data: existingUsers } = await axios.get("api/users", {
+        params: { uuid: user.uid }
       });
-    return response.data; 
+  
+      if (existingUsers.length > 0) {
+        return existingUsers[0]; // 如果用戶已存在，回傳用戶資料
+      }
+
+      // 2. 用戶不存在，新增到 json-server
+      const response = await axios.post("api/users", user);
+      return response.data; 
+  } catch (error) {
+    console.error("API 發生錯誤", error);
+    return null; // 確保有回傳值
+  }
+  
 };

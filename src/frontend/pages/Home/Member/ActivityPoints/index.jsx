@@ -1,25 +1,26 @@
 import { useState, useEffect  } from 'react';
-import { getActivityAll, getOrderAll, updatedMembers  } from "@/frontend/utils/api.js";
+import { getActivityAll, getOrderAll, updatedMembers } from "@/frontend/utils/api.js";
 import Swal from "sweetalert2";
+import { useUser } from "@/frontend/components/UserContext/Users";
 
 const ActivityPoints = () => {
   const userId = Number(localStorage.getItem("userId"));
-
+  const {getUsers} = useUser();
   const [userData, setUserData] = useState({
-    totalPoints: 0,
+    totalPoints: 2000,  
     recentActivities: [],
     nextReward: {
-      points: 3000,
-      reward: '免費一日遊',
+      points: 3000, // 初始點數
+      reward: "免費一日遊" // 初始獎勳
     },
+    noActivities: false,  // 用來判斷是否有活動資料
   });
 
-
-  
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+
         // 獲取所有訂單和所有活動資料
         const responseOrder = await getOrderAll(); // 所有訂單
         const responseActivity = await getActivityAll(); // 所有活動
@@ -46,82 +47,100 @@ const ActivityPoints = () => {
         }).filter(activity => activity !== null); // 排除 null 值
   
         // 計算總點數，將活動的 points 累加到 totalPoints
-        let updatedTotalPoints = 2000; // 預設 2000 點
+        let updatedTotalPoints = userData.totalPoints || 0; // 確保有值（預設為 0）
         updatedActivities.forEach(activity => {
           updatedTotalPoints += activity.points;
         });
-
+  
         // 根據 updatedTotalPoints 計算獎勳
-        let updatedRewards = ['專屬VIP點數']; // 預設送 2000 點專屬VIP點數
+        let updatedRewards = []; 
   
         // 當 totalPoints >= 3000 時，加入免費一日遊
         if (updatedTotalPoints >= 3000) {
           updatedRewards.push('免費一日遊');
         }
-
+  
         // 當 totalPoints >= 5000 時，加入免費兩日遊
         if (updatedTotalPoints >= 5000) {
           updatedRewards.push('免費兩日遊');
         }
-
+  
         // 當 totalPoints >= 8000 時，加入免費三日遊
         if (updatedTotalPoints >= 8000) {
           updatedRewards.push('免費三日遊');
         }
-
+  
         // 當 totalPoints >= 10000 時，加入免費四日遊
         if (updatedTotalPoints >= 10000) {
           updatedRewards.push('免費四日遊');
         }
+
+        // 動態更新 nextReward
+        const rewardsMap = [
+          { points: 3000, reward: '免費一日遊' },
+          { points: 5000, reward: '免費兩日遊' },
+          { points: 8000, reward: '免費三日遊' },
+          { points: 10000, reward: '免費四日遊' },
+        ];
+
+        const nextReward = rewardsMap.find(r => updatedTotalPoints >= r.points) || rewardsMap[0];
+
+      // 檢查是否有參加活動
+      const hasActivities = updatedActivities.length > 0;
   
-        // 更新用戶資料
-        setUserData((prevState) => ({
-          ...prevState,
-          totalPoints: updatedTotalPoints,
-          recentActivities: updatedActivities,
-          rewards: {
-            reward: updatedRewards,
-            points: updatedTotalPoints,
-            date: new Date().toISOString(),
-          },
-        }));
-
         // 更新後端資料庫中的 totalPoints
-      const updateUserPoints = async () => {
-        try {
-
-          if (userId) {
-            // 每次獲得的獎勳會儲存到 user 的 rewards 陣列中
-            await updatedMembers(userId, {
-              rewards: {
-                reward: updatedRewards,
-                points: updatedTotalPoints,
-                date: new Date().toISOString(),
-              },
-            })
-            // console.log('totalPoints 更新成功');
+        const updateUserPoints = async () => {
+          try {
+            if (userId) {
+              // 每次獲得的獎勳會儲存到 user 的 rewards 陣列中
+              await updatedMembers(userId, {
+                rewards: {
+                  reward: updatedRewards,
+                  points: updatedTotalPoints,
+                  date: new Date().toISOString(),
+                },
+              });
+              // 更新用戶資料
+              setUserData((prevState) => ({
+                ...prevState,
+                totalPoints: updatedTotalPoints,
+                recentActivities: updatedActivities,
+                rewards: {
+                  reward: updatedRewards,
+                  points: updatedTotalPoints,
+                  date: new Date().toISOString(),
+                },
+                nextReward, // 更新 nextReward
+                noActivities: !hasActivities, // 如果沒有活動，設為 true
+              }));
+            }
+          } catch (error) {
+            console.error('更新 totalPoints 時發生錯誤', error);
           }
-
-        } catch (error) {
-          console.error('更新 totalPoints 時發生錯誤', error);
-        }
-      };
-
-      // 呼叫更新後端 API
-      updateUserPoints();
-
+        };
+  
+        // 呼叫更新後端 API
+        updateUserPoints();
+  
       } catch (error) {
         console.error('無法獲取活動資料或訂單資料', error);
       }
     };
   
-    // 如果有 userId，則初始化 totalPoints 為 2000 點
     if (userId) {
       fetchUserData();
     }
-  }, [userId]); // 只依賴 userId 更新資料
+  }, [userId]); 
   
-  
+  // 當 getUsers 變化時，更新 totalPoints
+  useEffect(() => {
+    if (getUsers?.rewards?.points !== undefined) {
+      setUserData(prevState => ({
+        ...prevState,
+        totalPoints: getUsers.rewards.points, // 正確更新 totalPoints
+      }));
+    }
+  }, [getUsers]); // 監聽 getUsers 變化
 
 
   return (
@@ -168,19 +187,34 @@ const ActivityPoints = () => {
           <h5 className="mb-0">最近活動</h5>
         </div>
         <div className="list-group list-group-flush">
-          {userData.recentActivities.map(activity => (
-            <div key={activity.id} className="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <h6 className="mb-0">{activity.content.title}</h6>
-                {/* <small className="text-muted">{activity.startDate}</small> - <small className="text-muted">{activity.endDate}</small> */}
-              </div>
-              <span className="badge bg-success rounded-pill px-3 py-2">
-                +{activity.points}
-              </span>
+          {/* 顯示提示信息 */}
+          {userData.noActivities ? (
+            <div className="alert alert-info rounded-bottom rounded-top-0 mb-0">
+              還沒參加活動，趕快去預約吧！
             </div>
-          ))}
+          ) : (
+            <div>
+             {userData.recentActivities.map(activity => (
+              <div key={activity.id} className="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 className="mb-0">{activity.content.title}</h6>
+                  {/* <small className="text-muted">{activity.startDate}</small> - <small className="text-muted">{activity.endDate}</small> */}
+                </div>
+                <span className="badge bg-success rounded-pill px-3 py-2">
+                  +{activity.points}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
+         
+
         </div>
       </div>
+
+
+
     </div>
   </div>
   
