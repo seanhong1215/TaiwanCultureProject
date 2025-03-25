@@ -8,7 +8,6 @@ import Google from '@/frontend/assets/images/google-logo.svg';
 const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLogin, handleGoogleLogin, handleFacebookLogin, handleRegister, error, loading, loginData, setLoginData, registerData, setRegisterData }) => {
     const { t } = useTranslation();
 
-
     // 表單輸入處理
     const handleInputChange = (e, isLoginForm) => {
         const { id, value } = e.target;
@@ -73,10 +72,7 @@ const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLog
                                             </button>
                                             <button className="btn btn-Facebook" onClick={handleFacebookLogin}>
                                                 <img src={Facebook}  alt="Facebook-logo" />
-                                            </button>
-                                            <button className="btn btn-Facebook" onClick={handleFacebookLogin}>
-                                                <img src={Facebook}  alt="Facebook-logo" />
-                                            </button>
+                                            </button>   
                                         </div>
 
                                         <div className="text-center mt-3">

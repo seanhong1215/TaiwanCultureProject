@@ -21,7 +21,6 @@ import CustomerSupport from '@/frontend/pages/Home/Member/CustomerSupport';
 import Center from '@/frontend/pages/Home/Member/Center';
 
 import ActivityManager from '@/frontend/pages/Home/Member/ActivityManager';
-import EvaluationManager from '@/frontend/pages/Home/Member/EvaluationManager';
 import MessageManager from '@/frontend/pages/Home/Member/MessageManager';
 
 import Login from '@/frontend/pages/Admin/Login';
@@ -125,10 +124,6 @@ const router = createHashRouter(
         {
           path: 'activity-manager',
           element: <ActivityManager />,
-        },
-        {
-          path: 'evaluation-manager',
-          element: <EvaluationManager />,
         },
         {
           path: 'message-manager',

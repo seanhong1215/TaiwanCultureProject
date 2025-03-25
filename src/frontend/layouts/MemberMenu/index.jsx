@@ -2,12 +2,8 @@ import { useState, useEffect, useRef  } from 'react'
 import { NavLink, useLocation } from 'react-router-dom';
 import './Menu.scss';
 import { updatedMembers, uploadImageToCloudinary } from '@/frontend/utils/api';
-import { useUser } from "@/frontend/components/UserContext/Users";
-
 
 const Menu = () => {
-     const {getUsers} = useUser();
-     
 
       const location = useLocation();
       // 檢查當前路徑是否以 'member-center/order-management/' 開頭
@@ -113,27 +109,19 @@ const Menu = () => {
 
       {userRole === "ACTIVITY_MANAGER" ? (
         <ul className="menu-item-wrap">
+            <li>
+            <NavLink to="/member-center/activity-manager" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
+              <span className="material-icons">local_activity</span>活動管理
+            </NavLink>
+          </li>
           <li>
-          <NavLink to="/member-center/activity-manager" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
-            <span className="material-icons">account_circle</span>活動管理
-          </NavLink>
-        </li>
-        <li>
-            <NavLink
-            to="/member-center/evaluation-manager"
-            className={({ isActive }) => `nav-link-item ${isActive || isActiveLink ? 'active' : ''}`}
-          >
-            <span className="material-icons">receipt_long</span>評價管理
-          </NavLink>
-        </li>
-        <li>
-            <NavLink
-            to="/member-center/message-manager"
-            className={({ isActive }) => `nav-link-item ${isActive || isActiveLink ? 'active' : ''}`}
-          >
-            <span className="material-icons">receipt_long</span>留言管理
-          </NavLink>
-        </li>
+              <NavLink
+              to="/member-center/message-manager"
+              className={({ isActive }) => `nav-link-item ${isActive || isActiveLink ? 'active' : ''}`}
+            >
+              <span className="material-icons">star_rate</span>留言管理
+            </NavLink>
+          </li>
         </ul>
         ) :(
 

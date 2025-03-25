@@ -1,0 +1,14 @@
+.activityManager{
+  input,select {
+    height: 40px;
+  }
+  button {
+    height: 40px;
+    position: relative;
+    .material-icons {
+      font-size: 18px;
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
