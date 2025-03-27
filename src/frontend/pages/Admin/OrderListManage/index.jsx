@@ -65,7 +65,6 @@ const OrderManagement = () => {
   };
 
   const handleSave = async (order) => {
-    console.log(order);
     if (order.id){
       await updateOrder(order.id, order);
       Swal.fire({ title: "更新成功", icon: "success" });
@@ -116,7 +115,6 @@ const OrderManagement = () => {
         </thead>
         <tbody>
           {orders.map((order) => (
-            // console.log(order),
             <tr key={order.id}>
               <td>{order.id}</td>
               <td>{order.createdAt}</td>

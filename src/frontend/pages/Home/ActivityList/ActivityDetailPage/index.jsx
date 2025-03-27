@@ -52,7 +52,8 @@ const ActivityDetailPage = () => {
       "orderId": "",
       "reservedStatus": "reserved",
       "actImage" : "",
-      "reviewed": false
+      "reviewed": false,
+      "status": "upcoming"
   });
 
   const [error, setError] = useState(null);
@@ -270,7 +271,6 @@ useEffect(() => {
   // To update the modal when the selected date changes
   if (selectedActDate) {
     const formattedDate = `${selectedActDate.getFullYear()}-${selectedActDate.getMonth() + 1}-${selectedActDate.getDate()}`;
-    console.log('Selected Date:', formattedDate);
   }
 }, [selectedActDate]);
 

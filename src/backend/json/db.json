@@ -6,7 +6,17 @@
       "name": "系統管理員",
       "role": "ADMIN",
       "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741274658/uploads/1741274657091_zcfbsm.jpg",
-      "id": 1
+      "id": 1,
+      "signInHistory": [
+        "2025-03-18"
+      ],
+      "rewards": {
+        "reward": [],
+        "points": 2300,
+        "date": "2025-03-27T16:44:41.279Z"
+      },
+      "currentStreak": 1,
+      "tickets": []
     },
     {
       "email": "admin123@gmail.com",
@@ -21,8 +31,23 @@
       "password": "$2a$10$4z3N9Mw44qN2zdHKOTcC/uKEfLuWBfoOYGJW7NLWEuyR0.mXJATnu",
       "name": "漩渦鳴人",
       "role": "Member",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
-      "id": 3
+      "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1742446656/uploads/1742446656003_fsqfi8.jpg",
+      "id": 3,
+      "rewards": {
+        "reward": [
+          "專屬VIP點數"
+        ],
+        "points": 2500,
+        "date": "2025-03-20T06:05:14.076Z",
+        "reward_alert_sent": [
+          2000
+        ]
+      },
+      "signInHistory": [
+        "2025-03-18"
+      ],
+      "currentStreak": 1,
+      "tickets": []
     },
     {
       "email": "user002@gmail.com",
@@ -38,7 +63,18 @@
       "name": "酷拉皮卡",
       "role": "Member",
       "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
-      "id": 5
+      "id": 5,
+      "rewards": {
+        "reward": [
+          "專屬VIP點數"
+        ],
+        "points": 2000,
+        "date": "2025-03-17T17:04:56.368Z",
+        "reward_alert_sent": [
+          2000
+        ]
+      },
+      "tickets": []
     },
     {
       "email": "manager1@gmail.com",
@@ -87,6 +123,55 @@
       "role": "ADMIN",
       "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
       "id": 11
+    },
+    {
+      "email": "smileangeler1215@gmail.com",
+      "password": "$2a$10$tGvjIj0sfydiv2fbClyTY.8kNuL9tDeQA8DLCozf/vYwTPYsZytKO",
+      "uuid": "oZE6pB7iy9OMWopogGgXrkWkw353",
+      "name": "Shang Ben",
+      "avatar": "https://graph.facebook.com/2109190009531606/picture",
+      "id": 12
+    },
+    {
+      "email": "seanhong1215@gmail.com",
+      "password": "$2a$10$vxlKmQ0JGpOqj8RkGwUnU.8PhufBg30n9d.KfcIzncRepGs8Xyka2",
+      "uuid": "Adyf2889jxVsb6BMnwmQW0Bu6H92",
+      "name": "Sean Hong",
+      "avatar": "https://lh3.googleusercontent.com/a/ACg8ocJ2ZicVaOWn_QJasjBenAy2879_nGuaHEFyNPxsElcpYEWqSxw=s96-c",
+      "id": 13,
+      "rewards": {
+        "reward": [
+          "專屬VIP點數"
+        ],
+        "points": 2000,
+        "date": "2025-03-21T04:47:56.830Z",
+        "reward_alert_sent": [
+          2000
+        ]
+      },
+      "tickets": [],
+      "signInHistory": [
+        "2025-03-21"
+      ],
+      "currentStreak": 1
+    },
+    {
+      "email": "user@gmail.com",
+      "password": "$2a$10$U6/4lWecgvn2ES.Oos/iHuMwPBEjm.RWVyV0.HCL4MLwAP0UYkDui",
+      "name": "沫沫",
+      "role": "Member",
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "id": 14,
+      "tickets": [],
+      "rewards": {
+        "reward": [],
+        "points": 2100,
+        "date": "2025-03-21T15:09:38.432Z"
+      },
+      "signInHistory": [
+        "2025-03-21"
+      ],
+      "currentStreak": 1
     }
   ],
   "activity": [
@@ -96,10 +181,11 @@
       "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741063431/%E5%8F%B0%E5%8C%97_%E6%B2%89%E6%B5%B8%E5%BC%8F_DIY_%E8%AA%BF%E8%A3%BD%E9%A6%99%E6%B0%B4_qwhk60.png",
       "isFavorited": false,
       "rating": 4.7,
-      "startDate": "2025-02-14",
-      "endDate": "2025-02-14",
+      "startDate": "2025-05-14",
+      "endDate": "2025-05-14",
       "price": 1200,
       "eventType": "特色體驗",
+      "status": "upcoming",
       "content": {
         "title": "沉浸式 DIY 調製香水",
         "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。\n"
@@ -134,8 +220,8 @@
             ]
           },
           "map": {
-            "latitude": 25.0632753,
-            "longitude": 121.5002102,
+            "latitude": "25.0632753",
+            "longitude": "121.5002102",
             "mapLink": "https://maps.google.com"
           },
           "sections": [
@@ -160,10 +246,11 @@
       "isFavorited": false,
       "rating": 4.7,
       "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740976990/%E5%8F%B0%E4%B8%AD_%E7%B6%93%E5%85%B8%E8%A1%8C%E7%A8%8B_%E9%AB%98%E7%BE%8E%E6%BF%95%E5%9C%B0%E4%B8%80%E6%97%A5%E9%81%8A_rzcyud.png",
-      "startDate": "2025-02-01",
-      "endDate": "2025-02-01",
+      "startDate": "2025-05-01",
+      "endDate": "2025-05-01",
       "price": 2500,
       "eventType": "一日行程",
+      "status": "upcoming",
       "content": {
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
@@ -197,8 +284,8 @@
             ]
           },
           "map": {
-            "latitude": 24.1947,
-            "longitude": 120.6354,
+            "latitude": "24.1947",
+            "longitude": "120.6354",
             "mapLink": "https://maps.google.com"
           },
           "sections": [
@@ -209,6 +296,7 @@
             },
             {
               "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741186399/1741186398181_lzpxxs.avif",
+              "status": "completed",
               "imageCaption": "夜景﻿時光的浪漫與感動",
               "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！"
             }
@@ -223,10 +311,11 @@
       "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741062253/%E5%AE%9C%E8%98%AD_%E5%A4%A9%E9%80%81%E5%9F%A4%E7%81%AB%E8%BB%8A%E7%AB%99%E9%AB%98%E7%A9%BA%E7%B9%A9%E7%B4%A2%E9%AB%94%E9%A9%97_zqv3l0.png",
       "isFavorited": false,
       "rating": 4.5,
-      "startDate": "2025-02-05",
-      "endDate": "2025-02-05",
+      "startDate": "2025-06-05",
+      "endDate": "2025-06-05",
       "price": 1000,
       "eventType": "特色體驗",
+      "status": "upcoming",
       "content": {
         "title": "天送埤火車站高空繩索體驗",
         "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。\n"
@@ -286,11 +375,12 @@
         "description": "想親手製作道地的台灣經典點心嗎？來到台北參加我們的鳳梨酥 DIY 手作體驗，學習如何製作美味的鳳梨酥，從餡料調配到烘焙成型，感受台灣傳統糕點的魅力。適合親子、情侶、朋友一同參與，創造難忘的甜點回憶！"
       },
       "eventType": "特色體驗",
+      "status": "upcoming",
       "city": "台北",
       "price": 800,
       "rating": 5,
-      "startDate": "2025-02-11",
-      "endDate": "2025-02-11",
+      "startDate": "2025-04-25",
+      "endDate": "2025-04-25",
       "activityDetails": [
         {
           "images": [
@@ -342,10 +432,11 @@
       "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977094/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_dtfthy.jpg",
       "isFavorited": false,
       "rating": 4.8,
-      "startDate": "2025-02-15",
-      "endDate": "2025-02-15",
+      "startDate": "2025-06-15",
+      "endDate": "2025-06-15",
       "price": 600,
       "eventType": "特色體驗",
+      "status": "upcoming",
       "content": {
         "title": "月桃杯墊 DIY 手作體驗",
         "description": "體驗台東獨特的月桃文化，親手編織一片屬於自己的月桃杯墊！月桃葉具有天然的香氣與防潮特性，是台灣原住民傳統生活中的重要元素。在這場手作體驗中，您將學習如何使用月桃葉進行編織，享受療癒的編織過程，並深入了解台東的在地文化。\n"
@@ -387,6 +478,7 @@
           "sections": [
             {
               "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741185015/1741185013953_cgjk2i.jpg",
+              "status": "completed",
               "imageCaption": "台東｜月桃杯墊 DIY 手作體驗",
               "description": "體驗台東獨特的月桃文化，親手編織一片屬於自己的月桃杯墊！月桃葉具有天然的香氣與防潮特性，是台灣原住民傳統生活中的重要元素。在這場手作體驗中，您將學習如何使用月桃葉進行編織，享受療癒的編織過程，並深入了解台東的在地文化。"
             }
@@ -405,6 +497,7 @@
       "endDate": "2025-02-27",
       "price": 800,
       "eventType": "特色體驗",
+      "status": "completed",
       "content": {
         "title": "琉璃珠 DIY 手作體驗",
         "description": "來到台東，親手製作獨具特色的琉璃珠飾品！琉璃珠是台灣原住民的重要文化象徵，代表祝福與守護。在這場手作體驗中，您將學習琉璃珠的製作過程，從設計、塑形到燒製，每顆琉璃珠都承載著您的創意與心意。適合親子、朋友、情侶一同參與，共同創造獨一無二的回憶！"
@@ -446,6 +539,7 @@
           "sections": [
             {
               "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741189396/uploads/1741189384944_uvgcge.jpg",
+              "status": "completed",
               "imageCaption": "台東｜琉璃珠 DIY 手作體驗",
               "description": "來到台東，親手製作獨具特色的琉璃珠飾品！琉璃珠是台灣原住民的重要文化象徵，代表祝福與守護。在這場手作體驗中，您將學習琉璃珠的製作過程，從設計、塑形到燒製，每顆琉璃珠都承載著您的創意與心意。適合親子、朋友、情侶一同參與，共同創造獨一無二的回憶！\n"
             }
@@ -464,6 +558,7 @@
       "endDate": "2025-02-25",
       "price": "1500",
       "eventType": "特色體驗",
+      "status": "completed",
       "content": {
         "title": "原住民料理體驗廚房",
         "description": "來到花蓮，體驗台灣原住民獨特的飲食文化！透過親手製作傳統料理，您將深入了解原住民飲食習慣與文化故事。使用當地新鮮食材，在專業老師的指導下，學習如何烹調出道地的原住民美食，感受花蓮的風土人情與美味。\n"
@@ -481,6 +576,7 @@
       "endDate": "2025-02-18",
       "price": "900",
       "eventType": "特色體驗",
+      "status": "completed",
       "content": {
         "title": "糖果盒乾燥花蠟燭DIY 手作體驗",
         "description": "在高雄體驗一場充滿香氛與創意的蠟燭手作課程！運用天然大豆蠟與乾燥花，親手製作專屬於您的糖果盒造型蠟燭，無論是作為家居擺飾、禮物或是自我療癒的儀式，都充滿溫暖與美感。在專業老師的指導下，您將學習蠟燭調色、香氛搭配及裝飾技巧，享受放鬆又有趣的創作時光。\n"
@@ -510,6 +606,7 @@
           "sections": [
             {
               "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106266/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_njecdg.jpg",
+              "status": "completed",
               "imageCaption": "",
               "description": "在高雄體驗一場充滿香氛與創意的蠟燭手作課程！運用天然大豆蠟與乾燥花，親手製作專屬於您的糖果盒造型蠟燭，無論是作為家居擺飾、禮物或是自我療癒的儀式，都充滿溫暖與美感。在專業老師的指導下，您將學習蠟燭調色、香氛搭配及裝飾技巧，享受放鬆又有趣的創作時光。"
             }
@@ -528,6 +625,7 @@
       "endDate": "2025-02-10",
       "price": "800",
       "eventType": "特色體驗",
+      "status": "completed",
       "content": {
         "title": "藍曬印相法手洗照片體驗",
         "description": "走進高雄的手作工坊，體驗古老又充滿藝術感的藍曬印相技術！透過陽光與特殊感光紙的結合，創作出獨一無二的藍色影像。無論是拍攝自己的照片、植物剪影或是藝術拼貼，藍曬印相法都能呈現出濃郁的藍白對比，讓您的創作充滿復古與現代交融的美感。\n"
@@ -585,6 +683,7 @@
             },
             {
               "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "status": "completed",
               "imageCaption": "夜景﻿時光的浪漫與感動",
               "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
             }
@@ -603,6 +702,7 @@
       "endDate": "2025-02-06",
       "price": "1500",
       "eventType": "特色體驗",
+      "status": "completed",
       "content": {
         "title": "皮件製作體驗",
         "description": "走進高雄的手工皮革工坊，親手體驗皮件製作的工藝魅力！從挑選皮革、裁切、縫製到壓印，每一個步驟都由專業老師細心指導，讓您創造出獨一無二的個人皮件。無論是皮革鑰匙圈、名片夾，或是錢包，每一件作品都將成為您獨特的日常陪伴。\n"
@@ -660,6 +760,7 @@
             },
             {
               "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "status": "completed",
               "imageCaption": "夜景﻿時光的浪漫與感動",
               "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
             }
@@ -678,6 +779,7 @@
       "endDate": "2025-02-20",
       "price": "1200",
       "eventType": "特色體驗",
+      "status": "completed",
       "content": {
         "title": "金工DIY體驗",
         "description": "在高雄體驗傳統金工工藝，親手打造屬於自己的金屬飾品！從設計、敲打、焊接到拋光，每個步驟都由專業老師指導，讓您體驗金工藝術的獨特魅力。無論是手環、戒指或吊墜，這將是您專屬的獨特飾品，極具紀念價值。\n"
@@ -719,6 +821,7 @@
           "sections": [
             {
               "imageCaption": "高雄｜金工DIY體驗",
+              "status": "completed",
               "description": "在高雄體驗傳統金工工藝，親手打造屬於自己的金屬飾品！從設計、敲打、焊接到拋光，每個步驟都由專業老師指導，讓您體驗金工藝術的獨特魅力。無論是手環、戒指或吊墜，這將是您專屬的獨特飾品，極具紀念價值。\n",
               "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741280955/uploads/1741280954102_hubc0l.jpg"
             }
@@ -737,6 +840,7 @@
       "endDate": "2025-02-25",
       "price": "300",
       "eventType": "特色體驗",
+      "status": "completed",
       "content": {
         "title": "茶樹精油提煉DIY體驗",
         "description": "走進屏東的天然茶樹園，親身體驗精油提煉的魅力！從採摘新鮮茶樹葉片、了解蒸餾提煉技術，到親手製作專屬的天然茶樹精油，每一個環節都能讓您深入認識芳香療法的奧秘。這不僅是一場嗅覺與觸覺的體驗，更是一次與大自然親密接觸的放鬆之旅。\n"
@@ -794,6 +898,7 @@
             },
             {
               "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741278364/uploads/1741278363572_w1bzwt.avif",
+              "status": "completed",
               "imageCaption": "夜景﻿時光的浪漫與感動",
               "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
             }
@@ -808,6 +913,7 @@
         "description": "走進屏東的職人工坊，親手編織充滿台灣特色的魚線椅！魚線椅是一種結合傳統技藝與現代設計的工藝品，以耐用的漁網線手工編織於金屬框架上，既富創意又兼具實用性。透過這場DIY體驗，您將學習到魚線椅的歷史背景、編織技巧，並完成一張專屬於自己的椅子。\n\n"
       },
       "eventType": "特色體驗",
+      "status": "completed",
       "city": "屏東",
       "price": "2800",
       "rating": 5,
@@ -866,6 +972,7 @@
             },
             {
               "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "status": "completed",
               "imageCaption": "夜景﻿時光的浪漫與感動",
               "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
             }
@@ -881,6 +988,7 @@
         "description": "來到屏東漁村，親手製作台灣經典的午仔魚一夜干！這項體驗將帶您從挑選新鮮午仔魚開始，學習傳統醃漬與風乾技術，讓您親手完成一夜干的製作過程。透過這場體驗，您不僅能學到保存海鮮的技巧，還能帶回自己親手製作的美味午仔魚。\n"
       },
       "eventType": "一日行程",
+      "status": "completed",
       "city": "屏東",
       "price": "1500",
       "rating": 4,
@@ -897,6 +1005,7 @@
         "description": "走進墾丁的自然香氣世界，親手調製專屬於您的個性香水！這場精油香水DIY體驗結合南台灣特有的植物精華與調香技巧，讓您深入了解香氛的奧秘，並學習如何創造出屬於自己的香味。\n"
       },
       "eventType": "特色體驗",
+      "status": "completed",
       "city": "墾丁",
       "price": "1200",
       "rating": 4.6,
@@ -913,6 +1022,7 @@
         "description": "來到雲林，享受刺激又療癒的SUP立槳體驗！這場活動適合各種程度的參與者，無論是初學者或是有經驗的水上運動愛好者，都能在專業教練的帶領下，學習立槳技巧，悠遊於湖面或海域之上，感受大自然的寧靜與水上運動的樂趣。"
       },
       "eventType": "特色體驗",
+      "status": "completed",
       "city": "雲林",
       "price": 1680,
       "rating": 4.2,
@@ -929,6 +1039,7 @@
         "description": "來到苗栗，體驗最道地的傳統控窯樂趣，親手製作香氣四溢的手工披薩！這場活動結合戶外樂趣與美食DIY，不僅能學習傳統的控窯技巧，還能製作屬於自己的創意披薩，適合親子、好友及團體共同參與。\n"
       },
       "eventType": "特色體驗",
+      "status": "completed",
       "city": "苗栗",
       "price": "1800",
       "rating": 4.8,
@@ -970,6 +1081,7 @@
           "sections": [
             {
               "image": "",
+              "status": "completed",
               "imageCaption": "",
               "description": ""
             }
@@ -984,6 +1096,7 @@
         "description": "來到苗栗，體驗最具台灣特色的榨苦茶油活動，深入了解傳統的榨油技術，親手製作並品嚐自家榨取的苦茶油！這場活動結合了文化學習與動手實作，適合親子、好友或團體共同參與，讓您在愉快的氛圍中學習並體驗台灣的傳統手工藝。\n"
       },
       "eventType": "特色體驗",
+      "status": "completed",
       "city": "苗栗",
       "price": "200",
       "rating": 4,
@@ -1000,6 +1113,7 @@
         "description": "來到苗栗，體驗一場別具匠心的手拉胚DIY活動，讓您親手創作專屬的陶藝作品！這場活動結合了藝術創作與動手實作，讓您了解傳統陶藝的製作過程，並且親手拉製屬於自己的陶器。無論是親子、朋友還是團體，都能在這裡找到屬於自己的一份創意與成就感。\n"
       },
       "eventType": "特色體驗",
+      "status": "completed",
       "city": "苗栗",
       "price": "1200",
       "rating": 4.7,
@@ -1016,6 +1130,7 @@
         "description": "來到新竹，體驗台灣傳統美食——摃丸的DIY製作過程！這場活動結合了手作美食與文化學習，讓您親手製作摃丸，體驗從揉捏到煮熟的每個步驟，並品嚐自己製作的美味。這是一次既能學習傳統技藝，又能品味台灣風味的獨特體驗，適合親子、朋友以及團體共同參與。\n"
       },
       "eventType": "特色體驗",
+      "status": "completed",
       "city": "新竹",
       "price": 250,
       "rating": 4.1,
@@ -1150,32 +1265,6 @@
   ],
   "reviews": [
     {
-      "id": 1,
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
-      "name": "漩渦鳴人",
-      "rating": 4.5,
-      "activityTitle": "沉浸式 DIY 調製香水",
-      "imageFiles": [
-        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741184330/1741184328699_nulin1.jpg",
-        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741184327/1741184326546_wldf1g.jpg"
-      ],
-      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！!",
-      "activityId": 1
-    },
-    {
-      "id": 2,
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
-      "name": "奇犽",
-      "rating": 4.5,
-      "activityTitle": "經典行程＆高美濕地一日遊",
-      "imageFiles": [
-        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741186230/1741186229773_muqbxa.avif",
-        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741186235/1741186234464_duwf5y.avif"
-      ],
-      "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。",
-      "activityId": 2
-    },
-    {
       "id": 3,
       "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
       "name": "酷拉皮卡",
@@ -1228,30 +1317,17 @@
       "activityId": 1
     },
     {
-      "reviewContent": "棒棒!!",
-      "rating": 5,
-      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "月桃222",
+      "rating": 2,
+      "activityTitle": "月桃杯墊 DIY 手作體驗",
       "imageFiles": [
-        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741105594/%E8%8A%B1%E8%93%AE_%E5%8E%9F%E4%BD%8F%E6%B0%91%E6%96%99%E7%90%86%E9%AB%94%E9%A9%97%E5%BB%9A%E6%88%BF_gtoulf.jpg"
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1742205399/uploads/1742205398998_ipmqx5.jpg",
+        "https://res.cloudinary.com/dwjbzadev/image/upload/v1742205400/uploads/1742205400203_rbcmtt.jpg"
       ],
       "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
       "name": "漩渦鳴人",
-      "eventType": "特色體驗",
-      "activityId": 2,
-      "id": 13
-    },
-    {
-      "reviewContent": "糖果盒好好玩～讚啦",
-      "rating": 5,
-      "activityTitle": "糖果盒乾燥花蠟燭DIY 手作體驗",
-      "imageFiles": [
-        "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106391/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_vnyff4.jpg"
-      ],
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
-      "name": "漩渦鳴人",
-      "eventType": "特色體驗",
-      "activityId": 8,
-      "id": 14
+      "activityId": 5,
+      "id": 19
     }
   ],
   "favorites": [
@@ -1286,28 +1362,58 @@
       "id": 5
     },
     {
-      "activityId": 8,
-      "userId": 3,
+      "activityId": 1,
+      "userId": 13,
       "isFavorited": true,
       "id": 6
     },
     {
-      "activityId": 10,
-      "userId": 3,
+      "activityId": 8,
+      "userId": 13,
       "isFavorited": true,
       "id": 7
     },
     {
-      "activityId": 12,
-      "userId": 3,
+      "activityId": 9,
+      "userId": 13,
       "isFavorited": true,
       "id": 8
     },
     {
-      "activityId": 13,
-      "userId": 3,
+      "activityId": 2,
+      "userId": 14,
       "isFavorited": true,
       "id": 9
+    },
+    {
+      "activityId": 5,
+      "userId": 14,
+      "isFavorited": true,
+      "id": 10
+    },
+    {
+      "activityId": 13,
+      "userId": 14,
+      "isFavorited": true,
+      "id": 11
+    },
+    {
+      "activityId": 4,
+      "userId": 14,
+      "isFavorited": true,
+      "id": 12
+    },
+    {
+      "activityId": 9,
+      "userId": 14,
+      "isFavorited": true,
+      "id": 13
+    },
+    {
+      "activityId": 11,
+      "userId": 14,
+      "isFavorited": true,
+      "id": 14
     }
   ],
   "profiles": [
@@ -1337,15 +1443,70 @@
     },
     {
       "id": 3,
-      "lastName": "漩渦",
-      "firstName": "鳴人",
-      "nickName": "漩渦鳴人",
+      "userName": "漩渦鳴人",
+      "email": "user001@gmail.com",
+      "nickName": "鳴人",
       "gender": "男生",
       "birthday": "2025-03-01",
       "country": "日本",
       "countryCode": "+886",
       "phoneNumber": "010-888-011-22",
-      "userId": 3
+      "userId": 3,
+      "lastName": "漩渦",
+      "firstName": "鳴人",
+      "user": {
+        "email": "user001@gmail.com",
+        "password": "$2a$10$4z3N9Mw44qN2zdHKOTcC/uKEfLuWBfoOYGJW7NLWEuyR0.mXJATnu",
+        "name": "漩渦鳴人",
+        "role": "Member",
+        "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1742446656/uploads/1742446656003_fsqfi8.jpg",
+        "id": 3,
+        "rewards": {
+          "reward": [
+            "專屬VIP點數"
+          ],
+          "points": 2500,
+          "date": "2025-03-20T04:24:11.109Z",
+          "reward_alert_sent": [
+            2000
+          ]
+        },
+        "signInHistory": [
+          "2025-03-18"
+        ],
+        "currentStreak": 1,
+        "tickets": []
+      }
+    },
+    {
+      "id": 4,
+      "userName": "沫沫",
+      "email": "user@gmail.com",
+      "nickName": "小妺",
+      "gender": "秘密",
+      "birthday": "2025-03-10",
+      "country": "台灣",
+      "countryCode": "+886",
+      "phoneNumber": "988123456",
+      "userId": 14,
+      "user": {
+        "email": "user@gmail.com",
+        "password": "$2a$10$U6/4lWecgvn2ES.Oos/iHuMwPBEjm.RWVyV0.HCL4MLwAP0UYkDui",
+        "name": "沫沫",
+        "role": "Member",
+        "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+        "id": 14,
+        "tickets": [],
+        "rewards": {
+          "reward": [],
+          "points": 2100,
+          "date": "2025-03-21T15:09:38.432Z"
+        },
+        "signInHistory": [
+          "2025-03-21"
+        ],
+        "currentStreak": 1
+      }
     }
   ],
   "tickets": [],
@@ -1442,7 +1603,7 @@
       "activityId": 4,
       "createdAt": "2025-03-03 09:56:40",
       "activityName": "鳳梨酥 DIY 手作體驗",
-      "last_bookable_date": "2025-03-15",
+      "last_bookable_date": "2025-03-21",
       "activityLocation": "台北",
       "activityPeriod": {
         "startDate": "2025-03-22",
@@ -1452,11 +1613,11 @@
       "childCount": 4,
       "adultPrice": 800,
       "childPrice": 400,
-      "timeSlot": "18:00-22:00",
+      "timeSlot": "09:00-17:00",
       "totalAmount": 3200,
       "paymentStatus": "PAID",
       "orderId": "ORD202503030006",
-      "reservedStatus": "in_progress",
+      "reservedStatus": "reserved",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977034/%E5%8F%B0%E5%8C%97%E5%A3%AB%E6%9E%97_%E9%B3%B3%E6%A2%A8%E9%85%A5DIY%E9%AB%94%E9%A9%97_uxa3at.webp",
       "paymentData": {
         "contactName": "user001",
@@ -1473,7 +1634,7 @@
       "createdAt": "2025-03-03 17:29:34",
       "contactName": "",
       "activityName": "月桃杯墊 DIY 手作體驗",
-      "last_bookable_date": "2025-04-15",
+      "last_bookable_date": "2025-02-15",
       "activityLocation": "台東",
       "activityPeriod": {
         "startDate": "2025-02-15",
@@ -1487,7 +1648,7 @@
       "totalAmount": 2100,
       "paymentStatus": "PAID",
       "orderId": "ORD202503040007",
-      "reservedStatus": "reserved",
+      "reservedStatus": "finished",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977094/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_dtfthy.jpg",
       "paymentData": {
         "contactName": "ben",
@@ -1495,7 +1656,8 @@
         "expiryDate": "05/25",
         "cvv": "333"
       },
-      "id": "ORD202503040007"
+      "id": "ORD202503040007",
+      "reviewed": true
     },
     {
       "userId": 3,
@@ -1503,7 +1665,7 @@
       "createdAt": "2025-03-03 17:51:48",
       "contactName": "",
       "activityName": "經典行程＆高美濕地一日遊",
-      "last_bookable_date": "2025-04-11",
+      "last_bookable_date": "2025-02-11",
       "activityLocation": "台中",
       "activityPeriod": {
         "startDate": "2025-02-11",
@@ -1517,7 +1679,7 @@
       "totalAmount": 3750,
       "paymentStatus": "PAID",
       "orderId": "ORD202503040009",
-      "reservedStatus": "cancel",
+      "reservedStatus": "finished",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740976990/%E5%8F%B0%E4%B8%AD_%E7%B6%93%E5%85%B8%E8%A1%8C%E7%A8%8B_%E9%AB%98%E7%BE%8E%E6%BF%95%E5%9C%B0%E4%B8%80%E6%97%A5%E9%81%8A_rzcyud.png",
       "paymentData": {
         "contactName": "ben2",
@@ -1525,7 +1687,8 @@
         "expiryDate": "05/30",
         "cvv": "999"
       },
-      "id": "ORD202503040009"
+      "id": "ORD202503040009",
+      "reviewed": true
     },
     {
       "userId": 3,
@@ -1533,7 +1696,7 @@
       "createdAt": "2025-03-04 16:43:24",
       "contactName": "漩渦鳴人",
       "activityName": "糖果盒乾燥花蠟燭DIY 手作體驗",
-      "last_bookable_date": "2025-04-18",
+      "last_bookable_date": "2025-02-18",
       "activityLocation": "高雄市前金區市中一路204號2樓",
       "activityPeriod": {
         "startDate": "",
@@ -1549,7 +1712,7 @@
       "orderId": "ORD202503050011",
       "type": "",
       "status": "",
-      "reservedStatus": "reserved",
+      "reservedStatus": "finished",
       "qrCode": "",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106141/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_cfrwik.jpg",
       "paymentData": {
@@ -1580,7 +1743,7 @@
       "totalAmount": 2700,
       "paymentStatus": "PAID",
       "orderId": "ORD202503140012",
-      "reservedStatus": "reserved",
+      "reservedStatus": "finished",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740977094/%E5%8F%B0%E6%9D%B1_%E6%9C%88%E6%A1%83%E6%9D%AF%E5%A2%8ADIY%E9%AB%94%E9%A9%97_dtfthy.jpg",
       "paymentData": {
         "contactName": "admin",
@@ -1610,7 +1773,7 @@
       "totalAmount": 1350,
       "paymentStatus": "PAID",
       "orderId": "ORD202503140013",
-      "reservedStatus": "reserved",
+      "reservedStatus": "finished",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106141/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_cfrwik.jpg",
       "paymentData": {
         "contactName": "admin123",
@@ -1640,7 +1803,7 @@
       "totalAmount": 4500,
       "paymentStatus": "PAID",
       "orderId": "ORD202503140014",
-      "reservedStatus": "cancel",
+      "reservedStatus": "finished",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741187635/uploads/1741187625195_u0wvja.jpg",
       "paymentData": {
         "contactName": "admin456",
@@ -1692,7 +1855,7 @@
       "totalAmount": 1600,
       "paymentStatus": "PAID",
       "orderId": "ORD202503150016",
-      "reservedStatus": "ended",
+      "reservedStatus": "finished",
       "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741187567/uploads/1741187541473_g5tusu.jpg",
       "paymentData": {
         "contactName": "漩渦鳴人",
@@ -1703,34 +1866,85 @@
       "id": "ORD202503150016"
     },
     {
-      "userId": 3,
-      "activityId": 11,
-      "createdAt": "2025-03-15 13:31:38",
-      "contactName": "漩渦鳴人",
-      "activityName": "金工DIY體驗",
-      "last_bookable_date": "2025-02-20",
-      "activityLocation": "高雄市鼓山區青泉街107巷2之1號",
-      "activityPeriod": {
-        "startDate": "",
-        "endDate": ""
-      },
+      "userId": 13,
+      "activityId": 10,
+      "createdAt": "2025-03-21 04:48:44",
+      "contactName": "Sean Hong",
+      "activityName": "皮件製作體驗",
+      "last_bookable_date": "2025-02-06",
+      "activityLocation": "高雄市新興區六合一路56號之一",
       "adultCount": 2,
-      "childCount": 3,
-      "adultPrice": 1200,
-      "childPrice": 600,
-      "timeSlot": "09:00-12:00",
-      "totalAmount": 4200,
+      "childCount": 2,
+      "adultPrice": 1500,
+      "childPrice": 750,
+      "timeSlot": "18:00-21:00",
+      "totalAmount": 4500,
       "paymentStatus": "PAID",
-      "orderId": "ORD202503150017",
-      "reservedStatus": "ended",
-      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741187688/uploads/1741187679658_vsyqwm.webp",
+      "orderId": "ORD202503210017",
+      "reservedStatus": "finished",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741187635/uploads/1741187625195_u0wvja.jpg",
+      "reviewed": false,
+      "paymentData": {
+        "contactName": "Sean Hong",
+        "cardNumber": "1234-5678-0000-1234",
+        "expiryDate": "07/25",
+        "cvv": "999"
+      },
+      "id": "ORD202503210017"
+    },
+    {
+      "userId": 14,
+      "activityId": 10,
+      "createdAt": "2025-03-21 14:12:48",
+      "contactName": "沫沫",
+      "activityName": "皮件製作體驗",
+      "last_bookable_date": "2025-02-06",
+      "activityLocation": "高雄市新興區六合一路56號之一",
+      "adultCount": 2,
+      "childCount": 2,
+      "adultPrice": 1500,
+      "childPrice": 750,
+      "timeSlot": "09:00-12:00",
+      "totalAmount": 4500,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503210018",
+      "reservedStatus": "finished",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741187635/uploads/1741187625195_u0wvja.jpg",
+      "reviewed": false,
+      "paymentData": {
+        "contactName": "沫沫",
+        "cardNumber": "1234-5678-0000-1234",
+        "expiryDate": "08/30",
+        "cvv": "666"
+      },
+      "id": "ORD202503210018"
+    },
+    {
+      "userId": 3,
+      "activityId": 8,
+      "createdAt": "2025-03-27 13:11:17",
+      "contactName": "漩渦鳴人",
+      "activityName": "糖果盒乾燥花蠟燭DIY 手作體驗",
+      "last_bookable_date": "2025-02-18",
+      "activityLocation": "高雄市前金區市中一路204號2樓",
+      "adultCount": 1,
+      "childCount": 1,
+      "adultPrice": 900,
+      "childPrice": 450,
+      "timeSlot": "09:00-12:00",
+      "totalAmount": 1350,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503270019",
+      "reservedStatus": "reserved",
+      "actImage": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741106141/%E9%AB%98%E9%9B%84_%E7%B3%96%E6%9E%9C%E7%9B%92%E4%B9%BE%E7%87%A5%E8%8A%B1%E8%A0%9F%E7%87%ADDIY_%E6%89%8B%E4%BD%9C%E9%AB%94%E9%A9%97_cfrwik.jpg",
+      "reviewed": false,
       "paymentData": {
         "contactName": "漩渦鳴人",
-        "cardNumber": "1234-5678-0000-2222",
-        "expiryDate": "04/30",
-        "cvv": "333"
+        "cardNumber": "1234-5678-0000-0000",
+        "expiryDate": "05/30",
+        "cvv": "555"
       },
-      "id": "ORD202503150017"
+      "id": "ORD202503270019"
     }
   ],
   "payments": [],
@@ -1767,5 +1981,12 @@
       "完成第一次預訂",
       "專屬VIP優惠"
     ]
-  }
+  },
+  "notifications": [
+    {
+      "message": "新預約：宇智波佐助",
+      "timestamp": "2025-03-27T13:11:17.457Z",
+      "id": 1
+    }
+  ]
 }

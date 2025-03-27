@@ -15,6 +15,9 @@ const MessageManager = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
 
+  const [refreshReviews, setRefreshReviews] = useState(false);
+
+
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = (review) => {
     setSelectedReview(review)
@@ -24,6 +27,8 @@ const MessageManager = () => {
     setSelectedReview(null)
     setShowModal(false)
   };
+
+  
 
   useEffect(() => {
     try {
@@ -44,7 +49,7 @@ const MessageManager = () => {
       console.error("Error fetching reviews:", error);
     }
     
-  }, [page]);
+  }, [page, refreshReviews]);
 
   // 滾動到頁面頂部
   useEffect(() => {
@@ -89,20 +94,43 @@ const MessageManager = () => {
     setFilteredReviews(filtered);
   };
 
-  const handleDelete = async (id) => {
-    await deleteReviews(id);
-    setReviews(reviews.filter((review) => review.id !== id));
-    Swal.fire({
-        title: "刪除留言成功",
-        icon: "success"
-    });
-  };
+ // 刪除留言並觸發刷新
+const handleDelete = async (id) => {
+  const result = await Swal.fire({
+    icon: "warning",
+    title: "請再次確認是否刪除留言",
+    showCancelButton: true,
+    confirmButtonText: "確定",
+    cancelButtonText: "取消",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await deleteReviews(id); // 確保 API 刪除成功
+      Swal.fire({
+        icon: "success",
+        title: "留言已刪除",
+        timer: 1500,
+      });
+
+      // 透過 `setRefreshReviews` 來觸發 `useEffect`
+      setRefreshReviews((prev) => !prev);
+
+    } catch (error) {
+      console.error("刪除留言失敗", error);
+      Swal.fire({
+        icon: "error",
+        title: "刪除失敗，請稍後再試",
+      });
+    }
+  }
+}
 
 
   return (
         <div className="page-container">
-          <h2>活動留言管理</h2>
-          <div className="row mb-4">
+          <h2 className='text-center text-lg-start'>留言管理</h2>
+          <div className="row mb-4 gap-3">
         <div className="col-md-6">
           <input
             type="text"
@@ -157,7 +185,7 @@ const MessageManager = () => {
       ))}
 
       <div className="row">
-        {totalPage > 0 && totalItems >= limit && (
+        {totalPage > 1 && totalItems >= limit && (
           <div className="col-12">
             <PageNation totalPage={totalPage} page={page} setPage={setPage} />
           </div>

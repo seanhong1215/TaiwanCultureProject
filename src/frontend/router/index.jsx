@@ -22,6 +22,7 @@ import Center from '@/frontend/pages/Home/Member/Center';
 
 import ActivityManager from '@/frontend/pages/Home/Member/ActivityManager';
 import MessageManager from '@/frontend/pages/Home/Member/MessageManager';
+import NotificationsPage from '@/frontend/pages/Home/Member/NotificationsPage';
 
 import Login from '@/frontend/pages/Admin/Login';
 import Dashboard from '@/frontend/pages/Admin/Dashboard';
@@ -128,7 +129,12 @@ const router = createHashRouter(
         {
           path: 'message-manager',
           element: <MessageManager />,
+        },
+        {
+          path: 'notifications',
+          element: <NotificationsPage />,
         }
+        
       ]
     },
     {

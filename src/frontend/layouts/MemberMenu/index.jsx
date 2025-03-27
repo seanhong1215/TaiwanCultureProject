@@ -122,6 +122,14 @@ const Menu = () => {
               <span className="material-icons">star_rate</span>留言管理
             </NavLink>
           </li>
+          <li>
+              <NavLink
+              to="/member-center/notifications"
+              className={({ isActive }) => `nav-link-item ${isActive || isActiveLink ? 'active' : ''}`}
+            >
+              <span className="material-icons">campaign </span>通知管理
+            </NavLink>
+          </li>
         </ul>
         ) :(
 

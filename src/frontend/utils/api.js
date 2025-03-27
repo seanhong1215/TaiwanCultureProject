@@ -8,7 +8,6 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
 
  // 註冊
 export const register = async (data) => {
-    console.log(data);
     const response = await axios.post(`/api/register`, {
         email: data.email,
         password: data.password,
@@ -23,7 +22,6 @@ export const register = async (data) => {
 // 登入
 export const login = async (data) => {
 const response = await axios.post(`/api/signin`, data);
-console.log(response);
 if (response.data.accessToken) {
     localStorage.setItem('token', response.data.accessToken); // 存 Token
     // localStorage.setItem('user', JSON.stringify(response.data.user)); // 存 User
@@ -342,7 +340,6 @@ export const uploadImageToCloudinary = async(file) => {
 
         if (!imageUrl) {
             Swal.fire({ title: "無法取得圖片 URL", icon: "warning" });
-            console.log('無法取得圖片 URL');
         return;
         }
         return imageUrl
@@ -443,4 +440,15 @@ export const createMember = async (user) => {
     return null; // 確保有回傳值
   }
   
+};
+
+// 通知管理
+export const getNotifications = async () => {
+    const response = await axios.get("/api/notifications");
+    return response.data; 
+};
+
+export const addNotifications = async (data) => {
+    const response = await axios.get("/api/notifications", data);
+    return response.data; 
 };

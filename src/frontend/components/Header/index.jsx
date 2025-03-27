@@ -62,7 +62,6 @@ const Header = () => {
         try {
             const response = await login(loginData); 
             setIsLoggedIn(true);
-            console.log(response.user);
             
             localStorage.setItem("userId", response.user.id);
             localStorage.setItem("email", response.user.email);
@@ -171,7 +170,6 @@ const Header = () => {
             const response = await loginGoogle(idToken);
             setIsLoggedIn(true);
             const user = response.user;
-            console.log(user);
 
             const randomPassword = generateRandomPassword();
             const newUser = {
@@ -183,7 +181,6 @@ const Header = () => {
             };
 
             const userId = Number(getUsers.id); // 取得使用者ID
-            console.log(userId);
 
             const res = await createMember(newUser);
             localStorage.setItem("userId", userId);
@@ -195,7 +192,6 @@ const Header = () => {
                 user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
             );
 
-            console.log("新用戶創建成功:", res);
 
             setUserData({
                 name: user.name,
@@ -229,15 +225,12 @@ const Header = () => {
         try {
             const result = await signInWithPopup(auth, facebookProvider);
             const idToken = await result.user.getIdToken(); // 取得 JWT Token
-            console.log("Facebook Token:", idToken);
             
             // 傳送 Token 給 json-server
             const response = await loginFacebook(idToken); 
             setIsLoggedIn(true);
             const user = response.user;
     
-            console.log(user);
-
             const randomPassword = generateRandomPassword();
             const newUser = {
                 uuid: user.uid,
@@ -247,7 +240,6 @@ const Header = () => {
                 password: randomPassword,
             };
             const userId = Number(getUsers.id); // 取得使用者ID
-            console.log(userId);
 
             const res = await createMember(newUser);
             localStorage.setItem("userId", userId);
@@ -257,8 +249,6 @@ const Header = () => {
                 "userAvatar",
                 user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
             );
-
-            console.log("新用戶創建成功:", res);
             
             setUserData({
                 name: user.name,
@@ -355,7 +345,6 @@ const Header = () => {
 
     useEffect(() => {
         const handleStorageChange = () => {
-            // console.log("userAvatar 更新了，重新載入頭像");
             setUserData((prev) => ({
             ...prev,
             image: localStorage.getItem("userAvatar") || "",

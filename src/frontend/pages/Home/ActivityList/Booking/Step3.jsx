@@ -2,7 +2,7 @@ import React, { useState , useEffect } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step3.scss";
-import { createOrder } from "@/frontend/utils/api"
+import { createOrder, addNotifications } from "@/frontend/utils/api"
 import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import axios from "axios";
@@ -43,7 +43,6 @@ const Step3 = () => {
     };
 
     try {
-      // const timeSlot = submitData.timeSlot;
       // 執行 POST 請求
       const createResponse = await createOrder(orderData);
       Swal.fire({
@@ -51,6 +50,12 @@ const Step3 = () => {
               icon: "success"
           })
       navigate("/activity-list/booking4" ,{ state: createResponse } );
+
+      await addNotifications({
+        message: `新預約：${userName}`,
+        timestamp: new Date().toISOString()
+      })
+      
     } catch (error) {
       // 處理錯誤
       console.error("發送請求時出錯:", error);

@@ -154,7 +154,6 @@ if (rewardSent) {
 
   // 監聽 rewards 變化，檢查是否要發送票券
   useEffect(() => {
-    console.log("最新 rewards:", rewards);
     if (rewards) {
       checkAndRewardTicket(rewards);
     }
@@ -167,8 +166,8 @@ if (rewardSent) {
         <div className="col-12">
           {/* 我的行程 */}
           <div className="card shadow-sm mb-4">
+          <h5 className="card-title text-lg-center pb-lg-2">我的行程</h5>
             <div className="card-body">
-              <h2 className="card-title text-lg-center pb-lg-2">我的行程</h2>
               <table className="table table-bordered table-responsive">
                 <thead>
                   <tr>

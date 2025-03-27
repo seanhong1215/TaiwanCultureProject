@@ -38,7 +38,6 @@ const SignIn = () => {
   const fetchUserData = async () => {
     try {
       const data = await getMembers(userId);
-      // console.log("獲取的資料:", data); // 打印獲取到的資料
   
       if (!data) {
         console.error("獲取的資料為空: data 是 undefined 或 null");
@@ -48,24 +47,20 @@ const SignIn = () => {
       setUser(data);
   
       const today = dayjs().format("YYYY-MM-DD");
-      // console.log("今天的日期:", today);
 
       // 確保 signInHistory 是陣列，如果不是則初始化為空陣列
       const signInHistory = Array.isArray(data.signInHistory) ? data.signInHistory : [];
   
       // 確認今天是否已簽到
       const signedInToday = signInHistory.includes(today);
-      // console.log("用戶簽到歷史:", signInHistory); // 打印簽到歷史
       setHasSignedInToday(signedInToday);
   
       // 計算連續簽到天數，並檢查 signInHistory 是否存在
       const streakCount = Array.isArray(data.signInHistory) ? calculateStreak(data.signInHistory) : 0;
-      // console.log("連續簽到天數:", streakCount); // 打印連續簽到天數
       setStreak(streakCount);
   
       // 更新 stats，檢查 rewards 是否存在且有效
       if (data?.rewards) {
-        // console.log("用戶獎勳資料:", data.rewards); // 打印獎勳資料
       } else {
         console.warn("用戶未包含 rewards 資料");
       }

@@ -34,8 +34,6 @@ const OrderListPage = () => {
     // 處理搜尋
     const handleSearch = () => {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
-      // console.log("🔍 搜索關鍵字:", lowerCaseSearchTerm);
-      // console.log("📦 當前 userOrders:", userOrders);
     
       const result = userOrders.filter(order => {
         const activityName = order.activityName?.toLowerCase() || "";
@@ -44,17 +42,14 @@ const OrderListPage = () => {
         return activityName.includes(lowerCaseSearchTerm) || orderNumber.includes(lowerCaseSearchTerm);
       });
     
-      // console.log("✅ 篩選結果:", result);
       setFilteredOrders(result);
     };
 
     const handleSearchInputChange = (event) => {
-      // console.log(event.target.value);
       setSearchTerm(event.target.value); // 更新搜索框的值
     };
 
     const handleKeyDown = (event) => {
-      // console.log(event.key);
       if (event.key === "Enter") {
         handleSearch(); // 按下 Enter 键时触发搜索
       }
@@ -70,7 +65,6 @@ const OrderListPage = () => {
   // 控制評價Modal顯示
   const handleReview = (order) => {
       setSelectedOrder(order); // 確保傳遞當前點擊的 order
-      // console.log(order.id);
       setShowModal(true); // 顯示評價 Modal
   };
 
@@ -160,7 +154,6 @@ const OrderListPage = () => {
       // ✅ 自動更新狀態
       const updatedOrdersWithStatus = updatedOrders.map((order) => {
         const newStatus = getOrderStatus(order.last_bookable_date, order.timeSlot, order.reservedStatus);
-        // console.log(`📌 訂單 ID: ${order.id}，狀態更新為: ${newStatus}`);
         return { ...order, reservedStatus: newStatus };
       });
 
@@ -181,7 +174,6 @@ const OrderListPage = () => {
             // 如果狀態有變動，執行 API 更新
             try {
               await updateOrder(order.id, { reservedStatus: order.reservedStatus });
-              // console.log(`訂單 ${order.id} 狀態已更新為: ${order.reservedStatus}`);
             } catch (error) {
               console.error(`更新訂單 ${order.id} 狀態失敗:`, error);
             }
@@ -199,8 +191,6 @@ const OrderListPage = () => {
       const endIndex = startIndex + limit;
       setUserOrders(filteredByTab.slice(startIndex, endIndex));
 
-    // console.log("✅ 訂單資料已更新");
-
     // 呼叫儲存資料庫的函數
     saveUpdatedStatusToDatabase(updatedOrdersWithStatus);
 
@@ -217,7 +207,6 @@ const OrderListPage = () => {
   // 在排序选项变化时执行排序
   useEffect(() => {
     const sortedOrders = [...userOrders]; // 复制一份当前的订单数据
-    // console.log(sortedOrders);
 
     if (userOrders.length === 0) return; // 如果没有订单数据，直接返回
 
@@ -279,7 +268,7 @@ const OrderListPage = () => {
         </ul>
 
         {/* 篩選和搜尋 */}
-      <div className="d-flex justify-content-between mb-4">
+      <div className="d-flex justify-content-between mb-4 flex-lg-row flex-column gap-3">
       <select 
           className="form-select w-auto"
           value={sortOption}

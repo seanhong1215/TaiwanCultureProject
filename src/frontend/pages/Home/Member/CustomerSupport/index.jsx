@@ -145,7 +145,7 @@ const handleQuickReply = (item) => {
               {/* 快速功能按鈕區域 */}
               <div className="border-top border-bottom p-4">
                 <form className="quick-reply-section" onSubmit={handleSendMessage}>
-                  <div className="d-flex justify-content-center gap-3">
+                  <div className="d-flex justify-content-center gap-3 flex-lg-row flex-column">
                     {['行程諮詢', '訂單查詢', '優惠活動', '退款資訊'].map((item) => (
                       <button
                         key={item}
