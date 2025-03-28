@@ -4,7 +4,6 @@ import fs from 'fs';
 import jsonServer from 'json-server';
 import jsonServerAuth from 'json-server-auth';
 import express from 'express';
-// import * as jwtDecode from 'jwt-decode';
 import { jwtDecode } from "jwt-decode";
 import cors from 'cors';
 import multer from 'multer';
@@ -17,6 +16,9 @@ import { dirname, join } from 'path';
 // Firebase Admin
 import firebaseAdmin from 'firebase-admin';
 
+// 讀取 .env 檔案
+dotenv.config();
+
 // 初始化 Firebase Admin SDK
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert({
@@ -26,13 +28,10 @@ firebaseAdmin.initializeApp({
   }),
 });
 
-// 讀取 .env 檔案
-dotenv.config();
-
 // Cloudinary 設定
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
+  api_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'), // 處理換行
   api_secret: process.env.API_SECRET
 });
 

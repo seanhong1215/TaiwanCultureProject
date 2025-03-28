@@ -9,8 +9,11 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const loggedInEmail = localStorage.getItem("userEmail"); 
-        if (!loggedInEmail) return;
+        const loggedInEmail = localStorage.getItem("userEmail")|| ""; 
+        if (!loggedInEmail.trim()) {
+          console.warn("本地儲存中沒有 userEmail");
+          return;
+      }
 
         const users = await getMemberAll();
         const user = users.find(user => user.email === loggedInEmail);

@@ -9,7 +9,7 @@ import { auth, googleProvider, facebookProvider, signInWithPopup, signOut } from
 import { useUser } from "@/frontend/components/UserContext/Users";
 
 const Header = () => {
-    const {getUsers} = useUser();
+    const { getUsers } = useUser();
 
     const userRole = localStorage.getItem("userRole"); // 取得 userRole
 
@@ -151,8 +151,6 @@ const Header = () => {
         }
     };
 
-    // **********************************
-
     const generateRandomPassword = () => {
         // 這裡簡單生成一個隨機的密碼
         return Math.random().toString(36).slice(-8);
@@ -274,10 +272,6 @@ const Header = () => {
             setLoading(false);
         }
     };
-        
-
-    // **********************************
-
 
     // 更新用戶資料
     const updateUserData = (data) => {
