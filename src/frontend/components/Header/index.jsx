@@ -423,10 +423,10 @@ const Header = () => {
                                     <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.zhCn')}</button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.en')}</button>
+                                    <button className="dropdown-item" onClick={() => changeLanguage('en')}>{t('lang.en')}</button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.jp')}</button>
+                                    <button className="dropdown-item" onClick={() => changeLanguage('jp')}>{t('lang.jp')}</button>
                                 </li>
                             </ul>
                         </li>
@@ -460,9 +460,6 @@ const Header = () => {
                                     <ul className="dropdown-menu user-member-menu" aria-labelledby="user-dropdown-circle">
                                     {userRole === "ACTIVITY_MANAGER" ? (
                                         <>
-                                        {/* <li>
-                                            <Link className="dropdown-item" to="/member-center/center">{t('member.center')}</Link>
-                                        </li> */}
                                         <li>
                                             <Link className="dropdown-item" to="/member-center/activity-manager">活動管理</Link>
                                         </li>

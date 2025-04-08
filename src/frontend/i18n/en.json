@@ -83,14 +83,14 @@
       "signIn": "Sign in"
   },
   "lang": {
-      "zhCn": "繁體中文",
+      "zhCn": "Traditional Chinese",
       "en": "English",
       "jp": "Japanese"
   },
   "menu": {
       "activityList": "All activities",
       "journal": "Slow Life Log",
-      "lang": "繁體中文"
+      "lang": "Traditional Chinese"
   },
   "copyright": "© Copyright 2025 Culture in Taiwan. All Rights Reserved"
 }
