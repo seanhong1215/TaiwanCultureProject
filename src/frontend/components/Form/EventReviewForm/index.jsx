@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
-import './EventReviewForm.scss';
-import { addReviews, uploadImageToCloudinary, getOrders, updateOrder, updatedMembers, getMembers } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
-// import defaultImage from "@/frontend/assets/images/default-images.png";
+import { addReviews, uploadImageToCloudinary, getOrders, updateOrder, updatedMembers, getMembers } from '@/frontend/utils/api';
+import './EventReviewForm.scss';
 
 const EventReviewForm = ({ order, onClose }) => {
 

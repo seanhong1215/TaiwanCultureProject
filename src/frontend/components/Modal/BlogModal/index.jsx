@@ -11,7 +11,6 @@ import { uploadImageToCloudinary } from '@/frontend/utils/api.js';
 import './Blog.scss';
 
 
-
 const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrentBlog }) => {
   const { control, register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -128,28 +127,6 @@ const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
           />
         </Form.Group>
 
-        {/* <Form.Group className="mb-3">
-            <Form.Label>日期</Form.Label>
-            <Controller
-            name="date"
-            value={currentBlog.date}
-            control={control}
-            render={({ field }) => (
-              <DatePicker
-                {...field}
-                selected={field.value ? new Date(field.value) : null}
-                onChange={(date) => {
-                  field.onChange(date); 
-                  setValue('date', date);
-                }}
-                dateFormat="yyyy-MM-dd"
-                className="form-control"
-                placeholderText="選擇日期"
-              />
-            )}
-          />
-          </Form.Group> */}
-
             {/* Image Upload */}
             <Form.Group className="mb-3">
             <Form.Label>活動主圖</Form.Label>
@@ -168,9 +145,6 @@ const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
                 />
               </div>
             )}
-            {/* {errors.images && (
-              <p className="text-danger">{errors.images.message}</p>
-            )} */}
           </Form.Group>
 
         <Form.Group className="mb-3">

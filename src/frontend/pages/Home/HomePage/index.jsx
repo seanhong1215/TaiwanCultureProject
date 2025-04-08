@@ -158,6 +158,7 @@ const HomePage = () => {
             });
         }
 
+        navigate("/activity-list");
     };
 
     const handleInputChange = (e) => {
@@ -310,7 +311,6 @@ const HomePage = () => {
                                             </ul>
                                         )}
                                     </div>
-                                
                                 </div>
 
                                 {/* 價格輸入 */}
@@ -382,7 +382,7 @@ const HomePage = () => {
                         <div className="main-body-section row">
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src={ beach } alt="..." />
+                                    <img src={ beach } alt="沙灘" />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.culturalExperienceTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.culturalExperienceText')}</p>
@@ -391,7 +391,7 @@ const HomePage = () => {
                             </div>
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src={ communication } alt="..." />
+                                    <img src={ communication } alt="社群" />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.reservationPlatformText')}</p>
@@ -402,7 +402,7 @@ const HomePage = () => {
                         <div className="main-body-section row">
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src={ fishing } alt="..." />
+                                    <img src={ fishing } alt="衝浪" />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.recommendationsTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.recommendationsText')}</p>
@@ -411,7 +411,7 @@ const HomePage = () => {
                             </div>
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src={ travel } alt="..." />
+                                    <img src={ travel } alt="旅行" />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.DeepConnectionText')}</p>
@@ -466,13 +466,12 @@ const HomePage = () => {
                                         />
                                     </SwiperSlide>
                                 ))}
-                                {/* 自定義導航按鈕 */}
                                 <div className="swiper-button-wrap">
-                                    <div className="swiper-button-next custom-next">
-                                        <span className="material-icons">chevron_left</span>
-                                    </div>
                                     <div className="swiper-button-prev custom-prev">
                                         <span className="material-icons">chevron_right</span>
+                                    </div>
+                                    <div className="swiper-button-next custom-next">
+                                        <span className="material-icons">chevron_left</span>
                                     </div>
                                 </div>
                             </Swiper>

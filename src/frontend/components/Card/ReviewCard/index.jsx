@@ -6,15 +6,15 @@ export const ReviewCard = ({ avatar, name, rating, activityTitle, reviewContent 
   return (
     <div className="card mb-3" style={{ padding: "24px", borderRadius: "40px"}}>
         <div className="row g-0" >
-            <div className="col-md-2">
+            <div className="col-md-3 text-center">
               <img
                   src={avatar}
-                  // alt={`${name} ${avatar}`}
+                  alt={`${name} ${avatar}`}
                   className="rounded-circle"
                   style={{ width: "64px", height: "64px", objectFit: "cover" }}
               />
             </div>
-            <div className="col-md-10">
+            <div className="col-md-9">
             <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center card-title-wrap">
                   <h5 className="card-title">{name}</h5>

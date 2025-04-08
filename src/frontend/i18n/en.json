@@ -1,36 +1,96 @@
 {
-  "websiteName": "Experience Taiwan's good culture",
-  "searchViewInfo": "Search for information on Taiwan’s special attractions now!",
-  "popularEventTitle": "Popular Event",
-  "popularEventSubTitle": "Experience local culture and travel around Taiwan. Taste Taiwanese local food!",
-  "choosing": "Why choose us",
-  "journalTitle": "Slow Living Journal",
-  "journalSubTitle": "Slow down and savor the beauty of life.",
+  "websiteName": "Experience Taiwan's great culture",
+  "websiteNameEn": "Culture in Taiwan",
+  "searchViewInfo": "Search now<br />Taiwan's special attractions information",
+  "activity": {
+      "popularEventTitle": "Popular Events",
+      "popularEventSubTitle": "Experience local culture and travel around Taiwan. Taste authentic Taiwanese cuisine!",
+      "moreEvents": "More events"
+  },
+  "journal": {
+      "title": "Slow Life Diary",
+      "subTitle": "Slow down and savor the beauty of life."
+  },
   "eventReviews": "Event Reviews",
-  "copyright": "© 2025 Culture in Taiwan. All rights reserved. No commercial activities.",
   "common": {
-    "btnBack": "Back",
-    "btnPay": "Pay",
-    "step1": "My Data",
-    "step2": "Payment",
-    "help": "HELP",
-    "signIn": "SIGN IN",
-    "continue": "Continue"
+      "btnBack": "Previous step",
+      "btnPay": "Payment",
+      "step1": "My information",
+      "step2": "Payment method",
+      "help": "Help",
+      "signIn": "Sign in",
+      "continue": "Continue",
+      "search": "Search",
+      "cancel": "Cancel",
+      "loading": "Loading...",
+      "noData": "There is currently no data..."
+  },
+  "banner": {
+      "search": "Search",
+      "searchMore": "More",
+      "searchPlacehoder": "Search for keywords",
+      "taichung": "Taichung",
+      "taipei": "Taipei",
+      "kaohsiung": "Kaohsiung",
+      "tainan": "Tainan"
+  },
+  "choosing": {
+      "mainTitle": "Why choose us",
+      "content": {
+          "culturalExperienceTitle": "Diversified cultural experience",
+          "culturalExperienceText": "We have selected a variety of experiences including traditional crafts, festivals, food tours, etc. from all over Taiwan to meet different travel needs.",
+          "reservationPlatformTitle": "One-stop reservation platform",
+          "reservationPlatformText": "Integrate experience activities and tourist attractions to facilitate quick booking without cumbersome procedures.",
+          "recommendationsTitle": "Real-time updates and recommendations",
+          "recommendationsText": "Get the latest event information and popular recommendations, and keep abreast of exciting Taiwanese cultural events.",
+          "DeepConnectionTitle": "Deep connection with local culture",
+          "DeepConnectionText": "We specially plan to collaborate with local craftsmen or cultural groups to make every participation meaningful."
+      }
   },
   "form": {
-    "inputFirstName": "please enter Name",
-    "inputLastName": "please enter LastName",
-    "name": "Name",
-    "lastName": "LastName"
+      "login": "Login",
+      "loggingIn": "Logging in...",
+      "register": "Register",
+      "Registering": "Registering...",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "ReEnterPassword": "Enter password again",
+      "pleaseEnterYourEmail": "Please enter your email",
+      "pleaseEnterYourPassword": "Please enter your password",
+      "loginGoogle": "Log in with Google",
+      "notMember": "Not a member yet?",
+      "isMember": "Already a member?",
+      "registerNow": "Register now",
+      "signInNow": "Sign in now",
+      "searchMore": "Search more",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "activityDate": "Activity Date",
+      "area": "Region",
+      "eventType": "Type",
+      "oneDayItinerary": "One-day itinerary",
+      "featuredExperiences": "Featured Experiences",
+      "outdoorExploration": "Outdoor Exploration",
+      "price": "Price",
+      "keyword": "Search keywords"
+  },
+  "member": {
+      "center": "Member Center",
+      "orderList": "Order List",
+      "favoritesList": "Favorites List",
+      "signOut": "Sign out",
+      "signIn": "Sign in"
   },
   "lang": {
-    "zhCn": "中文",
-    "en": "English",
-    "jp": "Japanese"
+      "zhCn": "繁體中文",
+      "en": "English",
+      "jp": "Japanese"
   },
   "menu": {
-    "activityList": "All activities",
-    "journal": "Slow Living Journal",
-    "lang": "Multiple languages"
-  }
+      "activityList": "All activities",
+      "journal": "Slow Life Log",
+      "lang": "繁體中文"
+  },
+  "copyright": "© Copyright 2025 Culture in Taiwan. All Rights Reserved"
 }

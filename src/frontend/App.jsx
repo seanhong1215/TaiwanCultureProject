@@ -5,7 +5,7 @@ import { UserProvider } from "@/frontend/components/UserContext/Users";
 const App = () => {
   return (
     <UserProvider>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </UserProvider>
   )
 };

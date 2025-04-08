@@ -3,7 +3,6 @@ import { Quill } from "react-quill"
 import './EditorToolbar.scss';
 
 
-
 const CustomUndo = () => (
   <svg viewBox="0 0 18 18">
     <polygon className="ql-fill ql-stroke" points="6 10 4 12 2 10 6 10" />

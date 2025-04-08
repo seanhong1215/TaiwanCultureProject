@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";  
-import { Modal, Button, Form, Card, Alert } from "react-bootstrap";
-import { addActivitys, updatedActivitys, getActivitys, uploadImageToCloudinary } from '@/frontend/utils/api';
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
-import './ActivityDetilPage.scss';
+import { Modal, Button, Form, Card, Alert } from "react-bootstrap";
+import { addActivitys, updatedActivitys, getActivitys, uploadImageToCloudinary } from '@/frontend/utils/api';
 import defaultImage from "@/frontend/assets/images/default-images.png";
+import './ActivityDetilPage.scss';
 
 
 const EventDetail = () => {
@@ -211,9 +211,6 @@ const EventDetail = () => {
           if (uploadedImageUrl) {
             submitData.images[i].url = uploadedImageUrl; // ✅ 替換 `File` → `URL`
           }
-        } else if (submitData.images[i].url !== originalImages[i]) {
-          // 原始圖片 URL 變動
-          console.log(`圖片 ${i} 已變更，需更新：`, submitData.images[i].url);
         }
       }
 
@@ -227,9 +224,6 @@ const EventDetail = () => {
           if (uploadedImageUrl) {
             submitData.sections[i].image = uploadedImageUrl; // ✅ 替換 `File` → `URL`
           }
-        } else if (submitData.sections[i].image !== originalSectionImages[i]) {
-          // 原始圖片 URL 變動
-          console.log(`圖片 ${i} 已變更，需更新：`, submitData.sections[i].image);
         }
       }
     

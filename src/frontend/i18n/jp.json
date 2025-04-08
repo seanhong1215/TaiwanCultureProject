@@ -1,21 +1,96 @@
 {
-  "websiteName": "台湾の良い文化を体験してください",
-  "searchViewInfo": "台湾のとっておきの観光スポット情報を今すぐ検索！",
-  "popularEventTitle": "人気のイベント",
-  "popularEventSubTitle": "地元の文化を体験し、台湾を旅しましょう。台湾の郷土料理を味わいましょう!",
-  "利点": "当社を選ぶ理由",
-  "journalTitle": "スローリビングジャーナル",
-  "journalSubTitle": "ゆっくりと人生の美しさを味わいましょう。",
+  "websiteName": "台湾の素晴らしい文化を体験する",
+  "websiteNameEn": "台湾の文化",
+  "searchViewInfo": "今すぐ検索<br />台湾の名所情報",
+  "activity": {
+      "popularEventTitle": "人気のイベント",
+      "popularEventSubTitle": "地元の文化を体験し、台湾を旅しましょう。本格的な台湾料理を味わってください！",
+      "moreEvents": "その他のイベント"
+  },
+  "journal": {
+      "title": "スローライフ日記",
+      "subTitle": "「ゆっくりして人生の美しさを味わいましょう。」"
+  },
   "eventReviews": "イベントレビュー",
-  "copyright": "© 2025 台湾の文化。無断複写・転載を禁じます。商業活動は禁止です。",
+  "common": {
+      "btnBack": "前のステップ",
+      "btnPay": "支払い",
+      "step1": "私の情報",
+      "step2": "支払い方法",
+      "help": "ヘルプ",
+      "signIn": "サインイン",
+      "continue": "「続行」、",
+      "search": "検索",
+      "cancel": "キャンセル",
+      "loading": "読み込み中...",
+      "noData": "現在データはありません..."
+  },
+  "banner": {
+      "search": "検索",
+      "searchMore": "もっと見る",
+      "searchPlacehoder": "キーワードを検索",
+      "taichung": "台中",
+      "taipei": "台北",
+      "kaohsiung": "高雄",
+      "tainan": "台南"
+  },
+  "choosing": {
+      "mainTitle": "当社を選ぶ理由",
+      "content": {
+          "culturalExperienceTitle": "多様な文化体験",
+          "culturalExperienceText": "さまざまな旅行ニーズを満たすために、台湾全土の伝統工芸、祭り、グルメツアーなど、さまざまな体験を厳選しました。",
+          "reservationPlatformTitle": "ワンストップ予約プラットフォーム",
+          "reservationPlatformText": "体験アクティビティと観光スポットを統合し、面倒な手続きなしで迅速な予約を可能にします。",
+          "recommendationsTitle": "リアルタイムの更新と推奨事項",
+          "recommendationsText": "最新のイベント情報や人気のおすすめ情報を入手し、台湾のエキサイティングな文化イベントの最新情報を入手しましょう。",
+          "DeepConnectionTitle": "地元の文化との深いつながり",
+          "DeepConnectionText": "「私たちは、あらゆる参加が有意義なものとなるよう、地元の職人や文化団体と協力することを特別に計画しています。」"
+      }
+  },
+  "form": {
+      "login": "ログイン",
+      "loggingIn": "ログイン中...",
+      "register": "登録",
+      "Registering": "登録中...",
+      "email": "メール",
+      "password": "パスワード",
+      "confirmPassword": "パスワードの確認",
+      "ReEnterPassword": "パスワードをもう一度入力してください",
+      "pleaseEnterYourEmail": "メールアドレスを入力してください",
+      "pleaseEnterYourPassword": "パスワードを入力してください",
+      "loginGoogle": "Googleでログイン",
+      "notMember": "まだメンバーではありませんか?",
+      "isMember": "すでにメンバーですか?",
+      "registerNow": "今すぐ登録",
+      "signInNow": "今すぐサインイン",
+      "searchMore": "さらに検索",
+      "startDate": "開始日",
+      "endDate": "終了日",
+      "activityDate": "アクティビティ日",
+      "area": "地域",
+      "eventType": "タイプ",
+      "oneDayItinerary": "1日の旅程",
+      "featuredExperiences": "おすすめの体験",
+      "outdoorExploration": "アウトドア探検",
+      "price": "価格",
+      "keyword": "検索キーワード"
+  },
+  "member": {
+      "center": "会員センター",
+      "orderList": "注文リスト",
+      "favoritesList": "お気に入りリスト",
+      "signOut": "サインアウト",
+      "signIn": "サインイン"
+  },
   "lang": {
-    "zhCn": "中国語",
-    "en": "英語",
-    "jp": "日本語"
+      "zhCn": "中国語",
+      "en": "英語",
+      "jp": "日本語"
   },
   "menu": {
-    "activityList": "すべてのアクティビティ",
-    "journal": "スローリビング ジャーナル",
-    "lang": "複数の言語"
-  }
+      "activityList": "すべてのアクティビティ",
+      "journal": "スローライフログ",
+      "lang": "中国語"
+  },
+  "copyright": "© Copyright 2025 Culture in Taiwan。無断転載禁止"
 }

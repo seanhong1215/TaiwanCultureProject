@@ -1,11 +1,11 @@
-import "./ActivityDetailPage.scss";
-import Breadcrumb from "@/frontend/components/Breadcrumb";
-import ReviewBars from "@/frontend/components/Progress";
-import ActivityMap from "@/frontend/components/ActivityMap";
-import { getActivitys, getReservations, addReservations, getReviewsActivityId, getReviewsActivityIdPage } from '@/frontend/utils/api';
 import { useState , useEffect } from 'react'; 
 import Swal from 'sweetalert2';
 import { useParams , useNavigate } from "react-router-dom";
+import { getActivitys, getReservations, addReservations, getReviewsActivityId, getReviewsActivityIdPage } from '@/frontend/utils/api';
+import Breadcrumb from "@/frontend/components/Breadcrumb";
+import ReviewBars from "@/frontend/components/Progress";
+import ActivityMap from "@/frontend/components/ActivityMap";
+import "./ActivityDetailPage.scss";
 
 const ActivityDetailPage = () => {
 
@@ -365,11 +365,7 @@ return (
               <div className="card col-lg-8 titleArea" >
                 <div className="card-body actTitleBody">
                   <div className='actTitleDiv'>
-                    <h2 className="actTitle" >{activityData.content?.title}
-
-                      <button className='addFavorites'><span className="material-icons favoriteHeart">favorite_border</span><span>加入收藏</span></button>
-                      
-                    </h2>
+                    <h2 className="actTitle" >{activityData.content?.title}</h2>
                     <span className='rating'><span className="material-icons">star</span>{avgRatingstar}({RatingstarAll.length}) <span className='addFavorites'>{RatingstarAll.length} 人參加過</span></span>
                   </div>
                   <hr />
@@ -406,9 +402,9 @@ return (
                                 <div className="mb-4" key={index}>
                                   <div className="actPic">
                                       <img src={item.image} 
-                                        alt="" 
-                                        className="card-img w-100"
-                                        style={{objectFit:"cover"}}
+                                          alt="活動圖片" 
+                                          className="card-img w-100"
+                                          style={{objectFit:"cover"}}
                                       />
                                   
                                   </div>
@@ -457,12 +453,11 @@ return (
                        {/*評論區塊 */}  
                       <div >
                           {(reviewData.length > 0) ? (reviewData.map((item,index)=>
-                                
                             <div className="row reviewRow g-0" key={index}>
                               <div className="col-1 ratingerImg">
                                 <div className="roundedCircle">
                                     <img src={item.avatar}
-                                    alt="..." 
+                                    alt={item.name} 
                                     />
                                 </div>
                               </div>

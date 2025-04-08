@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import "./Breadcrumb.scss";
-import { getActivitys, getJournals } from "@/frontend/utils/api"; // 假設有 API 可查詢活動名稱
+import { getActivitys, getJournals } from "@/frontend/utils/api"; 
 
 const pathNameMap = {
   "activity-list": "所有活動",

@@ -86,7 +86,6 @@ app.post("/api/auth", async (req, res) => {
   }
   try {
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
-    console.log("解碼後的 Token:", decodedToken);
     // 確保 decodedToken 包含 uid 和 email
     if (decodedToken.uid && decodedToken.email) {
       const user = {

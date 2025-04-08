@@ -67,7 +67,7 @@ const JournalListPage = () => {
         <div className="container">
           {/* 麵包屑 */}
           <Breadcrumb />
-          <div className="row">
+          <div className="row blog-section">
           {journalData.length > 0 ? (
             journalData.map((item) => (
               <div className="col-md-6 col-lg-3" key={item.id} onClick={(e) => handleNavigate(e, item)} style={{cursor:'pointer'}}>

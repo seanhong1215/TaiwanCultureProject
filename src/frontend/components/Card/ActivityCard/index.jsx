@@ -111,7 +111,7 @@ return (
               window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
             }
           }}>
-            <img src={activity.images} className="card-img-top" />
+            <img src={activity.images} className="card-img-top" alt={activity.content.title} />
             <div className="activity-card-body card-body">
                 <div className="d-flex justify-content-between align-items-center">
                 <p className="card-text">{activity.eventType}</p>

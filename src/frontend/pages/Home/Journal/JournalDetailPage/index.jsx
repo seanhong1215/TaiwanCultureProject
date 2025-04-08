@@ -69,7 +69,7 @@ const JournalDetailPage = () => {
 
             {/* Featured Image */}
             <div className="post-featured-image mb-4">
-              <img src={journal.images} alt="" className="img-fluid rounded" />
+              <img src={journal.images} alt="部落格圖片" className="img-fluid rounded" />
             </div>
 
             {/* Post Content */}

@@ -355,7 +355,7 @@ const Header = () => {
         }, []);
 
     return (
-        <header className={`header ${menuOpen ? "menu-open" : ""}`}>
+        <header className={`header fixed-top ${menuOpen ? "menu-open" : ""}`}>
             <nav className="navbar navbar-expand-lg navbar-light">
                 <div className="container d-flex justify-content-between align-items-center">
                 <Link className="navbar-brand nav-link d-flex align-items-center" to="/">

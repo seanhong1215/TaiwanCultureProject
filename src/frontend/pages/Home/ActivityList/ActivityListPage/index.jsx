@@ -18,8 +18,7 @@ const ActivityList = () => {
   const [searchData, setSearchData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchingValue , setSearchingValue] = useState([]);
-  const [selectedStartDate, SelectedStartDate] = useState('');
-  const [selectedEndDate, SelectedEndDate] = useState('');
+  const [selectedDate, SelectedDate] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [selectedSite, setSelectedSite] = useState('');
   const [selectedPrice, setSelectedPrice] = useState('');
@@ -31,7 +30,6 @@ const ActivityList = () => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
 
   const fetchGetActivityAll = async () => {
 
@@ -71,18 +69,14 @@ useEffect(()=>{
   window.scrollTo(0, 0);
 },[page])
 
-
   const getSearchInput = (value) => {
     setSearchInput(value)
   }
   
-  const getSelectedStartDate = (e) => {
-    SelectedStartDate(e.target.value)
+  const getSelectedDate = (e) => {
+    SelectedDate(e.target.value)
   };
 
-  const getSelectedEndDate = (e) => { 
-    SelectedEndDate(e.target.value);
-  };
 
   const getSelectedType = (e) => {
     setSelectedType(e.target.value);
@@ -98,13 +92,13 @@ useEffect(()=>{
 
   
   const searchActivity = () => {
-    if (!searchInput && !selectedStartDate && !selectedEndDate && !selectedType && !selectedSite && !selectedPrice) {
+    if (!searchInput && !selectedDate && !selectedType && !selectedSite && !selectedPrice) {
       setSearchResultsData([]);
       setSearchingValue([]);
       fetchGetActivityAll();
       return;
     }
-    setSearchingValue([searchInput , selectedStartDate , selectedType, selectedEndDate, selectedSite, selectedPrice])
+    setSearchingValue([searchInput , selectedDate , selectedType, selectedSite, selectedPrice])
     
     const searchResults = searchData.filter((item) => {
       const matchesTitle = searchInput 
@@ -113,10 +107,7 @@ useEffect(()=>{
         item.city.toLowerCase().includes(searchInput.toLowerCase()) 
       : true;
       const matchesDate =
-      selectedStartDate || selectedEndDate
-                ? new Date(item.startDate) >= new Date(selectedStartDate || "1970-01-01") &&
-                new Date(item.startDate) <= new Date(selectedEndDate || "2099-12-31")
-                : true;
+      selectedDate ? new Date(item.startDate) >= new Date(selectedDate || "1970-01-01") && new Date(item.startDate) <= new Date(selectedDate || "2099-12-31") : true;
       const matchesType = selectedType ? item.eventType === selectedType : true;
       const matchesSite = selectedSite ? item.city === selectedSite : true;
       const matchesPrice = selectedPrice ? item.price <= selectedPrice : true;
@@ -160,28 +151,29 @@ useEffect(()=>{
                     </div>
                   </div>
                   {/* 日期選擇 */}
-                  <div className="mb-4 modal-body-list">
-                    <span className="title">起始日期</span>
+                  {/* <div className="mb-4 modal-body-list">
+                    <span className="title">活動日期</span>
                     <div className="list-content">
                       <span className="material-icons">today</span>
                       <div className="react-datepicker-wrapper">
                         <div className="react-datepicker__input-container">
-                          <input type="date" placeholder="請選擇開始日期" className="date-input" value={selectedStartDate} onChange={getSelectedStartDate}/>
+                          <input type="date" placeholder="請選擇活動日期" className="date-input" value={selectedDate} onChange={getSelectedDate}/>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="mb-4 modal-body-list">
-                    <span className="title">結束日期</span>
-                    <div className="list-content">
+                  </div> */}
+                   <div className="mb-3 modal-body-list">
                       <span className="material-icons">today</span>
-                      <div className="react-datepicker-wrapper">
-                        <div className="react-datepicker__input-container">
-                          <input type="date" placeholder="請選擇結束日期" className="date-input" value={selectedEndDate} onChange={getSelectedEndDate} />
-                        </div>
-                      </div>
-                    </div>
+                      <DatePicker
+                          selected={selectedDate}
+                          onChange={(date) => getSelectedDate(date)}
+                          dateFormat="yyyy-MM-dd"
+                          placeholderText="請選擇活動日期"
+                          className="date-input"
+                          calendarClassName="custom-calendar"
+                      />
                   </div>
+
                   {/* 類型選擇 */}
                   <div className="mb-4 modal-body-list">
                     <span className="title">活動類型</span>
@@ -198,6 +190,7 @@ useEffect(()=>{
                       </div>
                     </div>
                   </div>
+
                   {/* 價格輸入 */}
                   <div className="mb-4 modal-body-list">
                     <span className="title">價格</span>
@@ -206,6 +199,7 @@ useEffect(()=>{
                       <input type="text" className="form-control" placeholder="請選擇價格區間" value={selectedPrice} onChange={getSelectedPrice}/>
                     </div>
                   </div>
+
                   {/* 地區選擇 */}
                   <div className="mb-4 modal-body-list">
                     <span className="title">地區</span>
@@ -230,6 +224,7 @@ useEffect(()=>{
                       </div>
                     </div>
                   </div>
+                  
                 </div>
                 <div className="footer">
                   <button type="button" className="btn btn-primary" onClick={searchBtn}>搜尋</button>
@@ -301,22 +296,12 @@ useEffect(()=>{
                       <span className="material-icons">today</span>
                       <div className="react-datepicker-wrapper">
                         <div className="react-datepicker__input-container">
-                          <input type="date" placeholder="請選擇開始日期" className="date-input" value={selectedStartDate} onChange={getSelectedStartDate}/>
+                          <input type="date" placeholder="請選擇開始日期" className="date-input" value={selectedDate} onChange={getSelectedDate}/>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="mb-4 modal-body-list">
-                    <span className="title">結束日期</span>
-                    <div className="list-content">
-                      <span className="material-icons">today</span>
-                      <div className="react-datepicker-wrapper">
-                        <div className="react-datepicker__input-container">
-                          <input type="date" placeholder="請選擇結束日期" className="date-input" value={selectedEndDate} onChange={getSelectedEndDate} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+         
                   {/* 類型選擇 */}
                   <div className="mb-4 modal-body-list">
                     <span className="title">活動類型</span>

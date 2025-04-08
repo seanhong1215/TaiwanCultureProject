@@ -129,7 +129,7 @@ const OrderDetailPage = () => {
                 <tbody>
                     <tr>
                         <td className='activities-img'>
-                        <img src={activity.images} alt=""/>
+                        <img src={activity.images} alt="活動圖片"/>
                         </td>
                     </tr>
                     <tr className="d-block mt-3 mb-3">

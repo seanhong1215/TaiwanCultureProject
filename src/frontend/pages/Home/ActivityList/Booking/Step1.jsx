@@ -89,7 +89,7 @@ const Step1 = () => {
             <h4 className="mb-4 text-center fw-semibold">您的預約行程</h4>
             <Row className="align-items-center">
               <Col md={6} className="text-center">
-                <img src={submitData.actImage} alt="" className="img-fluid rounded" />
+                <img src={submitData.actImage} alt="活動圖片" className="img-fluid rounded" />
               </Col>
               <Col md={6} className="form-wrap">
                   <Form.Group className="mb-2 d-flex">
