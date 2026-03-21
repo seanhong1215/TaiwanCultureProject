@@ -41,7 +41,7 @@ const LoginPage = () => {
       }
 
       localStorage.setItem("admin_token", response.accessToken);
-      localStorage.setItem("admin_userAvatar", response.user.avatar || "/img/avatar/image-6.png");
+      localStorage.setItem("admin_userAvatar", response.user.avatar || "https://mockmind-api.uifaces.co/content/human/212.jpg");
       localStorage.setItem("admin_userId", response.user.id);
       localStorage.setItem("admin_userEmail", response.user.email);
       localStorage.setItem("admin_userName", response.user.name);

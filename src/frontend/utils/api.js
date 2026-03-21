@@ -24,7 +24,7 @@ export const register = async (data) => {
         password: data.password,
         name: data.name,
         role: "Member",
-        avatar: "/img/avatar/image-6.png"
+        avatar: "https://mockmind-api.uifaces.co/content/human/212.jpg"
     });
     
     return response.data; 

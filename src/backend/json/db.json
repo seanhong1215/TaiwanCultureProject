@@ -61,7 +61,7 @@
       "password": "$2a$10$7F9cQUEeXFTDMFGpUfaal.N6A4xFoClCmWkno9Sn5m1hC1bvKkJ9K",
       "name": "奇犽",
       "role": "Member",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 4
     },
     {
@@ -69,7 +69,7 @@
       "password": "$2a$10$1rEa.qXYdkJRr6eIUnelzumvhJHzikORLTUqWcdAawS.MV7AGxIc2",
       "name": "酷拉皮卡",
       "role": "Member",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 5,
       "rewards": {
         "reward": [
@@ -88,7 +88,7 @@
       "password": "$2a$10$aErDLr09LR/zWcDncigvqeppt8KFJl6JTK5n8qjswAv2ltrJeElu2",
       "name": "活動管理者1",
       "role": "ACTIVITY_MANAGER",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 6
     },
     {
@@ -96,7 +96,7 @@
       "password": "$2a$10$BmIRfAk9Kfvwsg/HVUvbXOV9Z5SQoXI2vyg4w7AH8QtQ8/VgVKC0i",
       "name": "活動管理者2",
       "role": "ACTIVITY_MANAGER",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 7
     },
     {
@@ -104,7 +104,7 @@
       "password": "$2a$10$9Go2yLcD9wuO1EwLFhOjFO0jQ36WL6ycUXU/X7RLMBSun/UyuMcDC",
       "name": "活動管理者3",
       "role": "ACTIVITY_MANAGER",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 8
     },
     {
@@ -112,7 +112,7 @@
       "password": "$2a$10$EhTFjWNcE2afFyLSaqV8SOP2qW.cKWgC5Tw5hQ.KsyQM35YOsZVFi",
       "name": "系統管理者1",
       "role": "ADMIN",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 9
     },
     {
@@ -120,7 +120,7 @@
       "password": "$2a$10$w0Q1kY5WxueMBDTQMuola.17w5n5fTyN8GvD2FRxXhIqyyKU863vO",
       "name": "系統管理者2",
       "role": "ADMIN",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 10
     },
     {
@@ -128,7 +128,7 @@
       "password": "$2a$10$bL1jh/HkyQ9QylZxayBTFed7er8kD4h5EQd8hjn9x7kzaUl27OOIq",
       "name": "系統管理者3",
       "role": "ADMIN",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 11
     },
     {
@@ -161,7 +161,7 @@
       "password": "$2a$10$U6/4lWecgvn2ES.Oos/iHuMwPBEjm.RWVyV0.HCL4MLwAP0UYkDui",
       "name": "沫沫",
       "role": "Member",
-      "avatar": "/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "id": 14,
       "tickets": [],
       "rewards": {
@@ -1306,7 +1306,7 @@
     },
     {
       "id": 6,
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "name": "米卡莎",
       "rating": 4,
       "activityTitle": "沉浸式 DIY 調製香水",
@@ -1319,7 +1319,7 @@
     },
     {
       "id": 7,
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "name": "米卡莎",
       "rating": 4,
       "activityTitle": "沉浸式 DIY 調製香水",
@@ -1332,7 +1332,7 @@
     },
     {
       "id": 8,
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "name": "米卡莎",
       "rating": 4,
       "activityTitle": "沉浸式 DIY 調製香水",
@@ -1345,7 +1345,7 @@
     },
     {
       "id": 9,
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+      "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
       "name": "米卡莎",
       "rating": 4,
       "activityTitle": "沉浸式 DIY 調製香水",
@@ -1521,7 +1521,7 @@
         "password": "$2a$10$U6/4lWecgvn2ES.Oos/iHuMwPBEjm.RWVyV0.HCL4MLwAP0UYkDui",
         "name": "沫沫",
         "role": "Member",
-        "avatar": "/img/avatar/image-6.png",
+        "avatar": "https://mockmind-api.uifaces.co/content/human/212.jpg",
         "id": 14,
         "tickets": [],
         "rewards": {

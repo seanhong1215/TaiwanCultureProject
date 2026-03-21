@@ -48,13 +48,13 @@ const AdminHeader = () => {
           <div className="dropdown">
             <button className="btn btn-link text-dark d-flex align-items-center gap-2 text-decoration-none" data-bs-toggle="dropdown">
               <img
-                src={userAvatar || "/img/avatar/image-6.png"}
+                src={userAvatar || "https://mockmind-api.uifaces.co/content/human/212.jpg"}
                 alt="User"
                 className="rounded-circle"
                 width="36"
                 height="36"
                 style={{ objectFit: 'cover' }}
-                onError={(e) => { e.target.src = "/img/avatar/image-6.png"; }}
+                onError={(e) => { e.target.src = "https://mockmind-api.uifaces.co/content/human/212.jpg"; }}
               />
               <span className="d-none d-md-inline">{userName}</span>
               <ChevronDown size={16} />

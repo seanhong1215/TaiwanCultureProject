@@ -101,13 +101,13 @@ return (
                         <td className="py-3 px-4">{user.id}</td>
                         <td className="py-3 px-4">
                             <img
-                                src={user.avatar || "/img/avatar/image-6.png"}
+                                src={user.avatar || "https://mockmind-api.uifaces.co/content/human/212.jpg"}
                                 alt={user.name}
                                 className="rounded-circle"
                                 width="40"
                                 height="40"
                                 style={{ objectFit: 'cover' }}
-                                onError={(e) => { e.target.src = "/img/avatar/image-6.png"; }}
+                                onError={(e) => { e.target.src = "https://mockmind-api.uifaces.co/content/human/212.jpg"; }}
                             />
                         </td>
                         <td className="py-3 px-4">{user.name}</td>

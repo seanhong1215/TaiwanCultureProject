@@ -63,7 +63,7 @@ const Header = () => {
             localStorage.setItem("userEmail", response.user.email);
             localStorage.setItem("userName", response.user.name);
             localStorage.setItem("userRole", response.user.role);
-            const avatarUrl = response.user.avatar || "/img/avatar/image-6.png";
+            const avatarUrl = response.user.avatar || "https://mockmind-api.uifaces.co/content/human/212.jpg";
             localStorage.setItem("userAvatar", avatarUrl);
             updateUserData({
                 name: response.user.name,
@@ -186,7 +186,7 @@ const Header = () => {
                 uuid: firebaseUser.uid,
                 email: userEmail,
                 name: firebaseUser.name || firebaseUser.email,
-                avatar: firebaseUser.picture || "/img/avatar/image-6.png",
+                avatar: firebaseUser.picture || "https://mockmind-api.uifaces.co/content/human/212.jpg",
                 password: generateRandomPassword(),
                 role: "Member",
             });
@@ -194,7 +194,7 @@ const Header = () => {
             if (!dbUser) throw new Error("建立用戶資料失敗");
 
             // 4. 儲存用戶資訊（使用 DB 回傳的真實 ID 和 role）
-            const avatar = dbUser.avatar || firebaseUser.picture || "/img/avatar/image-6.png";
+            const avatar = dbUser.avatar || firebaseUser.picture || "https://mockmind-api.uifaces.co/content/human/212.jpg";
             localStorage.setItem("userId", dbUser.id);
             localStorage.setItem("userName", dbUser.name || firebaseUser.name);
             localStorage.setItem("userEmail", dbUser.email || userEmail);
@@ -334,8 +334,8 @@ const Header = () => {
                 <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""} ${isLoggedIn ? "user-circle" : ""}`} id="navbarNav">
                     <button className="btn btn-secondary user-circle-button" type="button">
                         <img
-                            src={userData.image || "/img/avatar/image-6.png"}
-                                onError={(e) => { e.target.src = "/img/avatar/image-6.png"; }}
+                            src={userData.image || "https://mockmind-api.uifaces.co/content/human/212.jpg"}
+                                onError={(e) => { e.target.src = "https://mockmind-api.uifaces.co/content/human/212.jpg"; }}
                             alt="User"
                             className="rounded-circle"
                             width="60"
@@ -411,8 +411,8 @@ const Header = () => {
                                         aria-expanded="false"
                                     >
                                         <img
-                                            src={userData.image || "/img/avatar/image-6.png"}
-                                onError={(e) => { e.target.src = "/img/avatar/image-6.png"; }}
+                                            src={userData.image || "https://mockmind-api.uifaces.co/content/human/212.jpg"}
+                                onError={(e) => { e.target.src = "https://mockmind-api.uifaces.co/content/human/212.jpg"; }}
                                             alt="User"
                                             className="rounded-circle"
                                             width="40"
