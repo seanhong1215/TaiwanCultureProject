@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './CustomerSupport.scss';
 
 const CustomerSupport = () => {
@@ -21,6 +21,11 @@ const CustomerSupport = () => {
 
   const chatEndRef = useRef(null);
   const [isAgentTyping, setIsAgentTyping] = useState(false);
+
+  // 每次訊息更新自動捲到底
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isAgentTyping]);
 
   const quickResponses = {
     '訂單查詢': '請問您需要查詢哪一筆訂單呢？請提供訂單編號，我馬上為您查詢。',
@@ -142,21 +147,39 @@ const handleQuickReply = (item) => {
                 <div ref={chatEndRef} />
               </div>
 
-              {/* 快速功能按鈕區域 */}
-              <div className="border-top border-bottom p-4">
-                <form className="quick-reply-section" onSubmit={handleSendMessage}>
-                  <div className="d-flex justify-content-center gap-3 flex-lg-row flex-column">
-                    {['行程諮詢', '訂單查詢', '優惠活動', '退款資訊'].map((item) => (
-                      <button
-                        key={item}
-                        type="button"
-                        className="btn btn-outline-primary rounded-pill px-4 py-2 shadow-sm hover-btn"
-                        onClick={() => handleQuickReply(item)} // 點擊按鈕觸發快速回覆
-                      >
-                        {item}
-                      </button>
-                    ))}
-                  </div>
+              {/* 快速回覆按鈕 */}
+              <div className="border-top p-3">
+                <div className="d-flex justify-content-center gap-2 flex-wrap">
+                  {['行程諮詢', '訂單查詢', '優惠活動', '退款資訊'].map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className="btn btn-outline-primary rounded-pill px-3 py-1 shadow-sm"
+                      onClick={() => handleQuickReply(item)}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 輸入框 */}
+              <div className="border-top p-3">
+                <form className="d-flex gap-2" onSubmit={handleSendMessage}>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="輸入訊息..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-custom-primary px-4"
+                    disabled={!message.trim()}
+                  >
+                    送出
+                  </button>
                 </form>
               </div>
         </div>

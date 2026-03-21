@@ -5,6 +5,17 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwan-culture-project.onrender.com'
  : 'http://localhost:3001'
 
+// 自動帶入 token（前台用 token，後台用 admin_token）
+axios.interceptors.request.use((config) => {
+  const adminToken = localStorage.getItem('admin_token');
+  const memberToken = localStorage.getItem('token');
+  const token = adminToken || memberToken;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 
  // 註冊
 export const register = async (data) => {
@@ -13,7 +24,7 @@ export const register = async (data) => {
         password: data.password,
         name: data.name,
         role: "Member",
-        avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg"
+        avatar: "/img/avatar/image-6.png"
     });
     
     return response.data; 
@@ -239,7 +250,13 @@ export const deleteReservations = async (id) => {
 // 獲取所有訂單
 export const getOrderAll = async () => {
     const response = await axios.get(`/api/orders`);
-    return response.data; 
+    return response.data;
+};
+
+// 獲取指定用戶的訂單（避免撈全部再 client 過濾）
+export const getOrdersByUser = async (userId) => {
+    const response = await axios.get(`/api/orders?userId=${userId}`);
+    return response.data;
 };
 
 export const getOrderPage = async (page, limit) => {
@@ -318,9 +335,11 @@ export const getPayments = async (id) => {
 // 圖片上傳
 export const uploadImageToCloudinary = async(file) => {
     try {
+        const token = localStorage.getItem('token');
+        const authHeader = { Authorization: `Bearer ${token}` };
 
         // 1. 獲取 Cloudinary 簽名
-        const signResponse = await axios.get(`/get-signature`);
+        const signResponse = await axios.get(`/get-signature`, { headers: authHeader });
         const { signature, timestamp, apiKey } = signResponse.data;
 
         // 2. 準備 FormData
@@ -333,7 +352,7 @@ export const uploadImageToCloudinary = async(file) => {
         formData.append('folder', 'uploads');  // 設定 asset_folder 為 'uploads'
 
         // 3. 上傳到 Cloudinary
-        const cloudinaryResponse = await axios.post(`/upload-to-cloudinary`, formData);
+        const cloudinaryResponse = await axios.post(`/upload-to-cloudinary`, formData, { headers: { ...authHeader } });
 
         const imageData = cloudinaryResponse.data;
         const imageUrl = imageData.secure_url;
@@ -423,23 +442,42 @@ export const updatedMembers = async (id, data) => {
 
 export const createMember = async (user) => {
   try {
-      // 1. 先檢查用戶是否已存在
+      // 1. 先用 uuid 查詢用戶是否已存在
       const { data: existingUsers } = await axios.get("api/users", {
-        params: { uuid: user.uid }
+        params: { uuid: user.uuid }
       });
-  
+
       if (existingUsers.length > 0) {
-        return existingUsers[0]; // 如果用戶已存在，回傳用戶資料
+        return existingUsers[0];
       }
 
-      // 2. 用戶不存在，新增到 json-server
-      const response = await axios.post("api/users", user);
-      return response.data; 
+      // 2. 用戶不存在，透過 /api/register 建立帳號（取得 json-server JWT）
+      const { data: authData } = await axios.post("api/register", {
+        email: user.email,
+        password: user.password,
+      });
+
+      const token = authData.accessToken;
+      const userId = authData.user.id;
+
+      // 3. 用回傳的 token 補充 uuid、名稱、頭像等欄位
+      await axios.patch(`api/users/${userId}`, {
+        uuid: user.uuid,
+        name: user.name,
+        avatar: user.avatar,
+        role: user.role || "Member",
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      // 4. 回傳完整用戶資料
+      const { data: updatedUser } = await axios.get(`api/users/${userId}`);
+      return updatedUser;
+
   } catch (error) {
     console.error("API 發生錯誤", error);
-    return null; // 確保有回傳值
+    return null;
   }
-  
 };
 
 // 通知管理

@@ -19,19 +19,21 @@ import firebaseAdmin from 'firebase-admin';
 // 讀取 .env 檔案
 dotenv.config();
 
-// 初始化 Firebase Admin SDK
+// 使用 import.meta.url 來獲取當前檔案的 URL（必須在其他程式碼之前定義）
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);  // 獲取檔案所在的目錄
+
+// 初始化 Firebase Admin SDK（使用 JSON 憑證檔案）
+const serviceAccountPath = path.resolve(process.env.FIREBASE_SERVICE_ACCOUNT_PATH || './taiwancultureproject-firebase-adminsdk-fbsvc-c2a2519d47.json');
+const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
 firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert({
-    projectId: process.env.PROJECT_ID,
-    privateKey: process.env.PRIVATE_KEY,
-    clientEmail: process.env.CLIENT_EMAIL,
-  }),
+  credential: firebaseAdmin.credential.cert(serviceAccount),
 });
 
 // Cloudinary 設定
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'), // 處理換行
+  api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET
 });
 
@@ -49,10 +51,6 @@ const storage = multer.diskStorage({
   }
 });
 
-// 使用 import.meta.url 來獲取當前檔案的 URL
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);  // 獲取檔案所在的目錄
-
 // 確保 uploads 目錄存在，如果不存在則創建
 const uploadDir = join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -65,8 +63,11 @@ const app = express();
 // 允許 json 解析
 app.use(express.json()); 
 
-// 允許跨域請求
-app.use(cors()); 
+// 允許跨域請求（限制來源）
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? ['https://seanhong1215.github.io']
+  : ['http://localhost:5173', 'http://localhost:3000'];
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // 設定 Multer 存儲配置（記憶體存儲）
 const upload = multer({ storage: storage });
@@ -87,16 +88,16 @@ app.post("/api/auth", async (req, res) => {
   try {
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
     // 確保 decodedToken 包含 uid 和 email
-    if (decodedToken.uid && decodedToken.email) {
+    if (decodedToken.uid) {
       const user = {
         uid: decodedToken.uid,
-        email: decodedToken.email,
-        name: decodedToken.name || "", // 使用者名稱
-        picture: decodedToken.picture || "", // 🔹 Google 頭像
+        email: decodedToken.email || null,
+        name: decodedToken.name || "",
+        picture: decodedToken.picture || "",
       };
       res.status(200).json({ message: "Token verified", user });
     } else {
-      res.status(400).json({ message: "Token does not contain expected fields" });
+      res.status(400).json({ message: "Token does not contain uid" });
     }
   } catch (error) {
     res.status(401).json({ message: "Token 無效", error });
@@ -144,8 +145,17 @@ const rules = jsonServerAuth.rewriter({
 app.use(rules);
 
 
+// 驗證是否有登入 token（保護上傳相關路由）
+const requireToken = (req, res, next) => {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  next();
+};
+
 // 取得上傳簽名
-app.get('/get-signature', (req, res) => {
+app.get('/get-signature', requireToken, (req, res) => {
   const timestamp = Math.round(new Date().getTime() / 1000);
   const signature = cloudinary.utils.api_sign_request(
     { timestamp },
@@ -160,7 +170,7 @@ app.get('/get-signature', (req, res) => {
 });
 
 // 上傳圖片到 Cloudinary
-app.post('/upload-to-cloudinary', upload.single('file'), async (req, res) => {
+app.post('/upload-to-cloudinary', requireToken, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded or file size exceeds 500 KB' });

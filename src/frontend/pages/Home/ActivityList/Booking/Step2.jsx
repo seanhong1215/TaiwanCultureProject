@@ -7,8 +7,14 @@ import { useLocation } from "react-router-dom";
 const Step2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
- 
-  const submitData = location.state || {}; 
+
+  const submitData = location.state || {};
+
+  useEffect(() => {
+    if (!location.state?.activityName) {
+      navigate('/activity-list', { replace: true });
+    }
+  }, []);
 
   const date = new Date(submitData.last_bookable_date);
 

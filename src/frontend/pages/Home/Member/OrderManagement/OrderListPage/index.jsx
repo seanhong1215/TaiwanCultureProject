@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { getOrderAll, getActivityAll, updateOrder } from '@/frontend/utils/api';
+import { getOrdersByUser, getActivityAll, updateOrder } from '@/frontend/utils/api';
 import './OderListPage.scss';
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
@@ -128,10 +128,12 @@ const OrderListPage = () => {
   const fetchData = async () => {
     try {
       
-      const responseOrder = await getOrderAll(); // 所有訂單
-      const responseActivity = await getActivityAll(); // 所有活動
+      const [userFilteredOrders, responseActivity] = await Promise.all([
+        getOrdersByUser(currentUserId),
+        getActivityAll(),
+      ]);
 
-      if (!responseOrder || !responseActivity) {
+      if (!userFilteredOrders || !responseActivity) {
         Swal.fire({
           title: "資料獲取失敗",
           text: "無法獲取訂單或活動資料",
@@ -139,11 +141,6 @@ const OrderListPage = () => {
         });
         return;
       }
-
-      // 🔥 只篩選 `currentUserId` 的訂單
-      const userFilteredOrders = responseOrder.filter(
-        (order) => order.userId === currentUserId
-      );
 
       // 根據 `activityId` 更新每個訂單的活動資料
       const updatedOrders = userFilteredOrders.map((order) => {

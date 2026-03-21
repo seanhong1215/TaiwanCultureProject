@@ -1,4 +1,21 @@
-import { createHashRouter } from "react-router-dom";
+import { createHashRouter, Navigate } from "react-router-dom";
+
+// 需要登入才能訪問的路由
+const RequireAuth = ({ children }) => {
+  const token = localStorage.getItem('token');
+  if (!token) return <Navigate to="/" replace />;
+  return children;
+};
+
+// 需要 ADMIN 或 ACTIVITY_MANAGER 才能訪問的路由
+const RequireAdmin = ({ children }) => {
+  const token = localStorage.getItem('admin_token');
+  const role = localStorage.getItem('admin_userRole');
+  if (!token || (role !== 'ADMIN' && role !== 'ACTIVITY_MANAGER')) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  return children;
+};
 
 import HomePage from '@/frontend/pages/Home/HomePage';
 import ActivityList from '@/frontend/pages/Home/ActivityList/ActivityListPage';
@@ -84,7 +101,7 @@ const router = createHashRouter(
     },
     {
       path: '/member-center',
-      element: <MemberCenterLayout />,
+      element: <RequireAuth><MemberCenterLayout /></RequireAuth>,
       children:[
         {
           path: 'personal-data',
@@ -134,15 +151,15 @@ const router = createHashRouter(
           path: 'notifications',
           element: <NotificationsPage />,
         }
-        
+
       ]
     },
     {
       path: '/admin',
-      element: <AdminLayout />,
+      element: <RequireAdmin><AdminLayout /></RequireAdmin>,
       children: [
         {
-          path: 'dashboard', 
+          path: 'dashboard',
           element: <Dashboard />,
         },
         {

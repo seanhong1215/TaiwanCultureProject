@@ -5,9 +5,9 @@ import './Signin.scss';
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 
+dayjs.extend(isSameOrAfter);
 
 const SignIn = () => {
-  dayjs.extend(isSameOrAfter);
   const REWARD_DAYS = 7; // 每 7 天獲得獎勵
   const REWARD_POINTS = 50;
 
@@ -67,7 +67,7 @@ const SignIn = () => {
   
       setStats({
         currentStreak: streakCount,
-        points: data?.rewards?.points || 0,  // 檢查 rewards 是否存在
+        points: data?.rewards?.signInPoints || 0,
       });
   
     } catch (error) {
@@ -88,22 +88,25 @@ const SignIn = () => {
     // 計算連續簽到天數
     const streakCount = calculateStreak(updatedHistory);
   
-    // 計算累積獎勳點數
-    let updatedPoints = user?.rewards?.points || 0;
-    updatedPoints += 10; // 每次簽到 +10 點
+    // 計算簽到累積點數（獨立追蹤，不與訂單點數混合）
+    let signInPoints = user?.rewards?.signInPoints || 0;
+    signInPoints += 10; // 每次簽到 +10 點
     if (streakCount % 7 === 0) {
-      updatedPoints += 50; // 連續 7 天額外 +50 點
+      signInPoints += 50; // 連續 7 天額外 +50 點
     }
+    // 總點數 = 簽到點數 + 已計算的訂單點數
+    const countedOrderIds = user?.rewards?.countedOrderIds || [];
+    const totalPoints = signInPoints + countedOrderIds.length * 100;
 
-  
   // 更新用戶資料
   const updatedUser = {
     ...user,
     signInHistory: updatedHistory,
     rewards: {
-      ...user.rewards, // 保留 rewards 內的其他屬性
-      points: updatedPoints, // 更新 points
-      date: new Date().toISOString(), // 更新簽到時間
+      ...user.rewards,
+      signInPoints,
+      points: totalPoints,
+      date: new Date().toISOString(),
     },
     currentStreak: streakCount,
   };
@@ -120,7 +123,7 @@ const SignIn = () => {
       // 更新 stats
       setStats({
         currentStreak: streakCount,
-        points: updatedUser.rewards.points,
+        points: updatedUser.rewards.signInPoints,
       });
   
     } catch (error) {
@@ -198,7 +201,13 @@ const SignIn = () => {
         return dayNum > 0 && dayNum <= daysInMonth ? (
           <td
             key={dayIndex}
-            className={dateStr === today ? "bg-custom-primary text-white" : ""}
+            className={
+              dateStr === today
+                ? "bg-custom-primary text-white"
+                : isSignedIn
+                ? "bg-success text-white"
+                : ""
+            }
           >
             {dayNum}
           </td>

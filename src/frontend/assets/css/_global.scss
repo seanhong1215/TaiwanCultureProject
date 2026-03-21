@@ -338,13 +338,49 @@ a {
 }
 
 
-@media (max-width: 576px){
-  .page-container{
+@media (max-width: 576px) {
+  .page-container {
     margin-top: 12px;
     padding: 24px 8px;
+    border-radius: 16px;
     .card-title {
       text-align: center;
       color: #616161;
     }
+  }
+
+  // 按鈕在手機版全寬
+  .btn-mobile-full {
+    width: 100%;
+  }
+
+  // 表格手機版字體縮小
+  .table {
+    font-size: 13px;
+    th, td {
+      padding: 8px 6px;
+    }
+  }
+
+  // Modal 全螢幕
+  .modal-dialog {
+    margin: 8px;
+  }
+}
+
+// 手機版隱藏非必要欄位
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  // 頁面標題縮小
+  .display-3 {
+    font-size: 1.8rem;
+  }
+
+  // 卡片間距
+  .row.g-4 {
+    --bs-gutter-y: 1rem;
   }
 }

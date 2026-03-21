@@ -12,19 +12,20 @@ const countries = ["台灣", "日本", "韓國", "歐美"]; // 國家
 const genders = ["男生", "女生", "秘密"]; // 性別
 const countryCodes = ["+886", "+1", "+81", "+82"]; //國碼
 const [formData, setFormData] = useState({
-    id: null, // 預設為空
+    id: null,
     userName: localStorage.getItem("userName"),
-    email: localStorage.getItem("email"),
+    email: localStorage.getItem("userEmail"),
     nickName: "",
     gender: "",
     birthday: null,
     country: "",
-    countryCode: "+886", // 預設台灣國碼
-    phoneNumber: "", // 預設電話號碼
+    countryCode: "+886",
+    phoneNumber: "",
     userId
 });
 
 const [error, setError] = useState(null);
+const [loading, setLoading] = useState(true);
 
 // dropdown
 const [isCountryDropdownOpen, setisCountryDropdownOpen] = useState(false); // 控制國家下拉選單
@@ -133,20 +134,28 @@ const handleSubmit = async (e) => {
 };
 
 const getUsersData = async () => {
-    const response = await getUserDetail(userId); 
-    if (response && response.id) {
-        // 📌 更新 formData，確保 id 被設定，代表是「編輯模式」
-        setFormData(prevData => ({
-            ...prevData,
-            ...response // 將 API 回傳的資料合併到 formData
-        }));
+    try {
+        const response = await getUserDetail(userId);
+        if (response && response.id) {
+            setFormData(prevData => ({
+                ...prevData,
+                ...response
+            }));
+        }
+    } catch (err) {
+        setError("載入個人資料失敗");
+    } finally {
+        setLoading(false);
     }
 };
-
 
 useEffect(() => {
     getUsersData();
 }, []);
+
+if (loading) {
+    return <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>;
+}
 
 if (error) {
     return <div className="alert alert-danger">{error}</div>;

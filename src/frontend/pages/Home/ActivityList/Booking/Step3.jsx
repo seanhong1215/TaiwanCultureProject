@@ -15,7 +15,13 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
 const Step3 = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const submitData = location.state || {}; 
+  const submitData = location.state || {};
+
+  useEffect(() => {
+    if (!location.state?.activityName) {
+      navigate('/activity-list', { replace: true });
+    }
+  }, []);
 
   const userName = localStorage.getItem("userName");
 

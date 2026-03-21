@@ -52,12 +52,23 @@ const EventManagement = () => {
   };
 
   const handleDelete = async(id) => {
+    const result = await Swal.fire({
+      title: "確定要刪除此活動嗎？",
+      text: "此操作無法恢復",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "刪除",
+      cancelButtonText: "取消",
+    });
+    if (!result.isConfirmed) return;
+
     try {
       await deleteActivitys(id);
       setEvents(events.filter(event => event.id !== id));
       Swal.fire({ title: "刪除成功", icon: "success" });
     } catch (error) {
-      console.log("Error deleting event", error)
+      console.log("Error deleting event", error);
+      Swal.fire({ title: "刪除失敗", icon: "error" });
     }
   };
 

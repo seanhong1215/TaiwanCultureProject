@@ -16,16 +16,20 @@ const CollectionList = () => {
 
 
   const handleFavorite = async () => {
+    setLoading(true);
     try {
         const response = await getFavorites(userId);
         const favoriteIds = response.map((fav) => fav.activityId);
         const activityResponse = await getActivityAll();
         setFavorites(activityResponse.filter((activity) => favoriteIds.includes(activity.id)));
     } catch (error) {
+        setError("載入收藏清單失敗");
         Swal.fire({
-            title: "取消收藏失敗",
+            title: "載入收藏清單失敗",
             icon: "error"
         });
+    } finally {
+        setLoading(false);
     }
 };
 

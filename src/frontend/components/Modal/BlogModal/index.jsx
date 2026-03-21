@@ -46,16 +46,12 @@ const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
 
 
   useEffect(() => {
-    if (currentBlog && typeof currentBlog.images) {
-      const imageString = typeof currentBlog.images === "string"
-      ? currentBlog.images
-      : JSON.stringify(currentBlog.images); // 確保為字串
-
-      setPreviewImages([imageString]); 
+    if (currentBlog?.images && typeof currentBlog.images === "string" && currentBlog.images.startsWith("http")) {
+      setPreviewImages([currentBlog.images]);
     } else {
-      setPreviewImages([imageString]); 
+      setPreviewImages([]);
     }
-  }, [currentBlog]);
+  }, [currentBlog?.id]);
 
 
   // 處理輸入變更

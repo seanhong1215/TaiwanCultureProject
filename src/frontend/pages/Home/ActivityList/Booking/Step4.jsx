@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step4.scss";
@@ -7,10 +7,16 @@ import { useLocation } from "react-router-dom";
 const Step4 = () => {
   const navigate = useNavigate();
 
-    const location = useLocation();
-    const submitData = location.state || {}; 
-    
-    const date = new Date(submitData.last_bookable_date);
+  const location = useLocation();
+  const submitData = location.state || {};
+
+  useEffect(() => {
+    if (!location.state?.activityName) {
+      navigate('/activity-list', { replace: true });
+    }
+  }, []);
+
+  const date = new Date(submitData.last_bookable_date);
 
     const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2, '0')}月${date.getDate().toString().padStart(2, '0')}日`;
     

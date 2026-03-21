@@ -10,6 +10,7 @@ const UserManagement = () => {
     const [showModal, setShowModal] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [dataLoading, setDataLoading] = useState(true);
 
     const [totalPage , setTotalPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
@@ -34,43 +35,34 @@ const handleSave = async(userData) => {
         if (editingUser) {
             await updatedMembers(editingUser.id, userData);
             Swal.fire({ title: "編輯成功", icon: "success" });
-            AdminUsers();
         } else {
             await register(userData);
             Swal.fire({ title: "新增成功", icon: "success" });
-            AdminUsers();
         }
-
-
+        handleClose();
+        AdminUsers();
     } catch(error) {
         console.error('儲存失敗:', error);
     } finally {
         setLoading(false);
     }
-
-handleClose();
 };
 
 const AdminUsers = async() => {
+    setDataLoading(true);
     try{
-    // 先獲取所有資料
-    const response  = await getMemberAll();
-    const totalItems = response.length; // 直接計算總筆數
-
-    // 設定總筆數
-    setTotalItems(totalItems);
-
-    // 計算總頁數
-    const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
-    setTotalPage(totalPages);
-
-    // 獲取當前頁面的資料
-    const responsePage  = await getMemberPage(page, limit);
-    setMembers(responsePage); 
-
-
+        const [allData, responsePage] = await Promise.all([
+            getMemberAll(),
+            getMemberPage(page, limit),
+        ]);
+        const total = allData.length;
+        setTotalItems(total);
+        setTotalPage(total ? Math.ceil(total / limit) : 1);
+        setMembers(responsePage);
     } catch(error){
         console.log(error);
+    } finally {
+        setDataLoading(false);
     }
 }
 
@@ -87,10 +79,16 @@ return (
 
         <div className="card shadow-sm border-0">
             <div className="table-responsive">
+            {dataLoading ? (
+                <div className="text-center py-5">
+                    <div className="spinner-border text-primary" role="status"></div>
+                </div>
+            ) : (
                 <table className="table table-hover align-middle mb-0">
                     <thead>
                     <tr className="bg-light border-bottom">
                         <th className="py-3 px-4">ID</th>
+                        <th className="py-3 px-4">頭像</th>
                         <th className="py-3 px-4">姓名</th>
                         <th className="py-3 px-4">Email</th>
                         <th className="py-3 px-4">角色</th>
@@ -101,6 +99,17 @@ return (
                     {members.map(user => (
                     <tr key={user.id}>
                         <td className="py-3 px-4">{user.id}</td>
+                        <td className="py-3 px-4">
+                            <img
+                                src={user.avatar || "/img/avatar/image-6.png"}
+                                alt={user.name}
+                                className="rounded-circle"
+                                width="40"
+                                height="40"
+                                style={{ objectFit: 'cover' }}
+                                onError={(e) => { e.target.src = "/img/avatar/image-6.png"; }}
+                            />
+                        </td>
                         <td className="py-3 px-4">{user.name}</td>
                         <td className="py-3 px-4">{user.email}</td>
                         <td className="py-3 px-4">
@@ -119,6 +128,7 @@ return (
                         ))}
                     </tbody>
                 </table>
+            )}
             </div>
         </div>
 

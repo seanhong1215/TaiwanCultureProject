@@ -2,18 +2,25 @@
   "users": [
     {
       "email": "admin@gmail.com",
-      "password": "$2a$10$Wg2B6ggBSZILbvyOnwWnluNtrC8.Dv4ClUSe.9L7WQUFfhA.Q/XoC",
+      "password": "$2a$10$ujfWEXLwKzLBDkcNQbl.zu2Z56WHF7niGl2C4JRcB1OTQ/OqeujKS",
       "name": "系統管理員",
       "role": "ADMIN",
       "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741274658/uploads/1741274657091_zcfbsm.jpg",
       "id": 1,
       "signInHistory": [
-        "2025-03-18"
+        "2025-03-18",
+        "2026-03-21"
       ],
       "rewards": {
         "reward": [],
-        "points": 2300,
-        "date": "2025-03-27T16:44:41.279Z"
+        "points": 310,
+        "date": "2026-03-21T13:51:53.933Z",
+        "signInPoints": 10,
+        "countedOrderIds": [
+          "ORD202503140012",
+          "ORD202503140013",
+          "ORD202503140014"
+        ]
       },
       "currentStreak": 1,
       "tickets": []
@@ -54,7 +61,7 @@
       "password": "$2a$10$7F9cQUEeXFTDMFGpUfaal.N6A4xFoClCmWkno9Sn5m1hC1bvKkJ9K",
       "name": "奇犽",
       "role": "Member",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 4
     },
     {
@@ -62,7 +69,7 @@
       "password": "$2a$10$1rEa.qXYdkJRr6eIUnelzumvhJHzikORLTUqWcdAawS.MV7AGxIc2",
       "name": "酷拉皮卡",
       "role": "Member",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 5,
       "rewards": {
         "reward": [
@@ -81,7 +88,7 @@
       "password": "$2a$10$aErDLr09LR/zWcDncigvqeppt8KFJl6JTK5n8qjswAv2ltrJeElu2",
       "name": "活動管理者1",
       "role": "ACTIVITY_MANAGER",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 6
     },
     {
@@ -89,7 +96,7 @@
       "password": "$2a$10$BmIRfAk9Kfvwsg/HVUvbXOV9Z5SQoXI2vyg4w7AH8QtQ8/VgVKC0i",
       "name": "活動管理者2",
       "role": "ACTIVITY_MANAGER",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 7
     },
     {
@@ -97,7 +104,7 @@
       "password": "$2a$10$9Go2yLcD9wuO1EwLFhOjFO0jQ36WL6ycUXU/X7RLMBSun/UyuMcDC",
       "name": "活動管理者3",
       "role": "ACTIVITY_MANAGER",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 8
     },
     {
@@ -105,7 +112,7 @@
       "password": "$2a$10$EhTFjWNcE2afFyLSaqV8SOP2qW.cKWgC5Tw5hQ.KsyQM35YOsZVFi",
       "name": "系統管理者1",
       "role": "ADMIN",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 9
     },
     {
@@ -113,7 +120,7 @@
       "password": "$2a$10$w0Q1kY5WxueMBDTQMuola.17w5n5fTyN8GvD2FRxXhIqyyKU863vO",
       "name": "系統管理者2",
       "role": "ADMIN",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 10
     },
     {
@@ -121,16 +128,8 @@
       "password": "$2a$10$bL1jh/HkyQ9QylZxayBTFed7er8kD4h5EQd8hjn9x7kzaUl27OOIq",
       "name": "系統管理者3",
       "role": "ADMIN",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 11
-    },
-    {
-      "email": "smileangeler1215@gmail.com",
-      "password": "$2a$10$tGvjIj0sfydiv2fbClyTY.8kNuL9tDeQA8DLCozf/vYwTPYsZytKO",
-      "uuid": "oZE6pB7iy9OMWopogGgXrkWkw353",
-      "name": "Shang Ben",
-      "avatar": "https://graph.facebook.com/2109190009531606/picture",
-      "id": 12
     },
     {
       "email": "seanhong1215@gmail.com",
@@ -140,13 +139,15 @@
       "avatar": "https://lh3.googleusercontent.com/a/ACg8ocJ2ZicVaOWn_QJasjBenAy2879_nGuaHEFyNPxsElcpYEWqSxw=s96-c",
       "id": 13,
       "rewards": {
-        "reward": [
-          "專屬VIP點數"
-        ],
-        "points": 2000,
-        "date": "2025-03-21T04:47:56.830Z",
+        "reward": [],
+        "points": 100,
+        "date": "2026-03-21T14:01:37.661Z",
         "reward_alert_sent": [
           2000
+        ],
+        "signInPoints": 0,
+        "countedOrderIds": [
+          "ORD202503210017"
         ]
       },
       "tickets": [],
@@ -160,7 +161,7 @@
       "password": "$2a$10$U6/4lWecgvn2ES.Oos/iHuMwPBEjm.RWVyV0.HCL4MLwAP0UYkDui",
       "name": "沫沫",
       "role": "Member",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "avatar": "/img/avatar/image-6.png",
       "id": 14,
       "tickets": [],
       "rewards": {
@@ -1355,7 +1356,6 @@
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
       "activityId": 1
     }
-  
   ],
   "favorites": [
     {
@@ -1521,7 +1521,7 @@
         "password": "$2a$10$U6/4lWecgvn2ES.Oos/iHuMwPBEjm.RWVyV0.HCL4MLwAP0UYkDui",
         "name": "沫沫",
         "role": "Member",
-        "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+        "avatar": "/img/avatar/image-6.png",
         "id": 14,
         "tickets": [],
         "rewards": {

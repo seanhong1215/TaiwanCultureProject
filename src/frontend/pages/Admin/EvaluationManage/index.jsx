@@ -10,7 +10,7 @@ import PageNation from "@/frontend/components/PageNation";
 const EvaluationManage = () => {
   const [reviews, setReviews] = useState([]);
   const [activities, setActivities] = useState([]);
-  const userName = localStorage.getItem("userName");
+  const userName = localStorage.getItem("admin_userName");
 
   const [totalPage , setTotalPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
@@ -70,7 +70,7 @@ const EvaluationManage = () => {
       });
       return;
     }
-  
+
     const data = {
       reviewContent: newReview.reviewContent,
       activityTitle: newReview.activityTitle,
@@ -78,7 +78,7 @@ const EvaluationManage = () => {
       avatar: "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
       name: userName,
     };
-  
+
     try {
       if (newReview.id) {
         await updateReviews(newReview.id, data);
@@ -87,31 +87,31 @@ const EvaluationManage = () => {
         await addReviews(data);
         Swal.fire({ title: "新增成功", icon: "success" });
       }
-  
       handleClose();
       await AdminReviewManagement();
     } catch (error) {
       console.error("儲存評價失敗:", error);
     }
-    if(id){
-      await deleteReviews(id);
-      Swal.fire({
-        title: "刪除評價成功",
-        icon: "success",
-      });
-      AdminReviewManagement();
-    }
-
   };
 
   const handleDelete = async (id) => {
-    await deleteReviews(id);
-    Swal.fire({
+    const result = await Swal.fire({
       icon: "warning",
-      title: "確定是否刪除評論",
-      confirmButtonText: "確定",
+      title: "確定要刪除這則評論嗎？",
+      text: "此操作無法恢復",
+      showCancelButton: true,
+      confirmButtonText: "刪除",
+      cancelButtonText: "取消",
     });
-    await AdminReviewManagement();
+    if (!result.isConfirmed) return;
+
+    try {
+      await deleteReviews(id);
+      Swal.fire({ title: "刪除成功", icon: "success" });
+      await AdminReviewManagement();
+    } catch (error) {
+      console.error("刪除評價失敗:", error);
+    }
   }
 
   const AdminReviewManagement = async() => {

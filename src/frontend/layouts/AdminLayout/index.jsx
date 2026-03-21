@@ -26,8 +26,8 @@ export const AdminLayout = () => {
         <AdminContext.Provider value={contextValue}>
           <div className="admin-page-section min-vh-100 d-flex">
             <AdminMenu />
-            <div className="flex-grow-1 bg-light" 
-              style={{ 
+            <div className="flex-grow-1 bg-light admin-main-content"
+              style={{
                 marginLeft: sidebarOpen ? '240px' : '70px',
                 transition: 'margin-left 0.3s ease-in-out'
               }}

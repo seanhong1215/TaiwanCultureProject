@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from 'react';
-import { getOrderAll, getMembers, updatedMembers} from '@/frontend/utils/api';
+import { getOrdersByUser, getMembers, updatedMembers} from '@/frontend/utils/api';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Center.scss';
@@ -49,15 +49,8 @@ const Center = () => {
         return;
       }
   
-      // 獲取所有訂單資料
-      const responseOrder = await getOrderAll(); 
-
-      // 篩選出屬於該用戶的訂單資料
-      const userOrders = responseOrder.filter(
-        (order) => order.userId === userId
-      );
-  
-      // 更新狀態，將篩選後的訂單資料設置進 trips
+      // 直接取得該用戶的訂單資料
+      const userOrders = await getOrdersByUser(userId);
       setTrips(userOrders);
     } catch (error) {
       console.error('無法獲取訂單資料', error);

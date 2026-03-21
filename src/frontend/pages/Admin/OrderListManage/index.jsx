@@ -87,6 +87,7 @@ const OrderManagement = () => {
     });
     if (result.isConfirmed) {
       await deleteOrder(orderId);
+      Swal.fire({ title: "刪除成功", icon: "success" });
       getDataFetch();
     }
   };
@@ -121,7 +122,7 @@ const OrderManagement = () => {
               <td>{order.paymentData.contactName}</td>
               <td>{order.activityName}</td>
               <td>{order.last_bookable_date}</td>
-              <td>{order.reservedStatus === "reserved" ? "預約中" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</td>
+              <td>{order.reservedStatus === "reserved" ? "預約中" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : order.reservedStatus === "finished" ? "已完成" : "未知狀態"}</td>
               <td>{order.totalAmount}</td>
               <td>{order.paymentStatus === "PAID" ? "已付款" : order.paymentStatus === "PENDING" ? "尚未付款" : "未知的狀態"}</td>
               <td>

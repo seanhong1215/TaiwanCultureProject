@@ -1,36 +1,100 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Plus, Edit, Eye, Trash2, Users, ShoppingCart, Calendar, Star } from 'lucide-react';
+import { Eye, Users, ShoppingCart, Calendar, Star } from 'lucide-react';
+import { getMemberAll, getOrderAll, getReviewAll, getActivityAll } from '@/frontend/utils/api';
 import './Dashboard.scss';
-// import { useContext } from "react";
-// import ApiContext from "@/frontend/components/UserContext/UserAll";
-
-// 模擬數據
-const memberTrend = [
-{ name: '1月', value: 400 },
-{ name: '2月', value: 500 },
-{ name: '3月', value: 600 },
-{ name: '4月', value: 680 },
-{ name: '5月', value: 750 },
-{ name: '6月', value: 800 },
-];
 
 const AdminDashboard = () => {
-// const { data } = useContext(ApiContext);
+    const userRole = localStorage.getItem("admin_userRole");
 
-    const userRole = localStorage.getItem("userRole");
+    const [stats, setStats] = useState({
+        totalMembers: 0,
+        activeMembers: 0,
+        pendingOrders: 0,
+        completedOrders: 0,
+        totalRevenue: 0,
+        totalActivities: 0,
+        totalReviews: 0,
+        avgRating: 0,
+    });
+    const [memberTrend, setMemberTrend] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const [members, orders, reviews, activities] = await Promise.all([
+                    getMemberAll(),
+                    getOrderAll(),
+                    getReviewAll(),
+                    getActivityAll(),
+                ]);
+
+                // 會員趨勢（依月份統計）
+                const monthNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+                const trendMap = {};
+                members.forEach(m => {
+                    if (m.createdAt) {
+                        const month = new Date(m.createdAt).getMonth();
+                        trendMap[month] = (trendMap[month] || 0) + 1;
+                    }
+                });
+                const trend = monthNames.map((name, i) => ({
+                    name,
+                    value: trendMap[i] || 0,
+                }));
+
+                // 訂單統計
+                const pendingOrders = orders.filter(o => o.reservedStatus === 'reserved').length;
+                const completedOrders = orders.filter(o => o.reservedStatus === 'finished').length;
+                const totalRevenue = orders
+                    .filter(o => o.paymentStatus === 'PAID')
+                    .reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+
+                // 評價統計
+                const avgRating = reviews.length
+                    ? (reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length).toFixed(1)
+                    : 0;
+
+                setStats({
+                    totalMembers: members.length,
+                    activeMembers: members.filter(m => m.role === 'Member').length,
+                    pendingOrders,
+                    completedOrders,
+                    totalRevenue,
+                    totalActivities: activities.length,
+                    totalReviews: reviews.length,
+                    avgRating,
+                });
+                setMemberTrend(trend);
+            } catch (error) {
+                console.error('Dashboard 資料載入失敗:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStats();
+    }, []);
 
     const ROLES = {
         ADMIN: 'ADMIN',
         ACTIVITY_MANAGER: 'ACTIVITY_MANAGER',
         Member: 'Member'
-        // 可以添加其他角色
     };
+
+if (loading) {
+    return (
+        <div className="container-fluid py-4 text-center">
+            <div className="spinner-border text-primary" role="status"></div>
+        </div>
+    );
+}
 
 return (
     <div className="container-fluid py-4">
         <h1 className="display-3 mb-4">Overview</h1>
-        
+
         <div className="row g-4">
             {/* 會員管理卡片 */}
             {userRole !== ROLES.ACTIVITY_MANAGER && (
@@ -41,17 +105,16 @@ return (
                         <Users className="me-2" />
                         會員管理
                     </h5>
-                    <small className="text-muted">更新於 2分鐘前</small>
                     </div>
                     <div className="card-body">
                     <div className="row mb-4">
                         <div className="col-6">
                         <p className="text-muted mb-1">總會員數</p>
-                        <h3>2,345</h3>
+                        <h3>{stats.totalMembers.toLocaleString()}</h3>
                         </div>
                         <div className="col-6">
-                        <p className="text-muted mb-1">活躍會員</p>
-                        <h3>1,234</h3>
+                        <p className="text-muted mb-1">一般會員</p>
+                        <h3>{stats.activeMembers.toLocaleString()}</h3>
                         </div>
                     </div>
                     <div style={{ height: '200px' }}>
@@ -79,30 +142,29 @@ return (
             {userRole !== ROLES.ACTIVITY_MANAGER && (
                 <div className="col-md-6">
                 <div className="card h-100">
-                    <div className="card-header d-flex justify-content-between align-items-center">
+                    <div className="card-header">
                     <h5 className="card-title mb-0">
                         <ShoppingCart className="me-2" />
                         訂單管理
                     </h5>
-                    <small className="text-muted">更新於 5分鐘前</small>
                     </div>
                     <div className="card-body">
                     <div className="row mb-4">
                         <div className="col-4">
                         <p className="text-muted mb-1">待處理</p>
-                        <h3>25</h3>
+                        <h3>{stats.pendingOrders}</h3>
                         </div>
                         <div className="col-4">
                         <p className="text-muted mb-1">已完成</p>
-                        <h3>138</h3>
+                        <h3>{stats.completedOrders}</h3>
                         </div>
                         <div className="col-4">
                         <p className="text-muted mb-1">總銷售額</p>
-                        <h3>$12.5K</h3>
+                        <h3>${(stats.totalRevenue / 1000).toFixed(1)}K</h3>
                         </div>
                     </div>
                     <div className="mt-4">
-                    <Link to="/admin/order-list" className="btn btn-primary me-2">
+                        <Link to="/admin/order-list" className="btn btn-primary me-2">
                         <Eye className="me-1" size={16} /> 查看訂單
                         </Link>
                     </div>
@@ -121,30 +183,14 @@ return (
                 </h5>
                 </div>
                 <div className="card-body">
-                <div className="mb-3">
-                    <div className="p-3 bg-light rounded">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                        <h6 className="mb-1">春季特賣活動</h6>
-                        <small className="text-muted">進行中 - 還剩 5 天</small>
-                        </div>
-                        <button className="btn btn-outline-secondary btn-sm">查看詳情</button>
-                    </div>
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <div className="p-3 bg-light rounded">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                        <h6 className="mb-1">會員回饋活動</h6>
-                        <small className="text-muted">即將開始 - 3 天後</small>
-                        </div>
-                        <button className="btn btn-outline-secondary btn-sm">查看詳情</button>
-                    </div>
+                <div className="row mb-4">
+                    <div className="col-6">
+                    <p className="text-muted mb-1">活動總數</p>
+                    <h3>{stats.totalActivities}</h3>
                     </div>
                 </div>
                 <div className="mt-4">
-                <Link to="/admin/activity-list" className="btn btn-primary">
+                    <Link to="/admin/activity-list" className="btn btn-primary">
                     <Eye className="me-1" size={16} /> 查看活動
                     </Link>
                 </div>
@@ -165,37 +211,11 @@ return (
                 <div className="row mb-4">
                     <div className="col-6">
                     <p className="text-muted mb-1">平均評分</p>
-                    <h3>4.8</h3>
+                    <h3>{stats.avgRating} ★</h3>
                     </div>
                     <div className="col-6">
-                    <p className="text-muted mb-1">本月評價</p>
-                    <h3>256</h3>
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <div className="d-flex align-items-center mb-2">
-                    <span className="me-2" style={{width: '50px'}}>5星</span>
-                    <div className="progress flex-grow-1">
-                        <div className="progress-bar bg-warning" role="progressbar" style={{width: '70%'}} 
-                            aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span className="ms-2">70%</span>
-                    </div>
-                    <div className="d-flex align-items-center mb-2">
-                    <span className="me-2" style={{width: '50px'}}>4星</span>
-                    <div className="progress flex-grow-1">
-                        <div className="progress-bar bg-warning" role="progressbar" style={{width: '20%'}} 
-                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span className="ms-2">20%</span>
-                    </div>
-                    <div className="d-flex align-items-center">
-                    <span className="me-2" style={{width: '50px'}}>3星</span>
-                    <div className="progress flex-grow-1">
-                        <div className="progress-bar bg-warning" role="progressbar" style={{width: '10%'}} 
-                            aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span className="ms-2">10%</span>
+                    <p className="text-muted mb-1">評價總數</p>
+                    <h3>{stats.totalReviews}</h3>
                     </div>
                 </div>
                 <div className="mt-4">

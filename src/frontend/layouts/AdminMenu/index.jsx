@@ -7,7 +7,7 @@ import { AdminContext } from '@/frontend/layouts/AdminLayout';
 const AdminMenu = () => {
     const { sidebarOpen, mobileNavOpen } = useContext(AdminContext);
     const location = useLocation();
-    const userRole = localStorage.getItem("userRole");
+    const userRole = localStorage.getItem("admin_userRole");
 
     const ROLES = {
         ADMIN: 'ADMIN',
@@ -17,13 +17,22 @@ const AdminMenu = () => {
 
     return (
         <>
+            {/* 手機版遮罩 */}
+            {mobileNavOpen && (
+                <div
+                    className="d-lg-none position-fixed top-0 start-0 w-100 h-100"
+                    style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1039 }}
+                    onClick={toggleMobileNav}
+                />
+            )}
             {/* Sidebar */}
-            <div className={`bg-dark text-white position-fixed h-100 ${sidebarOpen ? 'width-240' : 'width-70'} 
-                ${mobileNavOpen ? 'show' : 'd-none d-lg-block'}`}
-                style={{ 
+            <div className={`bg-dark text-white position-fixed h-100
+                ${mobileNavOpen ? 'admin-sidebar-show' : 'd-none d-lg-block'}`}
+                style={{
                     transition: 'width 0.3s ease-in-out',
                     width: sidebarOpen ? '240px' : '70px',
-                    zIndex: 1040
+                    zIndex: 1040,
+                    overflowY: 'auto'
                 }}>
                 <div className="d-flex flex-column h-100">
 

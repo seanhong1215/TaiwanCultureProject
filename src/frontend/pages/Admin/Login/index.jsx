@@ -29,18 +29,23 @@ const LoginPage = () => {
     // 模擬登入請求
     try {
       const response = await login(credentials);
-      localStorage.setItem("userAvatar", response.user.avatar);
-      localStorage.setItem("userId", response.user.id);
-      localStorage.setItem("userName", response.user.name);
-      localStorage.setItem("userRole", response.user.role);
 
       if(response.user.role === "Member"){
+        // 清除已存入的 token，不允許 Member 登入後台
+        localStorage.removeItem("admin_token");
         Swal.fire({
           title: "登入失敗，你沒有權限!!",
           icon: "warning"
         })
         return
       }
+
+      localStorage.setItem("admin_token", response.accessToken);
+      localStorage.setItem("admin_userAvatar", response.user.avatar || "/img/avatar/image-6.png");
+      localStorage.setItem("admin_userId", response.user.id);
+      localStorage.setItem("admin_userEmail", response.user.email);
+      localStorage.setItem("admin_userName", response.user.name);
+      localStorage.setItem("admin_userRole", response.user.role);
 
       Swal.fire({
         title: "登入成功",

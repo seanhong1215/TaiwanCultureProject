@@ -6,11 +6,7 @@ import { register, login, loginGoogle, loginFacebook, createMember  } from '@/fr
 import Swal from 'sweetalert2';
 import AuthModal from '@/frontend/components/Modal/AuthModal';
 import { auth, googleProvider, facebookProvider, signInWithPopup, signOut } from "@/frontend/assets/js/firebaseConfig.js";
-import { useUser } from "@/frontend/components/UserContext/Users";
-
 const Header = () => {
-    const { getUsers } = useUser();
-
     const userRole = localStorage.getItem("userRole"); // 取得 userRole
 
     // 設定語言
@@ -64,17 +60,14 @@ const Header = () => {
             setIsLoggedIn(true);
             
             localStorage.setItem("userId", response.user.id);
-            localStorage.setItem("email", response.user.email);
+            localStorage.setItem("userEmail", response.user.email);
             localStorage.setItem("userName", response.user.name);
             localStorage.setItem("userRole", response.user.role);
-            if(!response.user.avatar){
-                localStorage.setItem("userAvatar", "https://mighty.tools/mockmind-api/content/human/119.jpg");
-            } else {
-                localStorage.setItem("userAvatar", response.user.avatar);
-            }
+            const avatarUrl = response.user.avatar || "/img/avatar/image-6.png";
+            localStorage.setItem("userAvatar", avatarUrl);
             updateUserData({
                 name: response.user.name,
-                image: response.user.avatar, 
+                image: avatarUrl,
             });
             Swal.fire({
                 title: "登入成功!",
@@ -125,7 +118,7 @@ const Header = () => {
             localStorage.removeItem("userName");
             localStorage.removeItem("userRole");
             localStorage.removeItem("userAvatar");
-            localStorage.removeItem("email");
+            localStorage.removeItem("userEmail");
 
             // 清除 state
             setUserData({});
@@ -156,122 +149,89 @@ const Header = () => {
         return Math.random().toString(36).slice(-8);
       };
 
-    // Google 登入
-    const handleGoogleLogin = async () => {
+    // 社群登入共用邏輯
+    const handleSocialLogin = async (loginFn, provider, providerName) => {
         setLoading(true);
         setError(null);
         try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const idToken = await result.user.getIdToken(); // 取得 JWT Token
-            
-            // 傳送 Token 給 json-server
-            const response = await loginGoogle(idToken);
+            // 1. Firebase 社群登入取得 idToken
+            const result = await signInWithPopup(auth, provider);
+            const idToken = await result.user.getIdToken();
+
+            // 2. 後端驗證 Firebase Token
+            const response = await loginFn(idToken);
+            const firebaseUser = response.user; // { uid, email, name, picture }
+
+            // Facebook 有時不回傳 email（用戶隱私設定）
+            let userEmail = firebaseUser.email;
+            if (!userEmail) {
+                const { value: inputEmail } = await Swal.fire({
+                    title: '請輸入您的 Email',
+                    text: '您的 Facebook 帳號未提供 Email，請手動輸入以完成註冊',
+                    input: 'email',
+                    inputPlaceholder: '請輸入 Email',
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '確認',
+                    inputValidator: (value) => {
+                        if (!value) return '請輸入 Email';
+                    }
+                });
+                if (!inputEmail) return; // 用戶取消
+                userEmail = inputEmail;
+            }
+
+            // 3. 在 json-server DB 建立或取得用戶（以 uuid 識別）
+            const dbUser = await createMember({
+                uuid: firebaseUser.uid,
+                email: userEmail,
+                name: firebaseUser.name || firebaseUser.email,
+                avatar: firebaseUser.picture || "/img/avatar/image-6.png",
+                password: generateRandomPassword(),
+                role: "Member",
+            });
+
+            if (!dbUser) throw new Error("建立用戶資料失敗");
+
+            // 4. 儲存用戶資訊（使用 DB 回傳的真實 ID 和 role）
+            const avatar = dbUser.avatar || firebaseUser.picture || "/img/avatar/image-6.png";
+            localStorage.setItem("userId", dbUser.id);
+            localStorage.setItem("userName", dbUser.name || firebaseUser.name);
+            localStorage.setItem("userEmail", dbUser.email || userEmail);
+            localStorage.setItem("userRole", dbUser.role || "Member");
+            localStorage.setItem("userAvatar", avatar);
+
             setIsLoggedIn(true);
-            const user = response.user;
+            setUserData({ name: dbUser.name || firebaseUser.name, image: avatar });
+            updateUserData({ name: dbUser.name || firebaseUser.name, image: avatar });
 
-            const randomPassword = generateRandomPassword();
-            const newUser = {
-                uuid: user.uid,
-                email: user.email,
-                name: user.name,
-                avatar: user.picture, 
-                password: randomPassword,
-            };
-
-            const userId = Number(getUsers.id); // 取得使用者ID
-
-            const res = await createMember(newUser);
-            localStorage.setItem("userId", userId);
-            localStorage.setItem("userName", user.name);
-            localStorage.setItem("userEmail", user.email);
-            localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
-            localStorage.setItem(
-                "userAvatar",
-                user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
-            );
-
-
-            setUserData({
-                name: user.name,
-                image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
-            });
-
-            updateUserData({
-                name: user.name,
-                image: user.picture, 
-            });
-
-            Swal.fire({
-                title: "Google 登入成功!",
-                icon: "success"
-            });
-
+            Swal.fire({ title: `${providerName} 登入成功!`, icon: "success" });
             handleCloseModal();
-    
+
         } catch (error) {
-            setError("Google 登入失敗");
-            console.error("Google 登入失敗:", error);
-        }finally {
-            setLoading(false);
-        }
-    };
-    
-    // Facebook 登入
-    const handleFacebookLogin = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const result = await signInWithPopup(auth, facebookProvider);
-            const idToken = await result.user.getIdToken(); // 取得 JWT Token
-            
-            // 傳送 Token 給 json-server
-            const response = await loginFacebook(idToken); 
-            setIsLoggedIn(true);
-            const user = response.user;
-    
-            const randomPassword = generateRandomPassword();
-            const newUser = {
-                uuid: user.uid,
-                email: user.email,
-                name: user.name,
-                avatar: user.picture, 
-                password: randomPassword,
+            // 顯示具體錯誤原因
+            const errorMessages = {
+                "auth/popup-closed-by-user": "登入視窗已關閉，請重試",
+                "auth/popup-blocked": "彈出視窗被封鎖，請允許此網站開啟彈出視窗",
+                "auth/cancelled-popup-request": "登入已取消",
+                "auth/account-exists-with-different-credential": "此 Email 已使用其他方式註冊，請改用原本的登入方式",
+                "auth/operation-not-allowed": `${providerName} 登入尚未在 Firebase Console 啟用`,
+                "auth/unauthorized-domain": "此網域未授權，請至 Firebase Console 新增授權網域",
+                "NO_EMAIL": `無法取得 ${providerName} Email，請確認帳號已開放 Email 存取權限`,
             };
-            const userId = Number(getUsers.id); // 取得使用者ID
-
-            const res = await createMember(newUser);
-            localStorage.setItem("userId", userId);
-            localStorage.setItem("userName", user.name);
-            localStorage.setItem("userRole", "Google"); // 給 Google 用戶標記
-            localStorage.setItem(
-                "userAvatar",
-                user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg"
-            );
-            
-            setUserData({
-                name: user.name,
-                image: user.picture || "https://mighty.tools/mockmind-api/content/human/119.jpg",
-            });
-
-            updateUserData({
-                name: user.name,
-                image: user.picture, 
-            });
-
-            Swal.fire({
-                title: "Facebook 登入成功!",
-                icon: "success"
-            });
-
-            handleCloseModal();
-            
-        }catch (error) {
-            setError("Facebook 登入失敗");
-            console.error("Facebook 登入失敗:", error);
-        }finally {
+            const msg = errorMessages[error.code] || errorMessages[error.message] || `${providerName} 登入失敗，請稍後再試`;
+            setError(msg);
+            console.error(`${providerName} 登入失敗 [${error.code}]:`, error.message);
+        } finally {
             setLoading(false);
         }
     };
+
+    // Google 登入
+    const handleGoogleLogin = () => handleSocialLogin(loginGoogle, googleProvider, "Google");
+
+    // Facebook 登入
+    const handleFacebookLogin = () => handleSocialLogin(loginFacebook, facebookProvider, "Facebook");
 
     // 更新用戶資料
     const updateUserData = (data) => {
@@ -374,7 +334,8 @@ const Header = () => {
                 <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""} ${isLoggedIn ? "user-circle" : ""}`} id="navbarNav">
                     <button className="btn btn-secondary user-circle-button" type="button">
                         <img
-                            src={userData.image}
+                            src={userData.image || "/img/avatar/image-6.png"}
+                                onError={(e) => { e.target.src = "/img/avatar/image-6.png"; }}
                             alt="User"
                             className="rounded-circle"
                             width="60"
@@ -414,7 +375,7 @@ const Header = () => {
                             <Link className="nav-link" to="/journal-list" onClick={closeMenu}>{t('menu.journal')}</Link>
                         </li>
                         {/* 多國語系切換 */}
-                        <li className="nav-item dropdown">
+                        {/* <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {t('menu.lang')}
                             </a>
@@ -430,6 +391,7 @@ const Header = () => {
                                 </li>
                             </ul>
                         </li>
+                        */}
                     </ul>
                     {/* 登入/登出按鈕 */}
                     { isMobile ? (
@@ -449,7 +411,8 @@ const Header = () => {
                                         aria-expanded="false"
                                     >
                                         <img
-                                            src={userData.image}
+                                            src={userData.image || "/img/avatar/image-6.png"}
+                                onError={(e) => { e.target.src = "/img/avatar/image-6.png"; }}
                                             alt="User"
                                             className="rounded-circle"
                                             width="40"

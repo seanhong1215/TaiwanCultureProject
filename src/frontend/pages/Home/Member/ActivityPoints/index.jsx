@@ -1,146 +1,89 @@
 import { useState, useEffect  } from 'react';
-import { getActivityAll, getOrderAll, updatedMembers } from "@/frontend/utils/api.js";
-import Swal from "sweetalert2";
-import { useUser } from "@/frontend/components/UserContext/Users";
+import { getActivityAll, getOrdersByUser, getMembers, updatedMembers } from "@/frontend/utils/api.js";
+
+const rewardsMap = [
+  { points: 3000, reward: '免費一日遊' },
+  { points: 5000, reward: '免費兩日遊' },
+  { points: 8000, reward: '免費三日遊' },
+  { points: 10000, reward: '免費四日遊' },
+];
 
 const ActivityPoints = () => {
   const userId = Number(localStorage.getItem("userId"));
-  const {getUsers} = useUser();
   const [userData, setUserData] = useState({
-    totalPoints: 2000,  
+    totalPoints: 0,
     recentActivities: [],
-    nextReward: {
-      points: 3000, // 初始點數
-      reward: "免費一日遊" // 初始獎勳
-    },
-    noActivities: false,  // 用來判斷是否有活動資料
+    nextReward: rewardsMap[0],
+    noActivities: false,
   });
-
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        // 取得用戶資料（含已計算的訂單 IDs）和訂單、活動
+        const [userResponse, userOrders, allActivities] = await Promise.all([
+          getMembers(userId),
+          getOrdersByUser(userId),
+          getActivityAll(),
+        ]);
 
-        // 獲取所有訂單和所有活動資料
-        const responseOrder = await getOrderAll(); // 所有訂單
-        const responseActivity = await getActivityAll(); // 所有活動
-  
-        // 只篩選出屬於當前用戶的訂單
-        const userFilteredOrders = responseOrder.filter(
-          (order) => order.userId === userId
-        );
-  
-        // 根據訂單中的 activityId 查找對應的活動資料，並為每個活動賦予 100 點
-        const updatedActivities = userFilteredOrders.map((order) => {
-          const activity = responseActivity.find(
-            (act) => act.id === order.activityId
-          );
-  
-          if (activity) {
-            return {
-              ...activity,
-              points: 100, // 給予每個活動 100 點
-            };
-          }
-  
-          return null; // 如果找不到對應的活動，返回 null
-        }).filter(activity => activity !== null); // 排除 null 值
-  
-        // 計算總點數，將活動的 points 累加到 totalPoints
-        let updatedTotalPoints = userData.totalPoints || 0; // 確保有值（預設為 0）
-        updatedActivities.forEach(activity => {
-          updatedTotalPoints += activity.points;
+        // 簽到累積的點數（由 SignIn 頁面寫入）
+        const signInPoints = userResponse?.rewards?.signInPoints || 0;
+        // 已計算過點數的訂單 IDs
+        const countedOrderIds = userResponse?.rewards?.countedOrderIds || [];
+
+        // 找出還沒計算過的新訂單
+        const newOrders = userOrders.filter(o => !countedOrderIds.includes(o.id));
+        const newOrderPoints = newOrders.length * 100;
+        const allCountedIds = [...countedOrderIds, ...newOrders.map(o => o.id)];
+
+        // 總點數 = 簽到點數 + 所有訂單點數
+        const totalPoints = signInPoints + (userOrders.length * 100);
+
+        // 組合活動列表（用於顯示）
+        const recentActivities = userOrders.map(order => {
+          const activity = allActivities.find(a => a.id === order.activityId);
+          return activity ? { ...activity, points: 100 } : null;
+        }).filter(Boolean);
+
+        // 計算獎勳列表
+        const updatedRewards = rewardsMap
+          .filter(r => totalPoints >= r.points)
+          .map(r => r.reward);
+
+        // 下一個獎勳
+        const nextReward = rewardsMap.find(r => totalPoints < r.points) || rewardsMap[rewardsMap.length - 1];
+
+        // 只在有新訂單時才寫回 DB，避免每次進頁面都觸發寫入
+        if (newOrderPoints > 0) {
+          await updatedMembers(userId, {
+            rewards: {
+              ...userResponse?.rewards,
+              reward: updatedRewards,
+              points: totalPoints,
+              signInPoints,
+              countedOrderIds: allCountedIds,
+              date: new Date().toISOString(),
+            },
+          });
+        }
+
+        setUserData({
+          totalPoints,
+          recentActivities,
+          nextReward,
+          noActivities: recentActivities.length === 0,
         });
-  
-        // 根據 updatedTotalPoints 計算獎勳
-        let updatedRewards = []; 
-  
-        // 當 totalPoints >= 3000 時，加入免費一日遊
-        if (updatedTotalPoints >= 3000) {
-          updatedRewards.push('免費一日遊');
-        }
-  
-        // 當 totalPoints >= 5000 時，加入免費兩日遊
-        if (updatedTotalPoints >= 5000) {
-          updatedRewards.push('免費兩日遊');
-        }
-  
-        // 當 totalPoints >= 8000 時，加入免費三日遊
-        if (updatedTotalPoints >= 8000) {
-          updatedRewards.push('免費三日遊');
-        }
-  
-        // 當 totalPoints >= 10000 時，加入免費四日遊
-        if (updatedTotalPoints >= 10000) {
-          updatedRewards.push('免費四日遊');
-        }
 
-        // 動態更新 nextReward
-        const rewardsMap = [
-          { points: 3000, reward: '免費一日遊' },
-          { points: 5000, reward: '免費兩日遊' },
-          { points: 8000, reward: '免費三日遊' },
-          { points: 10000, reward: '免費四日遊' },
-        ];
-
-        const nextReward = rewardsMap.find(r => updatedTotalPoints >= r.points) || rewardsMap[0];
-
-      // 檢查是否有參加活動
-      const hasActivities = updatedActivities.length > 0;
-  
-        // 更新後端資料庫中的 totalPoints
-        const updateUserPoints = async () => {
-          try {
-            if (userId) {
-              // 每次獲得的獎勳會儲存到 user 的 rewards 陣列中
-              await updatedMembers(userId, {
-                rewards: {
-                  reward: updatedRewards,
-                  points: updatedTotalPoints,
-                  date: new Date().toISOString(),
-                },
-              });
-              // 更新用戶資料
-              setUserData((prevState) => ({
-                ...prevState,
-                totalPoints: updatedTotalPoints,
-                recentActivities: updatedActivities,
-                rewards: {
-                  reward: updatedRewards,
-                  points: updatedTotalPoints,
-                  date: new Date().toISOString(),
-                },
-                nextReward, // 更新 nextReward
-                noActivities: !hasActivities, // 如果沒有活動，設為 true
-              }));
-            }
-          } catch (error) {
-            console.error('更新 totalPoints 時發生錯誤', error);
-          }
-        };
-  
-        // 呼叫更新後端 API
-        updateUserPoints();
-  
       } catch (error) {
         console.error('無法獲取活動資料或訂單資料', error);
       }
     };
-  
+
     if (userId) {
       fetchUserData();
     }
-  }, [userId]); 
-  
-  // 當 getUsers 變化時，更新 totalPoints
-  useEffect(() => {
-    if (getUsers?.rewards?.points !== undefined) {
-      setUserData(prevState => ({
-        ...prevState,
-        totalPoints: getUsers.rewards.points, // 正確更新 totalPoints
-      }));
-    }
-  }, [getUsers]); // 監聽 getUsers 變化
+  }, [userId]);
 
 
   return (
