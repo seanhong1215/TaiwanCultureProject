@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
+import { ShieldCheck } from 'lucide-react';
 
 
 const LoginPage = () => {
@@ -73,7 +74,7 @@ const LoginPage = () => {
               <div className="card-body p-5">
                 {/* Logo 區域 */}
                 <div className="text-center mb-4">
-                  <i className="bi bi-shield-lock text-primary" style={{ fontSize: '3rem' }}></i>
+                  <ShieldCheck className="text-primary" size={48} aria-hidden="true" />
                   <h2 className="mt-3 mb-4">管理後台</h2>
                 </div>
 

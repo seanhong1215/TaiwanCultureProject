@@ -1,5 +1,6 @@
 import { useState, useEffect  } from 'react';
 import { getActivityAll, getOrdersByUser, getMembers, updatedMembers } from "@/frontend/utils/api.js";
+import { Star } from 'lucide-react';
 
 const rewardsMap = [
   { points: 3000, reward: '免費一日遊' },
@@ -98,7 +99,7 @@ const ActivityPoints = () => {
               <h2 className="display-4 fw-bold mb-0">{userData.totalPoints}</h2>
             </div>
             <div className="col-4 text-end">
-              <i className="bi bi-star-fill fs-1"></i>
+              <Star size={40} fill="currentColor" aria-hidden="true" />
             </div>
           </div>
         </div>

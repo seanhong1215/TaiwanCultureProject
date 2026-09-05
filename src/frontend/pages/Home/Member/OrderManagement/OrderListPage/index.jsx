@@ -296,7 +296,7 @@ const OrderListPage = () => {
         {/* 顯示沒有搜尋結果的訊息 */}
         {showNoResults && (
           <div className="col-12 text-center py-5">
-            <p className="text-muted">沒有符合 "{searchTerm}" 的結果</p>
+            <p className="text-muted">沒有符合「{searchTerm}」的結果</p>
           </div>
         )}
 

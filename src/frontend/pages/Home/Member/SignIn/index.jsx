@@ -60,8 +60,7 @@ const SignIn = () => {
       setStreak(streakCount);
   
       // 更新 stats，檢查 rewards 是否存在且有效
-      if (data?.rewards) {
-      } else {
+      if (!data?.rewards) {
         console.warn("用戶未包含 rewards 資料");
       }
   

@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { AdminContext } from '@/frontend/layouts/AdminLayout';
 
 const AdminMenu = () => {
-    const { sidebarOpen, mobileNavOpen } = useContext(AdminContext);
+    const { sidebarOpen, mobileNavOpen, toggleMobileNav } = useContext(AdminContext);
     const location = useLocation();
     const userRole = localStorage.getItem("admin_userRole");
 

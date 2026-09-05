@@ -11,7 +11,7 @@ import { uploadImageToCloudinary } from '@/frontend/utils/api.js';
 import './Blog.scss';
 
 
-const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrentBlog }) => {
+const BlogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrentBlog }) => {
   const { control, register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
     defaultValues: {
       date: currentBlog.date ? new Date(currentBlog.date) : null, // 預設值為 currentBlog.date
@@ -171,7 +171,7 @@ const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
 };
 
 
-blogModal.propTypes = {
+BlogModal.propTypes = {
   showModal: PropTypes.bool.isRequired, // 是否顯示 Modal
   handleClose: PropTypes.func.isRequired, // 關閉 Modal 的函數
   handleSave: PropTypes.func.isRequired, // 儲存資料的函數
@@ -179,4 +179,4 @@ blogModal.propTypes = {
   setCurrentBlog: PropTypes.func.isRequired,
 };
 
-export default blogModal;
+export default BlogModal;
