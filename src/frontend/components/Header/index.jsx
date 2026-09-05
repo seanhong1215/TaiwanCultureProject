@@ -5,7 +5,7 @@ import './Header.scss';
 import { register, login, loginGoogle, loginFacebook, createMember  } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
 import AuthModal from '@/frontend/components/Modal/AuthModal';
-import { auth, googleProvider, facebookProvider, signInWithPopup, signOut } from "@/frontend/assets/js/firebaseConfig.js";
+import { socialSignIn, firebaseSignOut } from "@/frontend/assets/js/firebaseConfig.js";
 const Header = () => {
     const userRole = localStorage.getItem("userRole"); // 取得 userRole
 
@@ -109,8 +109,8 @@ const Header = () => {
     const handleLogout = async() => {
 
         try {
-            // 🟢 使用 Firebase signOut()
-            await signOut(auth);
+            // 只有曾經走過社群登入才需要呼叫 Firebase signOut
+            await firebaseSignOut();
 
              // 清除 localStorage
             localStorage.removeItem("token");
@@ -150,13 +150,12 @@ const Header = () => {
       };
 
     // 社群登入共用邏輯
-    const handleSocialLogin = async (loginFn, provider, providerName) => {
+    const handleSocialLogin = async (loginFn, providerKey, providerName) => {
         setLoading(true);
         setError(null);
         try {
-            // 1. Firebase 社群登入取得 idToken
-            const result = await signInWithPopup(auth, provider);
-            const idToken = await result.user.getIdToken();
+            // 1. Firebase 社群登入取得 idToken（此時才動態載入 Firebase SDK）
+            const idToken = await socialSignIn(providerKey);
 
             // 2. 後端驗證 Firebase Token
             const response = await loginFn(idToken);
@@ -228,10 +227,10 @@ const Header = () => {
     };
 
     // Google 登入
-    const handleGoogleLogin = () => handleSocialLogin(loginGoogle, googleProvider, "Google");
+    const handleGoogleLogin = () => handleSocialLogin(loginGoogle, "google", "Google");
 
     // Facebook 登入
-    const handleFacebookLogin = () => handleSocialLogin(loginFacebook, facebookProvider, "Facebook");
+    const handleFacebookLogin = () => handleSocialLogin(loginFacebook, "facebook", "Facebook");
 
     // 更新用戶資料
     const updateUserData = (data) => {

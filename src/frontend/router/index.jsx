@@ -1,198 +1,116 @@
-import { createHashRouter, Navigate } from "react-router-dom";
+import { lazy, Suspense } from 'react';
+import { createHashRouter } from 'react-router-dom';
 
-// 需要登入才能訪問的路由
-const RequireAuth = ({ children }) => {
-  const token = localStorage.getItem('token');
-  if (!token) return <Navigate to="/" replace />;
-  return children;
-};
+import { RequireAuth, RequireAdmin } from '@/frontend/components/RouteGuards';
+import PageLoader from '@/frontend/components/PageLoader';
+import ErrorPage from '@/frontend/components/ErrorPage';
 
-// 需要 ADMIN 或 ACTIVITY_MANAGER 才能訪問的路由
-const RequireAdmin = ({ children }) => {
-  const token = localStorage.getItem('admin_token');
-  const role = localStorage.getItem('admin_userRole');
-  if (!token || (role !== 'ADMIN' && role !== 'ACTIVITY_MANAGER')) {
-    return <Navigate to="/admin/login" replace />;
-  }
-  return children;
-};
-
-import HomePage from '@/frontend/pages/Home/HomePage';
-import ActivityList from '@/frontend/pages/Home/ActivityList/ActivityListPage';
-import ActivityDetailPage from '@/frontend/pages/Home/ActivityList/ActivityDetailPage';
-import BookingPage1 from '@/frontend/pages/Home/ActivityList/Booking/Step1.jsx';
-import BookingPage2 from '@/frontend/pages/Home/ActivityList/Booking/Step2.jsx';
-import BookingPage3 from '@/frontend/pages/Home/ActivityList/Booking/Step3.jsx';
-import BookingPage4 from '@/frontend/pages/Home/ActivityList/Booking/Step4.jsx';
-import JournalList from '@/frontend/pages/Home/Journal/JournalListPage';
-import JournalDetailPage from '@/frontend/pages/Home/Journal/JournalDetailPage';
-
-import CollectionList from '@/frontend/pages/Home/Member/CollectionList';
-import PersonalData from '@/frontend/pages/Home/Member/PersonalData';
-import OrderListPage from '@/frontend/pages/Home/Member/OrderManagement/OrderListPage';
-import OrderDetailPage from '@/frontend/pages/Home/Member/OrderManagement/OrderDetailPage';
-import ActivityReview from '@/frontend/pages/Home/Member/ActivityReview';
-import SignIn from '@/frontend/pages/Home/Member/SignIn';
-import ActivityPoints from '@/frontend/pages/Home/Member/ActivityPoints';
-import CustomerSupport from '@/frontend/pages/Home/Member/CustomerSupport';
-import Center from '@/frontend/pages/Home/Member/Center';
-
-import ActivityManager from '@/frontend/pages/Home/Member/ActivityManager';
-import MessageManager from '@/frontend/pages/Home/Member/MessageManager';
-import NotificationsPage from '@/frontend/pages/Home/Member/NotificationsPage';
-
-import Login from '@/frontend/pages/Admin/Login';
-import Dashboard from '@/frontend/pages/Admin/Dashboard';
-import MemberManage from '@/frontend/pages/Admin/MemberManage';
-import OrderListManage from '@/frontend/pages/Admin/OrderListManage';
-import BlogManage from '@/frontend/pages/Admin/BlogManage';
-import ActivityManageListPage from '@/frontend/pages/Admin/ActivityManage/ActivityManageListPage';
-import ActivityManageDetailPage from '@/frontend/pages/Admin/ActivityManage/ActivityDetailPage';
-import EvaluationManage from '@/frontend/pages/Admin/EvaluationManage';
-
-
-import AdminLayout from '@/frontend/layouts/AdminLayout';
+// 版面與首頁在首次載入就會用到，維持同步載入避免首屏閃動
 import FrontendLayout from '@/frontend/layouts/FrontendLayout';
-import MemberCenterLayout from '@/frontend/layouts/MemberCenterLayout';
+import HomePage from '@/frontend/pages/Home/HomePage';
 
-const router = createHashRouter(
-  [
-    {
-      path: '/',
-      element: <FrontendLayout />,
-      children: [
-        {
-          path: '', 
-          element: <HomePage />,
-        },
-        {
-          path: '/activity-list',
-          element: <ActivityList />,
-        },
-        {
-          path: '/activity-list/:id',
-          element: <ActivityDetailPage />,
-        },
-        {
-          path: '/activity-list/booking1',
-          element: <BookingPage1 />,
-        },
-        {
-          path: '/activity-list/booking2',
-          element: <BookingPage2 />,
-        },
-        {
-          path: '/activity-list/booking3',
-          element: <BookingPage3 />,
-        },
-        {
-          path: '/activity-list/booking4',
-          element: <BookingPage4 />,
-        },
-        {
-          path: '/journal-list',
-          element: <JournalList />,
-        },
-        {
-          path: '/journal-list/:id',
-          element: <JournalDetailPage />,
-        }
-      ],
-    },
-    {
-      path: '/member-center',
-      element: <RequireAuth><MemberCenterLayout /></RequireAuth>,
-      children:[
-        {
-          path: 'personal-data',
-          element: <PersonalData />,
-        },
-        {
-          path: 'order-management/list',
-          element: <OrderListPage />,
-        },
-        {
-          path: 'order-management/detail/:id',
-          element: <OrderDetailPage />,
-        },
-        {
-          path: 'activity-review',
-          element: <ActivityReview />,
-        },
-        {
-          path: 'collection-list',
-          element: <CollectionList />,
-        },
-        {
-          path: 'sign-in',
-          element: <SignIn />,
-        },
-        {
-          path: 'activity-points',
-          element: <ActivityPoints />,
-        },
-        {
-          path: 'customer-support',
-          element: <CustomerSupport />,
-        },
-        {
-          path: 'center',
-          element: <Center />,
-        },
-        {
-          path: 'activity-manager',
-          element: <ActivityManager />,
-        },
-        {
-          path: 'message-manager',
-          element: <MessageManager />,
-        },
-        {
-          path: 'notifications',
-          element: <NotificationsPage />,
-        }
+/*
+ * 路由層 code splitting。
+ * 拆分前整站打包成單一 2MB 的 JS，訪客光看首頁就得下載整個後台。
+ * 這裡讓每個路由各自成為一個 chunk，瀏覽器只在進入該頁時才下載。
+ */
 
-      ]
-    },
-    {
-      path: '/admin',
-      element: <RequireAdmin><AdminLayout /></RequireAdmin>,
-      children: [
-        {
-          path: 'dashboard',
-          element: <Dashboard />,
-        },
-        {
-          path: 'member',
-          element: <MemberManage />,
-        },
-        {
-          path: 'order-list',
-          element: <OrderListManage />,
-        },
-        {
-          path: 'blog',
-          element: <BlogManage />,
-        },
-        {
-          path: 'activity-list',
-          element: <ActivityManageListPage />,
-        },
-        {
-          path: 'activity-list/:id',
-          element: <ActivityManageDetailPage />,
-        },
-        {
-          path: 'evaluation',
-          element: <EvaluationManage />,
-        }
-      ]
-    },
-    {
-      path: '/admin/login', 
-      element: <Login />,
-    },
-  ],
-)
+// --- 前台 ---
+const ActivityList = lazy(() => import('@/frontend/pages/Home/ActivityList/ActivityListPage'));
+const ActivityDetailPage = lazy(() => import('@/frontend/pages/Home/ActivityList/ActivityDetailPage'));
+const BookingPage1 = lazy(() => import('@/frontend/pages/Home/ActivityList/Booking/Step1.jsx'));
+const BookingPage2 = lazy(() => import('@/frontend/pages/Home/ActivityList/Booking/Step2.jsx'));
+const BookingPage3 = lazy(() => import('@/frontend/pages/Home/ActivityList/Booking/Step3.jsx'));
+const BookingPage4 = lazy(() => import('@/frontend/pages/Home/ActivityList/Booking/Step4.jsx'));
+const JournalList = lazy(() => import('@/frontend/pages/Home/Journal/JournalListPage'));
+const JournalDetailPage = lazy(() => import('@/frontend/pages/Home/Journal/JournalDetailPage'));
+
+// --- 會員中心 ---
+const MemberCenterLayout = lazy(() => import('@/frontend/layouts/MemberCenterLayout'));
+const PersonalData = lazy(() => import('@/frontend/pages/Home/Member/PersonalData'));
+const OrderListPage = lazy(() => import('@/frontend/pages/Home/Member/OrderManagement/OrderListPage'));
+const OrderDetailPage = lazy(() => import('@/frontend/pages/Home/Member/OrderManagement/OrderDetailPage'));
+const ActivityReview = lazy(() => import('@/frontend/pages/Home/Member/ActivityReview'));
+const CollectionList = lazy(() => import('@/frontend/pages/Home/Member/CollectionList'));
+const SignIn = lazy(() => import('@/frontend/pages/Home/Member/SignIn'));
+const ActivityPoints = lazy(() => import('@/frontend/pages/Home/Member/ActivityPoints'));
+const CustomerSupport = lazy(() => import('@/frontend/pages/Home/Member/CustomerSupport'));
+const Center = lazy(() => import('@/frontend/pages/Home/Member/Center'));
+const ActivityManager = lazy(() => import('@/frontend/pages/Home/Member/ActivityManager'));
+const MessageManager = lazy(() => import('@/frontend/pages/Home/Member/MessageManager'));
+const NotificationsPage = lazy(() => import('@/frontend/pages/Home/Member/NotificationsPage'));
+
+// --- 後台 ---
+const AdminLayout = lazy(() => import('@/frontend/layouts/AdminLayout'));
+const Login = lazy(() => import('@/frontend/pages/Admin/Login'));
+const Dashboard = lazy(() => import('@/frontend/pages/Admin/Dashboard'));
+const MemberManage = lazy(() => import('@/frontend/pages/Admin/MemberManage'));
+const OrderListManage = lazy(() => import('@/frontend/pages/Admin/OrderListManage'));
+const BlogManage = lazy(() => import('@/frontend/pages/Admin/BlogManage'));
+const ActivityManageListPage = lazy(() => import('@/frontend/pages/Admin/ActivityManage/ActivityManageListPage'));
+const ActivityManageDetailPage = lazy(() => import('@/frontend/pages/Admin/ActivityManage/ActivityDetailPage'));
+const EvaluationManage = lazy(() => import('@/frontend/pages/Admin/EvaluationManage'));
+
+/** 包上 Suspense，載入 chunk 期間顯示 loading */
+const withSuspense = (element) => <Suspense fallback={<PageLoader />}>{element}</Suspense>;
+
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <FrontendLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'activity-list', element: withSuspense(<ActivityList />) },
+      { path: 'activity-list/booking1', element: withSuspense(<BookingPage1 />) },
+      { path: 'activity-list/booking2', element: withSuspense(<BookingPage2 />) },
+      { path: 'activity-list/booking3', element: withSuspense(<BookingPage3 />) },
+      { path: 'activity-list/booking4', element: withSuspense(<BookingPage4 />) },
+      { path: 'activity-list/:id', element: withSuspense(<ActivityDetailPage />) },
+      { path: 'journal-list', element: withSuspense(<JournalList />) },
+      { path: 'journal-list/:id', element: withSuspense(<JournalDetailPage />) },
+    ],
+  },
+  {
+    path: '/member-center',
+    element: <RequireAuth>{withSuspense(<MemberCenterLayout />)}</RequireAuth>,
+    errorElement: <ErrorPage />,
+    children: [
+      { path: 'personal-data', element: withSuspense(<PersonalData />) },
+      { path: 'order-management/list', element: withSuspense(<OrderListPage />) },
+      { path: 'order-management/detail/:id', element: withSuspense(<OrderDetailPage />) },
+      { path: 'activity-review', element: withSuspense(<ActivityReview />) },
+      { path: 'collection-list', element: withSuspense(<CollectionList />) },
+      { path: 'sign-in', element: withSuspense(<SignIn />) },
+      { path: 'activity-points', element: withSuspense(<ActivityPoints />) },
+      { path: 'customer-support', element: withSuspense(<CustomerSupport />) },
+      { path: 'center', element: withSuspense(<Center />) },
+      { path: 'activity-manager', element: withSuspense(<ActivityManager />) },
+      { path: 'message-manager', element: withSuspense(<MessageManager />) },
+      { path: 'notifications', element: withSuspense(<NotificationsPage />) },
+    ],
+  },
+  {
+    path: '/admin',
+    element: <RequireAdmin>{withSuspense(<AdminLayout />)}</RequireAdmin>,
+    errorElement: <ErrorPage />,
+    children: [
+      { path: 'dashboard', element: withSuspense(<Dashboard />) },
+      { path: 'member', element: withSuspense(<MemberManage />) },
+      { path: 'order-list', element: withSuspense(<OrderListManage />) },
+      { path: 'blog', element: withSuspense(<BlogManage />) },
+      { path: 'activity-list', element: withSuspense(<ActivityManageListPage />) },
+      { path: 'activity-list/:id', element: withSuspense(<ActivityManageDetailPage />) },
+      { path: 'evaluation', element: withSuspense(<EvaluationManage />) },
+    ],
+  },
+  {
+    path: '/admin/login',
+    element: withSuspense(<Login />),
+    errorElement: <ErrorPage />,
+  },
+  // 沒有對應的網址一律顯示 404（此路由不會拋錯，需明確標示 notFound）
+  { path: '*', element: <ErrorPage notFound /> },
+]);
 
 export default router;
