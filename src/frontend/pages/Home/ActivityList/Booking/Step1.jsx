@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Step1.scss";
 import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import { formatDateZh } from "@/frontend/utils/date";
 
 const renderTooltip = (props) => (
   <Tooltip {...props}>請選擇適合的選項</Tooltip>
@@ -58,9 +59,8 @@ const Step1 = () => {
     navigate("/activity-list/booking2", { state: updatedData });
   };
 
-  const date = new Date(submitData.last_bookable_date);
 
-  const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2, '0')}月${date.getDate().toString().padStart(2, '0')}日`;
+  const formattedDate = formatDateZh(submitData.last_bookable_date);
 
 
   

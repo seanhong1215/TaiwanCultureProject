@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step2.scss";
 import { useLocation } from "react-router-dom";
+import { formatDateZh } from "@/frontend/utils/date";
 
 const Step2 = () => {
   const navigate = useNavigate();
@@ -16,9 +17,8 @@ const Step2 = () => {
     }
   }, []);
 
-  const date = new Date(submitData.last_bookable_date);
 
-  const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2, '0')}月${date.getDate().toString().padStart(2, '0')}日`;
+  const formattedDate = formatDateZh(submitData.last_bookable_date);
 
   return (
     <Container className="booking-step2 py-4">
