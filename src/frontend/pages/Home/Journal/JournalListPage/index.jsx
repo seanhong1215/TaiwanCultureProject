@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/frontend/components/DatePicker/DatePicker.scss";
+import "@/frontend/components/Datepicker/Datepicker.scss";
 import { getJournalPage, getJournalAll } from '@/frontend/utils/api';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";

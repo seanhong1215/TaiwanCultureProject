@@ -99,7 +99,13 @@ CI 會執行以下項目，建議在本機先跑過一次：
 | `npm run lint` | ESLint，不得有 error |
 | `npm run test:run` | 單元測試全數通過 |
 | `npm run build` | 建置成功 |
+| `npm run check-import-case` | import 路徑大小寫與磁碟一致 |
 | `npm run check-bundle` | 首屏 bundle gzip 後不超過 400 kB |
+
+> **Windows 開發者請特別注意**：Windows 檔案系統不分大小寫，
+> `import "@/components/DatePicker/..."` 即使實際目錄是 `Datepicker/` 也能正常執行，
+> 但到了 Linux 的 CI 就會建置失敗，而且本機完全重現不出來。
+> `npm run check-import-case` 就是用來在本機提前抓出這種問題。
 
 ### 加入新的第三方套件時
 

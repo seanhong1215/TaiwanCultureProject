@@ -13,7 +13,7 @@ import communication from '@/frontend/assets/images/choosing/communication.svg';
 import fishing from '@/frontend/assets/images/choosing/fishing.svg';
 import travel from '@/frontend/assets/images/choosing/travel.svg';
 import "react-datepicker/dist/react-datepicker.css";
-import "@/frontend/components/DatePicker/DatePicker.scss"; 
+import "@/frontend/components/Datepicker/Datepicker.scss"; 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
