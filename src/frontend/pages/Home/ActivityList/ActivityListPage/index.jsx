@@ -4,7 +4,7 @@ import Breadcrumb from "@/frontend/components/Breadcrumb"
 import { useEffect, useState, useRef } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/frontend/components/DatePicker/DatePicker.scss";
+import "@/frontend/components/Datepicker/Datepicker.scss";
 import { getActivityAll, getActivityPage } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
