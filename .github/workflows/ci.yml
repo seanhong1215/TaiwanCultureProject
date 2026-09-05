@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [master, dev]
+  pull_request:
+    branches: [master, dev]
+
+jobs:
+  verify:
+    name: Lint / Test / Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 設定 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 安裝相依套件
+        run: npm ci
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: 單元測試
+        run: npm run test:run
+
+      - name: 建置
+        run: npm run build
+
+      - name: 檢查首屏 bundle 大小
+        run: node scripts/check-bundle-size.mjs
