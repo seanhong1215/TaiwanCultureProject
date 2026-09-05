@@ -1,9 +1,10 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'
- ? 'https://taiwan-culture-project.onrender.com'
- : 'http://localhost:3001'
+// 使用 Vite 的 import.meta.env 而非 process.env：瀏覽器沒有 process，
+// 且 API 位址改由環境變數注入，換部署環境不必改程式碼。
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
+  || (import.meta.env.PROD ? 'https://taiwan-culture-project.onrender.com' : 'http://localhost:3001');
 
 // 自動帶入 token（前台用 token，後台用 admin_token）
 axios.interceptors.request.use((config) => {
@@ -15,6 +16,30 @@ axios.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// 後端回 401 代表 token 過期或無效（社群登入的 Firebase ID Token 約 1 小時到期）。
+// 清掉本地憑證並導回對應的登入入口，避免使用者卡在「看起來已登入但每個操作都失敗」的狀態。
+const MEMBER_KEYS = ['token', 'userId', 'userName', 'userEmail', 'userAvatar', 'userRole'];
+const ADMIN_KEYS = ['admin_token', 'admin_userId', 'admin_userName', 'admin_userEmail', 'admin_userAvatar', 'admin_userRole'];
+
+const clearSession = (keys) => keys.forEach((key) => localStorage.removeItem(key));
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      const isAdminArea = window.location.hash.startsWith('#/admin');
+      if (isAdminArea) {
+        clearSession(ADMIN_KEYS);
+        window.location.hash = '#/admin/login';
+      } else {
+        clearSession(MEMBER_KEYS);
+        window.location.hash = '#/';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 
  // 註冊
@@ -335,35 +360,20 @@ export const getPayments = async (id) => {
 // 圖片上傳
 export const uploadImageToCloudinary = async(file) => {
     try {
-        const token = localStorage.getItem('token');
-        const authHeader = { Authorization: `Bearer ${token}` };
-
-        // 1. 獲取 Cloudinary 簽名
-        const signResponse = await axios.get(`/get-signature`, { headers: authHeader });
-        const { signature, timestamp, apiKey } = signResponse.data;
-
-        // 2. 準備 FormData
+        // 簽名與上傳都在後端完成，前端只負責送檔案（Token 由 interceptor 自動帶上）
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('signature', signature);
-        formData.append('timestamp', timestamp);
-        formData.append('api_key', apiKey);
-        formData.append('upload_preset', 'bennyhong');
-        formData.append('folder', 'uploads');  // 設定 asset_folder 為 'uploads'
 
-        // 3. 上傳到 Cloudinary
-        const cloudinaryResponse = await axios.post(`/upload-to-cloudinary`, formData, { headers: { ...authHeader } });
+        const { data } = await axios.post(`/upload-to-cloudinary`, formData);
 
-        const imageData = cloudinaryResponse.data;
-        const imageUrl = imageData.secure_url;
-
-        if (!imageUrl) {
+        if (!data.secure_url) {
             Swal.fire({ title: "無法取得圖片 URL", icon: "warning" });
-        return;
+            return;
         }
-        return imageUrl
+        return data.secure_url;
     } catch (error) {
-        Swal.fire({ title: '上傳圖片失敗: ' + error.message, icon: "error" });
+        const message = error.response?.data?.error || error.message;
+        Swal.fire({ title: '上傳圖片失敗: ' + message, icon: "error" });
     }
 }
 
@@ -486,7 +496,8 @@ export const getNotifications = async () => {
     return response.data; 
 };
 
+// 原本誤用 axios.get 送 body，通知其實從未被建立
 export const addNotifications = async (data) => {
-    const response = await axios.get("/api/notifications", data);
-    return response.data; 
+    const response = await axios.post("/api/notifications", data);
+    return response.data;
 };

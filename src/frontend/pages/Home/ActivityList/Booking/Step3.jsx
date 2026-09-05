@@ -48,20 +48,28 @@ const Step3 = () => {
     try {
       // 執行 POST 請求
       const createResponse = await createOrder(orderData);
-      Swal.fire({
-              title: "預約成功",
-              icon: "success"
-          })
-      navigate("/activity-list/booking4" ,{ state: createResponse } );
 
+      // 通知必須在導頁「之前」送出：navigate 會卸載本元件，
+      // 原本寫在 navigate 之後的請求實際上不一定會送出去。
+      // 通知失敗不應該擋住已成功的訂單，因此獨立 catch。
       await addNotifications({
         message: `新預約：${userName}`,
         timestamp: new Date().toISOString()
-      })
-      
+      }).catch((err) => console.error("建立通知失敗:", err));
+
+      Swal.fire({
+        title: "預約成功",
+        icon: "success"
+      });
+      navigate("/activity-list/booking4", { state: createResponse });
+
     } catch (error) {
-      // 處理錯誤
       console.error("發送請求時出錯:", error);
+      Swal.fire({
+        title: "預約失敗",
+        text: error.response?.data?.message || error.message,
+        icon: "error"
+      });
     }
   };
   
