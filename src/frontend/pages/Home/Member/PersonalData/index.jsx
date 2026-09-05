@@ -3,7 +3,7 @@ import { userProfiles, updateUsers, getUserDetail} from '@/frontend/utils/api';
 import './PersonalData.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/frontend/components/DatePicker/DatePicker.scss"; 
+import "@/frontend/components/Datepicker/Datepicker.scss"; 
 import Swal from 'sweetalert2';
 
 const PersonalData = () => {

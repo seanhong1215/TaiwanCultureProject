@@ -4,7 +4,7 @@ import { getOrdersByUser, getActivityAll, updateOrder } from '@/frontend/utils/a
 import './OderListPage.scss';
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
-import EventReviewForm from '@/frontend/components/form/EventReviewForm';
+import EventReviewForm from '@/frontend/components/Form/EventReviewForm';
 import dayjs from "dayjs";
 
 const OrderListPage = () => {

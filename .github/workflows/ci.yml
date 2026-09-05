@@ -26,6 +26,11 @@ jobs:
       - name: ESLint
         run: npm run lint
 
+      # 開發環境是 Windows（不分大小寫），這裡是 Linux（分大小寫），
+      # 先擋下只會在此環境炸掉的 import 路徑問題
+      - name: 檢查 import 路徑大小寫
+        run: npm run check-import-case
+
       - name: 單元測試
         run: npm run test:run
 

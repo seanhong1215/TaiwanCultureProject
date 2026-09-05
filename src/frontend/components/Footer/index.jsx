@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import './footer.scss';
+import './Footer.scss';
 import logo from '@/frontend/assets/images/logo.svg';
 
 const Footer = () => {
