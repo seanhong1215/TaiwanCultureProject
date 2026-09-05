@@ -169,7 +169,8 @@ src/
     └── assets/                 # SCSS、圖片、Firebase 設定
 ```
 
-更完整的架構、資料表與 API 說明請見 [ARCHITECTURE.md](ARCHITECTURE.md)。
+更完整的架構、資料表與 API 說明請見 [ARCHITECTURE.md](ARCHITECTURE.md)，
+分支策略與 commit 規範請見 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ---
 
