@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
 import { Eye, Users, ShoppingCart, Calendar, Star } from 'lucide-react';
 import { getMemberAll, getOrderAll, getReviewAll, getActivityAll } from '@/frontend/utils/api';
 import './Dashboard.scss';
@@ -19,6 +19,7 @@ const AdminDashboard = () => {
         avgRating: 0,
     });
     const [memberTrend, setMemberTrend] = useState([]);
+    const [orderTrend, setOrderTrend] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -31,19 +32,54 @@ const AdminDashboard = () => {
                     getActivityAll(),
                 ]);
 
-                // 會員趨勢（依月份統計）
-                const monthNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-                const trendMap = {};
+                // 近6個月標籤
+                const getLast6Months = () => {
+                    const months = [];
+                    const now = new Date();
+                    for (let i = 5; i >= 0; i--) {
+                        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                        months.push({
+                            key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
+                            label: `${d.getMonth() + 1}月`,
+                        });
+                    }
+                    return months;
+                };
+                const last6Months = getLast6Months();
+
+                // 會員趨勢（近6個月）
+                const memberTrendMap = {};
                 members.forEach(m => {
                     if (m.createdAt) {
-                        const month = new Date(m.createdAt).getMonth();
-                        trendMap[month] = (trendMap[month] || 0) + 1;
+                        const d = new Date(m.createdAt);
+                        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                        memberTrendMap[key] = (memberTrendMap[key] || 0) + 1;
                     }
                 });
-                const trend = monthNames.map((name, i) => ({
-                    name,
-                    value: trendMap[i] || 0,
+                const trend = last6Months.map(({ key, label }) => ({
+                    name: label,
+                    新增會員: memberTrendMap[key] || 0,
                 }));
+
+                // 訂單趨勢（近6個月）
+                const orderTrendMap = {};
+                orders.forEach(o => {
+                    if (o.createdAt) {
+                        const d = new Date(o.createdAt);
+                        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                        if (!orderTrendMap[key]) orderTrendMap[key] = { 訂單數: 0, 營收: 0 };
+                        orderTrendMap[key].訂單數 += 1;
+                        if (o.paymentStatus === 'PAID') {
+                            orderTrendMap[key].營收 += (o.totalAmount || 0);
+                        }
+                    }
+                });
+                const oTrend = last6Months.map(({ key, label }) => ({
+                    name: label,
+                    訂單數: orderTrendMap[key]?.訂單數 || 0,
+                    營收: orderTrendMap[key]?.營收 || 0,
+                }));
+                setOrderTrend(oTrend);
 
                 // 訂單統計
                 const pendingOrders = orders.filter(o => o.reservedStatus === 'reserved').length;
@@ -68,6 +104,7 @@ const AdminDashboard = () => {
                     avgRating,
                 });
                 setMemberTrend(trend);
+
             } catch (error) {
                 console.error('Dashboard 資料載入失敗:', error);
             } finally {
@@ -122,9 +159,10 @@ return (
                         <LineChart data={memberTrend}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
-                            <YAxis />
+                            <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Line type="monotone" dataKey="value" stroke="#0d6efd" />
+                            <Legend />
+                            <Line type="monotone" dataKey="新增會員" stroke="#0d6efd" strokeWidth={2} dot={{ r: 4 }} />
                         </LineChart>
                         </ResponsiveContainer>
                     </div>
@@ -149,7 +187,7 @@ return (
                     </h5>
                     </div>
                     <div className="card-body">
-                    <div className="row mb-4">
+                    <div className="row mb-3">
                         <div className="col-4">
                         <p className="text-muted mb-1">待處理</p>
                         <h3>{stats.pendingOrders}</h3>
@@ -163,7 +201,19 @@ return (
                         <h3>${(stats.totalRevenue / 1000).toFixed(1)}K</h3>
                         </div>
                     </div>
-                    <div className="mt-4">
+                    <div style={{ height: '200px' }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={orderTrend}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis allowDecimals={false} />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="訂單數" fill="#0d6efd" />
+                        </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="mt-3">
                         <Link to="/admin/order-list" className="btn btn-primary me-2">
                         <Eye className="me-1" size={16} /> 查看訂單
                         </Link>
