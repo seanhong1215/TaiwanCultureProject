@@ -1,0 +1,74 @@
+.activity-detail-page{
+  .card-title.h5 {
+    margin-bottom: 0;
+  }
+  .form-label {
+    font-size: $text-font-header-5;
+  }
+}
+
+  .trip-highlights{
+    div .form-label{
+      margin-bottom: 0;
+    }
+    ul {
+      padding: 0;
+      li {
+        margin-bottom: 12px;
+        button {
+          margin-left: 12px;
+          white-space: nowrap;
+        }
+      }
+    }
+    
+  }
+  .trip-images{
+    .img-thumbnail {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      // border: none;
+      object-fit: cover;
+    }
+  }
+  .trip-section{
+    div .form-label{
+      margin-bottom: 0;
+    }
+    .card {
+      padding: 24px;
+      button {
+        width: fit-content;
+        margin-left: auto;
+      }
+    }
+  }
+
+
+  .trip-highlights, .trip-section, .trip-images div{
+    button {
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-left: 8px;
+      font-size: 14px;
+      border: none;
+      &:hover {
+        border: none;
+        opacity: 0.85;
+      }
+    }
+  }
+
+.trip-form{
+  .form-label {
+    font-size: $text-font-header-5;
+  }
+}
+
+.trip-images div {
+  .form-label {
+    margin-bottom: 0;
+  }
+}
+  

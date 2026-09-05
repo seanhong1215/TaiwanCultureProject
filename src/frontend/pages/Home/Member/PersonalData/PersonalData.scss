@@ -1,0 +1,41 @@
+.personal {
+  .info {
+    color: $text-color-10;
+    font-weight: var(--font-weight-bold);
+    font-size: $text-font-header-4;
+    display: flex;
+    align-items: center;
+    line-height: 1.25;
+    &::before {
+      content: '';
+      background: $primary-color-5;
+      width: 5px;
+      height: 100%;
+      margin-right: 12px;
+      height: 30px;
+      margin-right: 12px;
+      display: inline-block;
+      border-radius: 4px;
+    }
+  }
+  form{
+    padding: 32px 0;
+    .row {
+      margin-bottom: 32px;
+      > div {
+        padding: 6px;
+      }
+    }
+    .btn {
+      display: block;
+      margin-left: auto;
+    }
+  }
+}
+
+
+@media (min-width: 992px){
+  .personal {
+
+  }
+}

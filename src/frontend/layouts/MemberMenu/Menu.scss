@@ -1,0 +1,123 @@
+.custom-menu {
+  background: var( --color-background); 
+  border-radius: 40px; 
+  border: 1px solid $text-color-4;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    margin: 0 12px;
+    border-top: 1px solid #eee;
+    overflow-x: auto;
+  li {
+    cursor: pointer;
+    &.active, &:hover {
+      background: transparent; 
+      transition: all .3s;
+      .nav-link-item {
+        color: $primary-color-5;
+      }
+    }
+    .nav-link-item{
+      color: $text-color-9;
+      font-size: $text-font-header-7;
+      display: block;
+      padding: 12px 8px;
+      display: flex;
+      align-items: flex-start;
+      white-space: nowrap;
+      gap: 8px;
+      &.active {
+        transition: all .3s;
+        color: $primary-color-5;
+      }
+    }
+    .material-icons {
+      display: none;
+    }
+  }
+}
+
+.user-image-wrap {
+  padding-top: 16px;
+  padding-bottom: 12px;
+  p {
+    color: $text-color-10;
+    font-weight: var( --font-weight-bold);
+    margin-top: 8px;
+  }
+  .avatar-img-wrap {
+    display: inline-block;
+    position: relative;
+    &:hover {
+      img {
+        opacity: 0.7;
+        transition: all .3s;
+      }
+      .camera-icon {
+        display: block;
+      }
+    }
+    .camera-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $text-color-1;
+      font-size: $text-font-header-4;
+      display: none;
+    }
+    .img-hover:hover {
+      opacity: 0.7;
+      transition: all .3s;
+    }
+  }
+}
+
+
+
+@media (min-width: 992px){
+  .custom-menu  {
+    padding: 32px 0;
+  }
+  .menu-item-wrap {
+    flex-wrap: wrap;
+    flex-direction: column;
+    li {
+      display: block;
+      width: 100%;
+      &.active, &:hover {
+        background: $primary-color-1; 
+        transition: all .3s;
+        .nav-link-item {
+          color: $primary-color-5;
+          transition: background 0.3s ease, color 0.3s ease;
+        }
+      }
+      .material-icons {
+        display: block;
+      }
+      .nav-link-item {
+        padding: 16px 24px;
+        align-items: center;
+        width: auto;
+        &.active {
+          background: transparent; 
+          transition: all .3s;
+          color: $primary-color-5;
+        }
+      }
+    }
+  }
+ .user-image-wrap {
+    margin-bottom: 32px;
+    padding: 0;
+ }
+}
+

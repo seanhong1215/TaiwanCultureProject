@@ -42,6 +42,9 @@ build/
 .env.test.local
 .env.production.local
 
+# Firebase Admin SDK credentials (contains private keys)
+*firebase-adminsdk*.json
+
 # npm ci cache
 npm-cache/
 
@@ -49,6 +52,5 @@ npm-cache/
 .prettierignore
 .eslintcache
 
-# 靜態資源
-public/static
-
+.claude
+.qodo

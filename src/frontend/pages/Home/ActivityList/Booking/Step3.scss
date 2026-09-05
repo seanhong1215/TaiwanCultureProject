@@ -1,0 +1,18 @@
+.payment-step {
+  background-color: #f8f9fa;
+}
+
+.payment-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.payment-card .form-control {
+  border-radius: 5px;
+}
+
+.payment-card button {
+  font-size: 1rem; 
+  padding: 10px 20px; 
+}

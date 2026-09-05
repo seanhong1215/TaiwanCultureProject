@@ -1,0 +1,25 @@
+.badge-custom {
+  font-size: 0.9rem !important;  
+  padding: 0.5rem 1rem !important;
+  font-weight: 500 !important;  
+}
+
+.member-center h2 {
+  color: $text-color-9;
+}
+
+.member-center {
+  .table{
+    thead tr th, tbody tr td {
+      white-space: nowrap;
+    }
+  }
+  .card-title {
+    margin-top: 12px;
+  }
+  .card-body {
+    overflow-x: auto;
+    width: 100%;
+    padding-top: 0;
+  }
+}
