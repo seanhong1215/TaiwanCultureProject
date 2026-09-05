@@ -5,12 +5,8 @@ import "./Step3.scss";
 import { createOrder, addNotifications } from "@/frontend/utils/api"
 import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import axios from "axios";
 import Swal from 'sweetalert2';
-
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'
- ? 'https://taiwan-culture-project.onrender.com'
- : 'http://localhost:3001'
+import { toSafePaymentRecord } from "@/frontend/utils/payment";
 
 const Step3 = () => {
   const navigate = useNavigate();
@@ -43,9 +39,10 @@ const Step3 = () => {
     });
 
   const onSubmit  = async (data) => {
+    // 只保留持卡人／卡別／末四碼；完整卡號、有效期限與 CVV 不離開此元件
     const orderData = {
-      ...submitData, // 包含用户表单数据
-      paymentData: data
+      ...submitData, // 包含使用者表單資料
+      paymentData: toSafePaymentRecord(data)
     };
 
     try {
