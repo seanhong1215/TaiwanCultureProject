@@ -1,0 +1,41 @@
+/* 骨架屏樣式。色票由 vite 的 additionalData 全域注入 _variables.scss */
+
+.skeleton {
+  display: block;
+  background-color: $text-color-4;
+  background-image: linear-gradient(
+    90deg,
+    $text-color-4 0%,
+    $text-color-3 40%,
+    $text-color-4 80%
+  );
+  background-size: 300% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+
+  // 尊重使用者的減少動態偏好設定
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 150% 0; }
+  to { background-position: -150% 0; }
+}
+
+.skeleton-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-card {
+  margin-bottom: 24px;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 4px 0;
+  }
+}

@@ -8,6 +8,8 @@ import "@/frontend/components/Datepicker/Datepicker.scss";
 import { getActivityAll, getActivityPage } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
+import { CardGridSkeleton } from '@/frontend/components/Skeleton';
+import EmptyState from '@/frontend/components/EmptyState';
 import PageNation from "@/frontend/components/PageNation";
 
 
@@ -65,8 +67,12 @@ const ActivityList = () => {
       setSearchData(response)
 
     } catch (error) {
-        setError('Error fetching activity:', error);
-    } 
+        console.error('取得活動資料失敗:', error);
+        setError('活動資料載入失敗');
+    } finally {
+        // 原本沒有 finally，setLoading(true) 之後永遠不會設回 false
+        setLoading(false);
+    }
 };
 
   useEffect(() => {
@@ -277,10 +283,27 @@ const selectOptionType = (eventType) => {
               <div className="right-content">
                 <div className="row main-body">
                   
-                    {/* Check if no search results and there are search criteria */}
-                    {(searchResultsData.length === 0 && searchingValue.length > 0) ? (
+                    {/* 載入中先用骨架屏撐出版面，避免整片空白讓人以為壞掉 */}
+                    {loading ? (
+                      <CardGridSkeleton count={6} />
+                    ) : error ? (
                       <div className="col-12">
-                        <p>No activities found.</p>
+                        <EmptyState
+                          title={error}
+                          description="請檢查網路連線後重試。"
+                          action={
+                            <button type="button" className="btn btn-primary" onClick={fetchGetActivityAll}>
+                              重新載入
+                            </button>
+                          }
+                        />
+                      </div>
+                    ) : (searchResultsData.length === 0 && searchingValue.length > 0) ? (
+                      <div className="col-12">
+                        <EmptyState
+                          title="找不到符合條件的活動"
+                          description="試著放寬搜尋條件，或清除篩選看看所有活動。"
+                        />
                       </div>
                     ) : (
                       // If there are search results, show them; otherwise, show all activities
@@ -297,8 +320,8 @@ const selectOptionType = (eventType) => {
                     )}
                 </div>
                 <div className="row">
-                    {/* Check if no search results and there are search criteria */}
-                    {(searchResultsData.length === 0 && searchingValue.length > 0) ? (
+                    {/* 載入中或查無結果時不顯示分頁 */}
+                    {(loading || error || (searchResultsData.length === 0 && searchingValue.length > 0)) ? (
                       ""
                     ) : (
                       <div className="col-12">

@@ -6,6 +6,7 @@ import Breadcrumb from "@/frontend/components/Breadcrumb";
 import ReviewBars from "@/frontend/components/Progress";
 import ActivityMap from "@/frontend/components/ActivityMap";
 import { formatDateZh } from "@/frontend/utils/date";
+import Skeleton, { SkeletonText } from "@/frontend/components/Skeleton";
 import "./ActivityDetailPage.scss";
 
 const ActivityDetailPage = () => {
@@ -369,6 +370,28 @@ const renderDay = (day) => {
   );
 };
 
+
+// 資料回來之前先撐出版面。原本 loading 狀態有設定卻從未渲染，
+// 使用者在載入期間看到的是一片空白。
+if (loading && !activityData.content) {
+  return (
+    <div className="activity-detail-page container" role="status" aria-busy="true">
+      <span className="visually-hidden">載入中，請稍候</span>
+      <div className="py-4">
+        <Skeleton height="360px" radius="8px" />
+        <div className="row mt-4">
+          <div className="col-lg-8">
+            <Skeleton width="55%" height="2rem" />
+            <div className="mt-3"><SkeletonText lines={4} /></div>
+          </div>
+          <div className="col-lg-4 mt-4 mt-lg-0">
+            <Skeleton height="160px" radius="8px" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 return (
 <div className="activity-detail-page container">
