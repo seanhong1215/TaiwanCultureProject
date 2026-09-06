@@ -1,0 +1,101 @@
+/*
+ * 訂票流程進度指示器。
+ * 沿用專案既有的 $primary-color-* 與 $text-color-* 色票（由 vite 的
+ * additionalData 全域注入，不需另外 @use）。
+ */
+
+.booking-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 4px;
+  list-style: none;
+  margin: 0 0 40px;
+  padding: 0;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid $text-color-5;
+    border-radius: 999px;
+    color: $text-color-7;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+
+    // 步驟之間的連接線，讓「流程」的感覺更明確
+    + .booking-steps__item {
+      position: relative;
+      margin-left: 20px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -22px;
+        width: 20px;
+        height: 1px;
+        background-color: $text-color-5;
+      }
+    }
+
+    &--done {
+      border-color: $primary-color-3;
+      background-color: $primary-color-1;
+      color: $primary-color-5;
+    }
+
+    &--active {
+      border-color: $primary-color-5;
+      background-color: $primary-color-5;
+      color: $text-color-1;
+    }
+  }
+
+  &__index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: $text-color-4;
+    color: $text-color-8;
+    font-size: 13px;
+    line-height: 1;
+
+    .booking-steps__item--done & {
+      background-color: $primary-color-3;
+      color: $text-color-1;
+    }
+
+    .booking-steps__item--active & {
+      background-color: rgba(255, 255, 255, 0.25);
+      color: $text-color-1;
+    }
+  }
+
+  // 手機版空間有限：只保留目前步驟的文字，其餘僅顯示編號
+  @media (max-width: 575.98px) {
+    gap: 6px;
+
+    &__item {
+      padding: 6px 10px;
+      margin-left: 0 !important;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    &__label {
+      display: none;
+    }
+
+    &__item--active &__label,
+    &__item--active .booking-steps__label {
+      display: inline;
+    }
+  }
+}

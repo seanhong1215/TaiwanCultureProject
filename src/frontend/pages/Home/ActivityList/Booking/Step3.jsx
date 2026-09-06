@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { toSafePaymentRecord } from "@/frontend/utils/payment";
+import BookingSteps from "@/frontend/components/BookingSteps";
 
 const Step3 = () => {
   const navigate = useNavigate();
@@ -80,16 +81,7 @@ const Step3 = () => {
       <h2 className="text-center mb-4">付款資料</h2>
 
        {/* 進度指示器 */}
-          <div className="progress-steps d-flex justify-content-center mb-5">
-            {['行程資料', '確認訂單', '付款資料', '完成預約'].map((step, index) => (
-              <Button
-                key={index}
-                className={`me-2 px-3 fw-semibold ${index === 2 ? "custom-btn" : "outline-custom-btn"}`}
-              >
-                {index + 3}. {step}
-              </Button>
-            ))}
-          </div>
+          <BookingSteps current={3} />
 
       <Row className="justify-content-center">
         <Col md={8}>
