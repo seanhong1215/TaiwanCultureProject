@@ -1,0 +1,34 @@
+/* 活動地圖。色票由 vite 的 additionalData 全域注入 _variables.scss */
+
+.activity-map {
+  // 與地圖實際高度一致：地圖載入前後版面不會跳動
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: $text-color-3;
+
+  // leaflet 初始化後會接管容器內容，這時不需要置中的佔位樣式
+  &:has(.leaflet-container) {
+    display: block;
+    background-color: transparent;
+  }
+
+  &--placeholder {
+    color: $text-color-8;
+    font-size: 14px;
+  }
+
+  &__hint {
+    color: $text-color-7;
+    font-size: 14px;
+  }
+
+  &__message {
+    margin: 0;
+    padding: 24px 0;
+    color: $text-color-8;
+    font-size: 14px;
+  }
+}
