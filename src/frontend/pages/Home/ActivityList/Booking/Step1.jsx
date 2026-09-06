@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { formatDateZh } from "@/frontend/utils/date";
 import BookingSteps from "@/frontend/components/BookingSteps";
+import { resolveBookingData, saveBookingDraft } from '@/frontend/utils/bookingDraft';
 
 const renderTooltip = (props) => (
   <Tooltip {...props}>請選擇適合的選項</Tooltip>
@@ -14,8 +15,14 @@ const renderTooltip = (props) => (
 const Step1 = () => {
 
   const location = useLocation();
-  const submitData = location.state || {}; 
+  // 重新整理時 location.state 會消失，退回 sessionStorage 的草稿
+  const submitData = resolveBookingData(location.state);
   const navigate = useNavigate();
+
+  // 進到這一步就把資料留一份，之後任何一步重新整理都還原得回來
+  useEffect(() => {
+    if (location.state) saveBookingDraft(location.state);
+  }, [location.state]);
   const [selectValue , setSelectValue] = useState('')
   const [selectTimeSolt , setSelectTimeSolt] = useState('')
   

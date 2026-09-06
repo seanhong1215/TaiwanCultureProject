@@ -8,17 +8,24 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { toSafePaymentRecord } from "@/frontend/utils/payment";
 import BookingSteps from "@/frontend/components/BookingSteps";
+import { resolveBookingData, saveBookingDraft } from '@/frontend/utils/bookingDraft';
 
 const Step3 = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const submitData = location.state || {};
+  // 重新整理時 location.state 會消失，退回 sessionStorage 的草稿
+  const submitData = resolveBookingData(location.state);
 
+  // 導回列表前先看草稿：原本只認 location.state，
+  // 使用者在流程中重新整理就會被踢回活動列表、資料全失
   useEffect(() => {
-    if (!location.state?.activityName) {
+    if (!submitData.activityName) {
       navigate('/activity-list', { replace: true });
+      return;
     }
-  }, []);
+    if (location.state) saveBookingDraft(location.state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
 
   const userName = localStorage.getItem("userName");
 
