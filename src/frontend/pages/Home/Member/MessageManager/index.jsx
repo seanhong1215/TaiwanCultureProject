@@ -3,6 +3,7 @@ import { getReviewAll, getReviewPage, deleteReviews } from "@/frontend/utils/api
 import PageNation from "@/frontend/components/PageNation";
 import MessageManagerModal from '@/frontend/components/Modal/MessageManagerModal';
 import Swal from 'sweetalert2';
+import toast from '@/frontend/utils/toast';
 
 const MessageManager = () => {
   const [reviews, setReviews] = useState([]);
@@ -107,21 +108,14 @@ const handleDelete = async (id) => {
   if (result.isConfirmed) {
     try {
       await deleteReviews(id); // 確保 API 刪除成功
-      Swal.fire({
-        icon: "success",
-        title: "留言已刪除",
-        timer: 1500,
-      });
+      toast.success("留言已刪除");
 
       // 透過 `setRefreshReviews` 來觸發 `useEffect`
       setRefreshReviews((prev) => !prev);
 
     } catch (error) {
       console.error("刪除留言失敗", error);
-      Swal.fire({
-        icon: "error",
-        title: "刪除失敗，請稍後再試",
-      });
+      toast.error("刪除失敗，請稍後再試");
     }
   }
 }
