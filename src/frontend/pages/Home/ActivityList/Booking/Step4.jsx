@@ -5,19 +5,35 @@ import "./Step4.scss";
 import { useLocation } from "react-router-dom";
 import { formatDateZh } from "@/frontend/utils/date";
 import BookingSteps from "@/frontend/components/BookingSteps";
+import { resolveBookingData, saveBookingDraft, clearBookingDraft } from '@/frontend/utils/bookingDraft';
 
 const Step4 = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
-  const submitData = location.state || {};
+  // 重新整理時 location.state 會消失，退回 sessionStorage 的草稿
+  const submitData = resolveBookingData(location.state);
 
+  // 導回列表前先看草稿：原本只認 location.state，
+  // 使用者在流程中重新整理就會被踢回活動列表、資料全失
   useEffect(() => {
-    if (!location.state?.activityName) {
+    if (!submitData.activityName) {
       navigate('/activity-list', { replace: true });
+      return;
     }
-  }, []);
+    if (location.state) saveBookingDraft(location.state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
 
+  /*
+   * 訂單已建立，流程到此結束，離開時把草稿清掉。
+   * 刻意不放在 unmount 的 cleanup：使用者若在這一頁重新整理，
+   * 我們仍要能還原這張完成頁，而不是把資料清光後把人踢回列表。
+   */
+  const finishBooking = (path) => {
+    clearBookingDraft();
+    navigate(path);
+  };
 
     const formattedDate = formatDateZh(submitData.last_bookable_date);
     
@@ -59,8 +75,8 @@ const Step4 = () => {
 
               {/* 返回按鈕 */}
               <div className="mt-4">
-                <Button className="px-4 me-2 custom-btn" onClick={() => navigate("/member-center/center")}>前往會員中心</Button>
-                <Button className="px-4 btn btn-secondary" onClick={() => navigate("/")}>回到首頁</Button>
+                <Button className="px-4 me-2 custom-btn" onClick={() => finishBooking("/member-center/center")}>前往會員中心</Button>
+                <Button className="px-4 btn btn-secondary" onClick={() => finishBooking("/")}>回到首頁</Button>
               </div>
             </Card.Body>
           </Card>
