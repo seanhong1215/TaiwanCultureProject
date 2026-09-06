@@ -6,8 +6,12 @@ import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
 import EventReviewForm from '@/frontend/components/Form/EventReviewForm';
 import dayjs from "dayjs";
+import Skeleton from "@/frontend/components/Skeleton";
+import EmptyState from "@/frontend/components/EmptyState";
 
 const OrderListPage = () => {
+  // 預設為 true：資料還沒回來之前不該先顯示「目前沒有訂單」，那會誤導使用者
+  const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [userOrders, setUserOrders] = useState([]); // 用來存儲過濾後的使用者訂單
   const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
@@ -198,6 +202,8 @@ const OrderListPage = () => {
         text: "無法獲取訂單或活動資料",
         icon: "error",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -293,22 +299,41 @@ const OrderListPage = () => {
         {/* 訂單列表 */}
         <div className="row">
 
+        {/* 載入中：先撐出訂單卡的版面 */}
+        {loading && (
+          <div className="col-12" role="status" aria-busy="true">
+            <span className="visually-hidden">載入中，請稍候</span>
+            {Array.from({ length: 3 }, (_, index) => (
+              <div className="mb-4" key={index}>
+                <Skeleton height="150px" radius="8px" />
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* 顯示沒有搜尋結果的訊息 */}
-        {showNoResults && (
-          <div className="col-12 text-center py-5">
-            <p className="text-muted">沒有符合「{searchTerm}」的結果</p>
+        {!loading && showNoResults && (
+          <div className="col-12">
+            <EmptyState
+              title={`沒有符合「${searchTerm}」的訂單`}
+              description="換個關鍵字，或清除搜尋看看全部訂單。"
+            />
           </div>
         )}
 
         {/* 顯示沒有資料的訊息 */}
-        {orders.length === 0 && !showNoResults && (
-          <div className="col-12 text-center py-5">
-            <p className="text-muted">目前沒有 {activeTab} 的訂單</p>
+        {!loading && orders.length === 0 && !showNoResults && (
+          <div className="col-12">
+            <EmptyState
+              title={`目前沒有${activeTab}的訂單`}
+              description="去逛逛有哪些文化體驗活動吧。"
+              action={<Link to="/activity-list" className="btn btn-primary">探索活動</Link>}
+            />
           </div>
         )}
 
         {/* 有資料時顯示訂單 */}
-        {orders.length > 0 && !showNoResults && ordersToRender.map((order) => (
+        {!loading && orders.length > 0 && !showNoResults && ordersToRender.map((order) => (
             <div className="col-lg-12 mb-4" key={order.id}>
               <div className="card h-100 shadow-sm">
                 <div className="row g-0">

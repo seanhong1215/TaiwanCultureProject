@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
+import { CardGridSkeleton } from "@/frontend/components/Skeleton";
+import EmptyState from "@/frontend/components/EmptyState";
 
 const JournalListPage = () => {
     const [totalPage , setTotalPage] = useState(1);
@@ -68,7 +70,9 @@ const JournalListPage = () => {
           {/* 麵包屑 */}
           <Breadcrumb />
           <div className="row blog-section">
-          {journalData.length > 0 ? (
+          {loading ? (
+            <CardGridSkeleton count={8} colClassName="col-md-6 col-lg-3" />
+          ) : journalData.length > 0 ? (
             journalData.map((item) => (
               <div className="col-md-6 col-lg-3" key={item.id} onClick={(e) => handleNavigate(e, item)} style={{cursor:'pointer'}}>
                 <div className="card mb-3">
@@ -82,13 +86,16 @@ const JournalListPage = () => {
               </div>
             ))
           ) : (
-            <p className="text-center">目前沒有資料</p>
+            <EmptyState
+              title="目前還沒有文章"
+              description="慢活日誌正在籌備中，敬請期待。"
+            />
           )}
 
           </div>
           <div className="row">
             <div className="col-12">
-              {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+              {!loading && totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
             </div>
           </div>
         </div>
