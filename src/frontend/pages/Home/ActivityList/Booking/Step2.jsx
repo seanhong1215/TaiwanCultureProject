@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Step2.scss";
 import { useLocation } from "react-router-dom";
 import { formatDateZh } from "@/frontend/utils/date";
+import BookingSteps from "@/frontend/components/BookingSteps";
 
 const Step2 = () => {
   const navigate = useNavigate();
@@ -26,16 +27,7 @@ const Step2 = () => {
       <h2 className="text-center mb-4">確認表單</h2>
 
        {/* 進度指示器 */}
-        <div className="progress-steps d-flex justify-content-center mb-5">
-          {['行程資料', '確認訂單', '付款資料', '完成預約'].map((step, index) => (
-            <Button
-              key={index}
-              className={`me-2 px-3 fw-semibold ${index === 1 ? "custom-btn" : "outline-custom-btn"}`}
-            >
-              {index + 2}. {step}
-            </Button>
-          ))}
-        </div>
+        <BookingSteps current={2} />
 
       <Row className="justify-content-center">
         <Col md={10}>

@@ -5,6 +5,7 @@ import { getActivitys, getReservations, addReservations, getReviewsActivityId, g
 import Breadcrumb from "@/frontend/components/Breadcrumb";
 import ReviewBars from "@/frontend/components/Progress";
 import ActivityMap from "@/frontend/components/ActivityMap";
+import { formatDateZh } from "@/frontend/utils/date";
 import "./ActivityDetailPage.scss";
 
 const ActivityDetailPage = () => {
@@ -252,18 +253,16 @@ const submitDateClick = () => {
     return
   }
   if(token===null){
+    // 不清除已選日期：使用者登入後回到這一頁，選好的日期還在，不必重選
     Swal.fire({
-      title: "請登入會員",
-      icon: "warning"})
-
-  setSelectedDate('')
-  return
+      title: "請先登入會員",
+      text: "登入後即可繼續預約，你選擇的日期會保留",
+      icon: "info"
+    })
+    return
   }
 
-
-    setTimeout(() => {
-      navigate("/activity-list/booking1" ,{ state: submitdData }); // 跳轉到預約頁面
-    }, 300); // 帶著資料跳轉到預約頁面
+  navigate("/activity-list/booking1", { state: submitdData }); // 帶著資料跳轉到預約頁面
 };
 
 // ********************日期選擇*********************
@@ -278,6 +277,50 @@ const renderCalendarDays = () => {
   const daysInMonth = new Date(currentActDate.getFullYear(), currentActDate.getMonth() + 1, 0).getDate();
   const days = [...Array(daysInMonth)].map((_, index) => renderDay(index + 1));
   return days;
+};
+
+// 所有可預約的日期（由小到大）
+const availableDates = Object.keys(getReservationData)
+  .filter((key) => /^\d{4}-\d{2}-\d{2}$/.test(key))
+  .sort();
+
+// 目前顯示的月份是否有可預約日期
+const currentMonthKey = `${currentActDate.getFullYear()}-${String(currentActDate.getMonth() + 1).padStart(2, '0')}`;
+const monthHasAvailability = availableDates.some((date) => date.startsWith(currentMonthKey));
+
+/*
+ * 日曆預設停在「今天」的月份，但活動可能排在好幾個月後，
+ * 使用者會看到整片灰色、又沒有任何提示，只能盲目按 Next 猜哪個月有名額。
+ * 這裡在可預約資料載入後，直接把日曆跳到第一個有名額的月份。
+ */
+useEffect(() => {
+  if (availableDates.length === 0) return;
+  const [firstDate] = availableDates;
+  setCurrentActDate(new Date(`${firstDate}T00:00:00`));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [getReservationData]);
+
+/*
+ * 活動日期原本只藏在日曆裡，價格區塊只寫「NT$1200起」，
+ * 使用者得先開日曆亂翻才知道這活動什麼時候辦。這裡直接顯示出來。
+ */
+const activityDateLabel = (() => {
+  const start = formatDateZh(activityData.startDate);
+  if (!start) return '';
+  const end = formatDateZh(activityData.endDate);
+  return !end || end === start ? start : `${start} ~ ${end}`;
+})();
+
+/** 跳到最接近、且有名額的月份 */
+const jumpToNearestAvailableMonth = () => {
+  if (availableDates.length === 0) return;
+  const current = currentActDate.getTime();
+  const nearest = availableDates
+    .map((date) => new Date(`${date}T00:00:00`))
+    .reduce((best, date) =>
+      Math.abs(date.getTime() - current) < Math.abs(best.getTime() - current) ? date : best
+    );
+  setCurrentActDate(nearest);
 };
 
 // Update formatted date when currentDate changes
@@ -502,6 +545,9 @@ return (
               <div className="card priceArea addDateTime col-lg-4">
                 <div className="card-body priceAreatitle">
                   <h2 className="actTitle">NT${activityData.price}起</h2>
+                  {activityDateLabel && (
+                    <p className="text-muted small mb-2">活動日期：{activityDateLabel}</p>
+                  )}
                   <div className="callbutton">
                   <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     選擇日期
@@ -514,6 +560,9 @@ return (
       <div className="mobileView">
         <div className="card-body actTitleMobile">
           <h2 className="">NT${activityData.price}起</h2>
+          {activityDateLabel && (
+            <p className="text-muted small mb-2">活動日期：{activityDateLabel}</p>
+          )}
           <div className="callbutton">
           <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             選擇日期
@@ -539,6 +588,23 @@ return (
                 <div className="days">
                   {renderCalendarDays()}
                 </div>
+
+                {/* 本月沒有名額時給出明確指引，而不是讓使用者對著一片灰色亂猜 */}
+                {availableDates.length > 0 && !monthHasAvailability && (
+                  <p className="text-center text-muted small mt-3 mb-0">
+                    本月沒有可預約的日期
+                    <button
+                      type="button"
+                      className="btn btn-link btn-sm p-0 ms-1 align-baseline"
+                      onClick={jumpToNearestAvailableMonth}
+                    >
+                      前往最近可預約的月份
+                    </button>
+                  </p>
+                )}
+                {availableDates.length === 0 && (
+                  <p className="text-center text-muted small mt-3 mb-0">此活動目前沒有開放預約的日期</p>
+                )}
               </div>
             </div>
           </div>

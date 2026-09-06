@@ -5,6 +5,7 @@ import "./Step1.scss";
 import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { formatDateZh } from "@/frontend/utils/date";
+import BookingSteps from "@/frontend/components/BookingSteps";
 
 const renderTooltip = (props) => (
   <Tooltip {...props}>請選擇適合的選項</Tooltip>
@@ -71,16 +72,7 @@ const Step1 = () => {
     <h2 className="text-center mb-5 mb-md-3 fw-bold">預約行程表單</h2>
 
     {/* 進度指示器 */}
-    <div className="progress-steps d-flex justify-content-center mb-5">
-      {['行程資料', '確認訂單', '付款資料', '完成預約'].map((step, index) => (
-        <Button
-          key={index}
-          className={`me-2 px-3 fw-semibold ${index === 0 ? "custom-btn" : "outline-custom-btn"}`}
-        >
-          {index + 1}. {step}
-        </Button>
-      ))}
-    </div>
+    <BookingSteps current={1} />
 
     <Row className="justify-content-center">
       <Col md={8} lg={10}>
