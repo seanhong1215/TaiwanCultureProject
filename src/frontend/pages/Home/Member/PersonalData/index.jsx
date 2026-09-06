@@ -4,7 +4,7 @@ import './PersonalData.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/frontend/components/Datepicker/Datepicker.scss"; 
-import Swal from 'sweetalert2';
+import toast from '@/frontend/utils/toast';
 
 const PersonalData = () => {
 const userId = Number(localStorage.getItem("userId")); // 取得 userId
@@ -113,22 +113,20 @@ const handleSubmit = async (e) => {
             localStorage.setItem("userName", formData.userName);
             // ✅ 觸發 custom event，通知 Header 更新
             window.dispatchEvent(new Event("storageChange"));
-            Swal.fire({
-                title: "設定更新成功",
-                icon: "success"
-            })
+            toast.success("設定已更新");
         } catch (error) {
-            setError("更新失敗", error);
+            console.error("更新個人資料失敗:", error);
+            setError("更新失敗");
+            toast.error("更新失敗，請稍後再試");
         }
     } else {
         try {
             await userProfiles(formData); 
-            Swal.fire({
-                title: "設定新增成功",
-                icon: "success"
-            })
+            toast.success("設定已儲存");
         } catch (error) {
-            setError("新增失敗", error);
+            console.error("新增個人資料失敗:", error);
+            setError("新增失敗");
+            toast.error("儲存失敗，請稍後再試");
         }
     }
 };
