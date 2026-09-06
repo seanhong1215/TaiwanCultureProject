@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import './Activity.scss';
 import { addFavorites, getFavorites, deleteFavorites } from '@/frontend/utils/api';
-import Swal from 'sweetalert2';
+import toast from '@/frontend/utils/toast';
 import { useState } from 'react';
 import { useNavigate  } from 'react-router-dom';
 
@@ -15,13 +15,12 @@ const [loading, setLoading] = useState(false);
 const handleFavoriteClickAdd = async() => {
     if (loading) return; // 防止重複點擊
 
-    if (!userId) {
-        Swal.fire({
-            title: "請先註冊成為會員!",
-            icon: "warning"
-        });
-            return;
-        }
+    // 登入檢查要在打 API 之前：原本先呼叫 getFavorites 才檢查 token，
+    // 未登入的使用者也會白白送出一次請求
+    if (!userId || token === null) {
+        toast.warning("請先登入會員才能收藏");
+        return;
+    }
 
     try{
         setLoading(true);
@@ -29,20 +28,9 @@ const handleFavoriteClickAdd = async() => {
         const favResponse = await getFavorites(userId);
         const repeat = favResponse.some((fav) => fav.activityId === activity.id);
 
-        if(token===null){
-            Swal.fire({
-                title: "請先登入會員，才能進行收藏!",
-                icon: "warning"
-            })
-            return
-        }
-
         if (repeat) {
-            // 如果已經收藏過，顯示警告
-            Swal.fire({
-                title: "請勿重複加入收藏!",
-                icon: "warning"
-            });
+            setIsFavorite(true); // 資料庫已有紀錄，讓畫面與實際狀態一致
+            toast.info("這個活動已經在你的收藏裡了");
             return;
         }
 
@@ -54,22 +42,17 @@ const handleFavoriteClickAdd = async() => {
             };
             await addFavorites(favoriteData);
             setIsFavorite(true);
-            Swal.fire({
-                title: "新增成功! 已加入我的收藏",
-                icon: "success"
-            });
-        } 
-    
+            toast.success("已加入收藏");
+        }
+
 
     } catch(error) {
-        Swal.fire({
-            title: "收藏操作失敗",
-            icon: "error"
-        });
+        console.error("加入收藏失敗:", error);
+        toast.error("收藏失敗，請稍後再試");
     } finally {
         setLoading(false);
     }
-    
+
 }
 
 const handleFavoriteClickRemove = async() => {
@@ -82,20 +65,15 @@ const handleFavoriteClickRemove = async() => {
         if (favorite) {
             await deleteFavorites(favorite.id);
             setIsFavorite(false);
-            Swal.fire({
-                title: "移除成功! 已移除我的收藏",
-                icon: "success"
-            });
+            toast.success("已移除收藏");
         }
         if (isCollectedPage && onToggleFavorite) {
             onToggleFavorite();
         }
-        
+
     } catch(error) {
-        Swal.fire({
-            title: "收藏操作失敗",
-            icon: "error"
-        });
+        console.error("移除收藏失敗:", error);
+        toast.error("移除失敗，請稍後再試");
     } finally {
         setLoading(false);
     }

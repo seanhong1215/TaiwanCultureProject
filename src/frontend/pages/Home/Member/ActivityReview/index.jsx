@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { addReviews, getActivityAll, uploadImageToCloudinary } from '@/frontend/utils/api';
-import Swal from 'sweetalert2';
+import toast from '@/frontend/utils/toast';
 
 const ActivityReview = () => {
     const [imageFiles, setImageFiles] = useState([]); // 用來儲存多張圖片
@@ -99,19 +99,19 @@ const ActivityReview = () => {
     // 新增評論
     const addReview = async () => {
         if (!newReview.reviewContent || !newReview.activityId) {
-            Swal.fire({ title: "請輸入評價內容並選擇活動", icon: "warning" });
+            toast.warning("請選擇活動並輸入評價內容");
             return; // 阻止提交
         }
 
         try {
             await addReviews(newReview);
-            Swal.fire({ title: "評論新增成功", icon: "success" });
+            toast.success("評價已送出");
 
             // 觸發 useEffect 來清空表單
             setIsSubmitted(true); 
 
         } catch (error) {
-            Swal.fire({ title: "評論新增失敗", icon: "error" });
+            toast.error("評價送出失敗，請稍後再試");
             console.error("評論新增失敗", error);
         }
     };
