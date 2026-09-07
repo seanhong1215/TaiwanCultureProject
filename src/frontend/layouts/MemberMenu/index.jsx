@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import './Menu.scss';
 import { updatedMembers } from '@/frontend/utils/api/member';
 import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 
 const Menu = () => {
 
@@ -96,7 +97,7 @@ const Menu = () => {
                 className="d-none"
               />
                 <img
-                  src={userAvatar}
+                  src={cloudinaryOptimize(userAvatar, 200)}
                   alt="User Avatar"
                   className="rounded-circle img-hover"
                   width="100"

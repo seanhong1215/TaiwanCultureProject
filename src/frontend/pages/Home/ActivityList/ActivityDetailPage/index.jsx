@@ -8,6 +8,7 @@ import ReviewBars from "@/frontend/components/Progress";
 import ActivityMap from "@/frontend/components/ActivityMap";
 import { formatDateZh, formatMonthYear } from "@/frontend/utils/date";
 import Skeleton, { SkeletonText } from "@/frontend/components/Skeleton";
+import { cloudinaryOptimize } from "@/frontend/utils/cloudinary";
 import "./ActivityDetailPage.scss";
 
 const LIMIT = 2;
@@ -279,7 +280,7 @@ return (
           <div className="row no-gutter" key={index}>
             {/* 左邊大圖 */}
             <div className="col-12 col-lg-6 no-gutters mainImage-container">
-              <img src={showMainImage} alt={`Main ${index}`} />
+              <img src={cloudinaryOptimize(showMainImage, 1000)} alt={`Main ${index}`} />
             </div>
 
             {/* 右邊 2x2 小圖 */}
@@ -288,7 +289,7 @@ return (
                 {item.images?.slice(1).map((image, imgIndex) => (
 
                   <div className="col-6 no-gutters image-container" key={imgIndex}>
-                    <img src={image?.url} alt={`Thumbnail ${index}-${imgIndex}`} />
+                    <img src={cloudinaryOptimize(image?.url, 400)} alt={`Thumbnail ${index}-${imgIndex}`} loading="lazy" />
                   </div>
                 ))}
               </div>
@@ -340,9 +341,10 @@ return (
                             activityDetailDataSection.map((item, index) => (
                                 <div className="mb-4" key={index}>
                                   <div className="actPic">
-                                      <img src={item.image}
+                                      <img src={cloudinaryOptimize(item.image, 800)}
                                           alt={t('activityDetail.activityImageAlt')}
                                           className="card-img w-100"
+                                          loading="lazy"
                                           style={{objectFit:"cover"}}
                                       />
 
@@ -395,8 +397,9 @@ return (
                             <div className="row reviewRow g-0" key={index}>
                               <div className="col-1 ratingerImg">
                                 <div className="roundedCircle">
-                                    <img src={item.avatar}
+                                    <img src={cloudinaryOptimize(item.avatar, 128)}
                                     alt={item.name}
+                                    loading="lazy"
                                     />
                                 </div>
                               </div>
@@ -413,7 +416,7 @@ return (
                               <div className="ratingImage">
                               { item.imageFiles.map((image,index) =>
                                   <div className='imageBox' key={index}>
-                                    <img src={image} alt={`image-${index}`}  />
+                                    <img src={cloudinaryOptimize(image, 300)} alt={`image-${index}`} loading="lazy" />
                                   </div>
                                 )}
                                 </div>

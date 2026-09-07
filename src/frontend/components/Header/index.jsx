@@ -318,7 +318,7 @@ const Header = () => {
         <header className={`header fixed-top ${menuOpen ? "menu-open" : ""}`}>
             <nav className="navbar navbar-expand-lg navbar-light">
                 <div className="container d-flex justify-content-between align-items-center">
-                <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
+                <Link className="navbar-brand nav-link d-flex align-items-center" to="/" aria-label={t('websiteName')}>
                     <h1 className="header-logo-side m-0 d-flex align-items-center"></h1>
                 </Link>
                 <button 

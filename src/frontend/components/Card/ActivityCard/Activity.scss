@@ -15,7 +15,7 @@
 .activity-card-body {
   text-align: left;
   span.rating {
-    color: $secondary-color-4;
+    color: $secondary-color-text;
   }
   span.favorite-icon {
     color: $text-color-1;
@@ -31,7 +31,7 @@
   span.favorite-icon.favorite {
     color: $secondary-color-4;
   }
-  h5 {
+  .card-title {
     font-weight: var(--font-weight-bold);
     margin: 8px 0;
     font-size: $text-font-header-4;

@@ -4,6 +4,7 @@ import { addFavorites, getFavorites, deleteFavorites } from '@/frontend/utils/ap
 import toast from '@/frontend/utils/toast';
 import { useState } from 'react';
 import { useNavigate  } from 'react-router-dom';
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 
 
 export const ActivityCard = ({ activity, isCollectedPage, onToggleFavorite, userId }) => {
@@ -89,13 +90,13 @@ return (
               window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
             }
           }}>
-            <img src={activity.images} className="card-img-top" alt={activity.content.title} />
+            <img src={cloudinaryOptimize(activity.images, 600)} className="card-img-top" alt={activity.content.title} loading="lazy" />
             <div className="activity-card-body card-body">
                 <div className="d-flex justify-content-between align-items-center">
                 <p className="card-text">{activity.eventType}</p>
                 <span className="rating">★ {activity.rating}</span>
                 </div>
-                <h5 className="card-title">{activity.city}: {activity.content.title}</h5>
+                <h3 className="card-title">{activity.city}: {activity.content.title}</h3>
                 <p className="card-text">{activity.content.description}</p>
                 <span className='card-price'>{activity.price}</span>    
             

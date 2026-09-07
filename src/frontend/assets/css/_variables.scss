@@ -12,6 +12,11 @@ $secondary-color-3: #F29349;
 $secondary-color-2: #F5A96E;
 $secondary-color-1: #FFC699;
 
+// $secondary-color-4／5 在白底上直接當文字色都不到 WCAG AA 要求的 4.5:1
+// （分別只有 2.61、3.21）。星級評分文字（★ 4.7）這類白底小字用這個
+// 專門調暗過的版本，對比度 5.17:1；按鈕、圖示背景等維持用原本的色階。
+$secondary-color-text: #B0520D;
+
 $text-color-12: #000;
 $text-color-11: #212121;
 $text-color-10: #424242;
