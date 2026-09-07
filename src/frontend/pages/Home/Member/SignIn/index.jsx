@@ -1,145 +1,90 @@
-import { useState, useEffect } from "react";
-import { getMembers, updatedMembers } from "@/frontend/utils/api/member";
 import './Signin.scss';
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import { useMemberQuery, useUpdateMemberMutation } from '@/frontend/hooks/useMember';
 
 dayjs.extend(isSameOrAfter);
+
+// 計算連續簽到天數
+const calculateStreak = (history) => {
+  let streak = 0;
+  let prevDate = dayjs().format("YYYY-MM-DD");
+
+  // 從今天開始往回推，計算連續簽到
+  while (history.includes(prevDate)) {
+    streak++;
+    prevDate = dayjs(prevDate).subtract(1, "day").format("YYYY-MM-DD");
+  }
+
+  return streak;
+};
 
 const SignIn = () => {
   const REWARD_DAYS = 7; // 每 7 天獲得獎勵
   const REWARD_POINTS = 50;
 
-  const [user, setUser] = useState(null);
-  const [hasSignedInToday, setHasSignedInToday] = useState(false);
-  const [stats, setStats] = useState({
-    currentStreak: 0,
-    points: 0,
-  });
-  
+  const userId = Number(localStorage.getItem("userId"));
+  const { data: user } = useMemberQuery(userId);
+  const updateMemberMutation = useUpdateMemberMutation(userId);
+
   // 計算當月的年份、月份和今天的日期
   const today = dayjs().format("YYYY-MM-DD");
   const currentYear = dayjs().year();
   const currentMonth = dayjs().month() + 1;  // 注意：month() 返回的是 0 - 11，所以要加 1
   const firstDayOfMonth = dayjs(`${currentYear}-${String(currentMonth).padStart(2, "0")}-01`).day(); // 當月第一天的星期
   const daysInMonth = dayjs(`${currentYear}-${String(currentMonth).padStart(2, "0")}`).daysInMonth(); // 當月的天數
-  
+
   // 計算應該顯示的格子數量：需要 (當月的天數 + 首日星期數)，然後除以 7 來確定需要幾行
   const totalCells = daysInMonth + firstDayOfMonth; // 當月天數 + 首日星期數
   const totalRows = Math.ceil(totalCells / 7); // 總共有幾行
-  const userId = Number(localStorage.getItem("userId"));
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
-    try {
-      const data = await getMembers(userId);
-  
-      if (!data) {
-        console.error("獲取的資料為空: data 是 undefined 或 null");
-        return;  // 如果 data 為 undefined 或 null，終止函數執行
-      }
-  
-      setUser(data);
-  
-      const today = dayjs().format("YYYY-MM-DD");
-
-      // 確保 signInHistory 是陣列，如果不是則初始化為空陣列
-      const signInHistory = Array.isArray(data.signInHistory) ? data.signInHistory : [];
-  
-      // 確認今天是否已簽到
-      const signedInToday = signInHistory.includes(today);
-      setHasSignedInToday(signedInToday);
-  
-      // 計算連續簽到天數，並檢查 signInHistory 是否存在
-      const streakCount = Array.isArray(data.signInHistory) ? calculateStreak(data.signInHistory) : 0;
-
-      // 更新 stats，檢查 rewards 是否存在且有效
-      if (!data?.rewards) {
-        console.warn("用戶未包含 rewards 資料");
-      }
-  
-      setStats({
-        currentStreak: streakCount,
-        points: data?.rewards?.signInPoints || 0,
-      });
-  
-    } catch (error) {
-      console.error("獲取用戶數據失敗", error);
-    }
+  // 簽到狀態、連續天數、點數都直接從 user 資料衍生，不再另外維護一份 state
+  const signInHistory = Array.isArray(user?.signInHistory) ? user.signInHistory : [];
+  const hasSignedInToday = signInHistory.includes(today);
+  const streakCount = signInHistory.length ? calculateStreak(signInHistory) : 0;
+  const stats = {
+    currentStreak: streakCount,
+    points: user?.rewards?.signInPoints || 0,
   };
-  
-  
 
   const handleSignIn = async () => {
-    if (hasSignedInToday) return;
-  
-    // 確保 signInHistory 是陣列
-    const signInHistory = Array.isArray(user?.signInHistory) ? user.signInHistory : [];
-  
+    if (hasSignedInToday || !user) return;
+
     const updatedHistory = [...signInHistory, today];
-  
+
     // 計算連續簽到天數
-    const streakCount = calculateStreak(updatedHistory);
-  
+    const newStreakCount = calculateStreak(updatedHistory);
+
     // 計算簽到累積點數（獨立追蹤，不與訂單點數混合）
     let signInPoints = user?.rewards?.signInPoints || 0;
     signInPoints += 10; // 每次簽到 +10 點
-    if (streakCount % REWARD_DAYS === 0) {
+    if (newStreakCount % REWARD_DAYS === 0) {
       signInPoints += REWARD_POINTS; // 連續 7 天額外 +50 點
     }
     // 總點數 = 簽到點數 + 已計算的訂單點數
     const countedOrderIds = user?.rewards?.countedOrderIds || [];
     const totalPoints = signInPoints + countedOrderIds.length * 100;
 
-  // 更新用戶資料
-  const updatedUser = {
-    ...user,
-    signInHistory: updatedHistory,
-    rewards: {
-      ...user.rewards,
-      signInPoints,
-      points: totalPoints,
-      date: new Date().toISOString(),
-    },
-    currentStreak: streakCount,
-  };
-  
-    try {
-      // 更新資料
-      await updatedMembers(userId, updatedUser);
-  
-      // 更新 UI
-      setUser(updatedUser);
-      setHasSignedInToday(true);
+    // 更新用戶資料
+    const updatedUser = {
+      ...user,
+      signInHistory: updatedHistory,
+      rewards: {
+        ...user.rewards,
+        signInPoints,
+        points: totalPoints,
+        date: new Date().toISOString(),
+      },
+      currentStreak: newStreakCount,
+    };
 
-      // 更新 stats
-      setStats({
-        currentStreak: streakCount,
-        points: updatedUser.rewards.signInPoints,
-      });
-  
+    try {
+      await updateMemberMutation.mutateAsync(updatedUser);
     } catch (error) {
       console.error("更新簽到狀態失敗", error);
     }
   };
-  
-  // 計算連續簽到天數
-  const calculateStreak = (history) => {
-    let streak = 0;
-    let prevDate = dayjs().format("YYYY-MM-DD");
-  
-    // 從今天開始往回推，計算連續簽到
-    while (history.includes(prevDate)) {
-      streak++;
-      prevDate = dayjs(prevDate).subtract(1, "day").format("YYYY-MM-DD");
-    }
-  
-    return streak;
-  };
-  
+
 
   return (
     <div className="page-container">

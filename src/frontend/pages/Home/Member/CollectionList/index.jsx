@@ -1,42 +1,24 @@
-import { getActivityAll } from '@/frontend/utils/api/activity';
-import { getFavorites } from '@/frontend/utils/api/favorite';
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import Swal from 'sweetalert2';
+import { useCollectionList } from './hooks';
 
 const CollectionList = () => {
     const userId = Number(localStorage.getItem("userId")); // 取得 userId
-    const [favorites, setFavorites] = useState([]);
-
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const { favorites, loading, error, refetch } = useCollectionList(userId);
 
     useEffect(() => {
-        handleFavorite();
-    }, [userId]);
-
-
-  const handleFavorite = async () => {
-    setLoading(true);
-    try {
-        const response = await getFavorites(userId);
-        const favoriteIds = response.map((fav) => fav.activityId);
-        const activityResponse = await getActivityAll();
-        setFavorites(activityResponse.filter((activity) => favoriteIds.includes(activity.id)));
-    } catch (error) {
-        console.error("載入收藏清單失敗", error);
-        setError("載入收藏清單失敗");
-        Swal.fire({
-            title: "載入收藏清單失敗",
-            icon: "error"
-        });
-    } finally {
-        setLoading(false);
-    }
-};
+        if (error) {
+            console.error("載入收藏清單失敗", error);
+            Swal.fire({
+                title: "載入收藏清單失敗",
+                icon: "error"
+            });
+        }
+    }, [error]);
 
   if (error) {
-    return <div className="alert alert-danger">{error}</div>;
+    return <div className="alert alert-danger">載入收藏清單失敗</div>;
 }
 
   return (
@@ -56,7 +38,7 @@ const CollectionList = () => {
                     activity={activity}
                     userId={userId}
                     isCollectedPage={true}
-                    onToggleFavorite={handleFavorite}
+                    onToggleFavorite={refetch}
                 />
                 </div>
             ))

@@ -1,23 +1,24 @@
 // 活動管理組件
 import { useState, useEffect } from "react";
-import { getActivityAll, getActivityPage, addActivitys, updatedActivitys, deleteActivitys } from '@/frontend/utils/api/activity';
 import './ActivityDetailPage.scss';
 import ActivityModal from '@/frontend/components/Modal/ActivityModal';
 import Swal from 'sweetalert2';
 import { Link } from "react-router-dom";
 import PageNation from "@/frontend/components/PageNation";
+import { useAdminActivitiesQuery, useSaveActivityMutation, useDeleteActivityMutation } from './hooks';
 
 
 const EventManagement = () => {
 
-  const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
 
-  const [totalPage , setTotalPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 10;
+
+  const { events, totalItems, totalPage } = useAdminActivitiesQuery(page, limit);
+  const saveActivityMutation = useSaveActivityMutation();
+  const deleteActivityMutation = useDeleteActivityMutation();
 
   const handleShow = (event = null) => {
     setCurrentEvent(event);
@@ -31,21 +32,11 @@ const EventManagement = () => {
 
   const handleSave = async(currentEvent) => {
     try {
-      if (currentEvent.id) {
-        await updatedActivitys(currentEvent.id, currentEvent);
-        setEvents(
-          events.map((event) =>
-            event.id === currentEvent.id ? currentEvent : event
-          )
-        );
-        Swal.fire({ title: "編輯成功", icon: "success" });
-      } else {
-        const newEvent  = await addActivitys(currentEvent);
-        setEvents((prevEvents) => [...prevEvents, newEvent ]);
-        Swal.fire({ title: "新增成功", icon: "success" });
-      }
+      await saveActivityMutation.mutateAsync(currentEvent);
+      Swal.fire({ title: currentEvent.id ? "編輯成功" : "新增成功", icon: "success" });
     } catch(error) {
       console.error("Error adding event", error);
+      Swal.fire({ title: "儲存失敗", icon: "error" });
     }
     handleClose();
   };
@@ -62,8 +53,7 @@ const EventManagement = () => {
     if (!result.isConfirmed) return;
 
     try {
-      await deleteActivitys(id);
-      setEvents(events.filter(event => event.id !== id));
+      await deleteActivityMutation.mutateAsync(id);
       Swal.fire({ title: "刪除成功", icon: "success" });
     } catch (error) {
       console.error("Error deleting event", error);
@@ -71,35 +61,10 @@ const EventManagement = () => {
     }
   };
 
-  const AdminEventManagement = async() => {
-    try{
-    // 先獲取所有資料
-    const response  = await getActivityAll();
-    const totalItems = response.length; // 直接計算總筆數
-
-    // 設定總筆數
-    setTotalItems(totalItems);
-
-    // 計算總頁數
-    const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
-    setTotalPage(totalPages);
-
-    // 獲取當前頁面的資料
-    const responsePage  = await getActivityPage(page, limit)
-    setEvents(responsePage); 
-
-
-
-    } catch(error){
-        console.error(error);
-    }
-}
-
   useEffect(() => {
-    AdminEventManagement();
     // 每次換頁時，讓畫面回到頂部
-  window.scrollTo(0, 0);
-}, [page, limit]); 
+    window.scrollTo(0, 0);
+  }, [page]);
 
   return (
     <div className="container mt-4">
