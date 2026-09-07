@@ -1,9 +1,7 @@
-import { useState , useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { useParams , useNavigate } from "react-router-dom";
-import { getActivitys } from '@/frontend/utils/api/activity';
-import { getReservations, addReservations } from '@/frontend/utils/api/reservation';
-import { getReviewsActivityId, getReviewsActivityIdPage } from '@/frontend/utils/api/review';
+import { useParams, useNavigate } from "react-router-dom";
+import { useActivityDetailPage } from './hooks';
 import Breadcrumb from "@/frontend/components/Breadcrumb";
 import ReviewBars from "@/frontend/components/Progress";
 import ActivityMap from "@/frontend/components/ActivityMap";
@@ -11,17 +9,13 @@ import { formatDateZh } from "@/frontend/utils/date";
 import Skeleton, { SkeletonText } from "@/frontend/components/Skeleton";
 import "./ActivityDetailPage.scss";
 
+const LIMIT = 2;
+
 const ActivityDetailPage = () => {
 
   const token = localStorage.getItem('token');
   const userId = Number(localStorage.getItem("userId"));
   const userName = localStorage.getItem("userName");
-  const [activityData, setActivityData] = useState([]);
-  const [reviewData, setReviewData] = useState([]);
-  const [activityDetailDataSection, setActivityDetailDataSection] = useState([]);
-  const [activityDetailData, setActivityDetailData] = useState([]);
-  const [showMainImage, setShowMainImage] = useState("");
-  const [getReservationData , setGetReservationData] = useState({})
   const [selectedDate, setSelectedDate] = useState('');
 
   // 日期選擇
@@ -29,15 +23,8 @@ const ActivityDetailPage = () => {
   const [currentActDate, setCurrentActDate] = useState(new Date());
 
   const [selectedData, setSelectedData] = useState(null);
-  const [RatingstarAll , setRatingStarAll] = useState([])
-  const [Ratingstar , setRatingStar] = useState(0)
-  const [avgRatingstar , setAvgRatingStar] = useState(0)
 
-
-  const [totalPage , setTotalPage] = useState(0)
   const [page, setPage] = useState(1); // 頁數狀態
-  const [isFirstEffectDone, setIsFirstEffectDone] = useState(false);
-  const limit = 2;
   const [submitdData, setSubmitData] = useState({
       "userId": null,
       "activityId": null,
@@ -60,65 +47,24 @@ const ActivityDetailPage = () => {
       "status": "upcoming"
   });
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const  param  = useParams();
   const { id } = param
-  
 
-const getReservationDate = async (activityData) => {
-    const result = { id: activityData.id };
-    const startDate = new Date(activityData.startDate);
-    const endDate = new Date(activityData.endDate);
-    const price = Number(activityData.price); // 確保 price 是數字
-
-    let currentDate = new Date(startDate);
-
-    // 使用更簡潔的日期格式化
-    const formatDate = (date) => date.toISOString().split('T')[0];
-
-    // 計算從開始日期到結束日期的所有日期
-    while (currentDate <= endDate) {
-        const formattedDate = formatDate(currentDate);
-        result[formattedDate] = { price };  // 添加價格
-        currentDate.setDate(currentDate.getDate() + 1);
-    }
-
-    try {
-        // 檢查是否已經存在該活動的預約資料
-        const existingResponse = await getReservations(activityData.id);
-
-        if (existingResponse && Object.keys(existingResponse).length === 0) {
-            // 如果不存在，添加新的預約資料
-            await addReservations(result);
-        }
-    } catch (error) {
-        // 錯誤處理，針對不同的錯誤情況進行處理
-        if (error.response && error.response.status === 404) {
-            console.log('Reservations not found:', error);
-        } else {
-            console.error('Error processing reservation:', error);
-        }
-    }
-};
-
-  const getReverseData = async() => {
-    try{
-      const response = await getReservations(id)
-      setGetReservationData(response) 
-    }catch(error){
-      console.log(error);
-    }
-  }
-
-  const getReviewsAll = async (id) => {
-    const response = await getReviewsActivityId(id);
-    setTotalPage(Math.ceil(response.length/limit))
-    setRatingStarAll(response)
-    
-};
+  const {
+    activityData,
+    activityDetailData,
+    activityDetailDataSection,
+    showMainImage,
+    getReservationData,
+    reviewData,
+    RatingstarAll,
+    Ratingstar,
+    avgRatingstar,
+    totalPage,
+    loading,
+  } = useActivityDetailPage(id, page, LIMIT);
 
 const handlePageChange = (page) => {
   setPage(page);
@@ -141,70 +87,8 @@ return pageNumbers.map((pageNumber) => (
 ));
 };
 
-useEffect(() => {
-  fetchGetReview(id , page, limit); // 這裡傳遞 page 和 limit
-}, [page]); // 監聽 page 變數，變更時重新獲取數據
-
-
-  useEffect(() => {
-    async function fetchData() {
-      await fetchGetActivity(id);
-      await fetchGetReview(id);
-      await getReviewsAll(id);
-      setIsFirstEffectDone(true); // 標記第一個 useEffect 已完成
-    }
-    fetchData();
-  }, [id]);
-
-  useEffect(() => {
-    if (isFirstEffectDone) {
-      getReverseData(id);
-    }
-  }, [id, isFirstEffectDone]);
-
-
-const fetchGetReview = async (id, page = 1, limit) => {
-  setLoading(true);
-  setError(null);
-  try {
-      const response = await getReviewsActivityIdPage(id, page, limit) // 傳入當前頁數與每頁顯示數量
-      setReviewData(response);
-  } catch (error) {
-      setError(error);
-  } finally {
-      setLoading(false);
-  }
-};
-
-useEffect(()=>{
-  reviewData.length === 0 ? setRatingStar(0) : setRatingStar(reviewData.reduce((sum , item)=> sum + item.rating, 0) / Number(reviewData.length))
-  RatingstarAll.length === 0 ? setAvgRatingStar(0) : setAvgRatingStar((RatingstarAll.reduce((sum , item)=> sum + item.rating, 0) / Number(RatingstarAll.length)).toFixed(1))
-},[reviewData , RatingstarAll])
-
-const fetchGetActivity = async (id) => {
-    setLoading(true);
-    setError(null);
-    try {
-        const response  = await getActivitys(id); 
-        
-        setActivityData(response); 
-        response.activityDetails.length===0 ? "" : setActivityDetailData(response.activityDetails)
-        response.activityDetails.length===0 ? "" : setActivityDetailDataSection(response.activityDetails?.[0]?.sections)
-        setShowMainImage(
-          response?.activityDetails?.[0]?.images?.length > 0 
-          ? response.activityDetails[0].images[0].url  // 取得第一張圖片
-          : "Loading" )
-          getReservationDate(response)
-    } catch (error) {
-        console.error("Error fetching activity:", error);
-        setError('Error fetching activity:', error);
-    } finally{
-      setLoading(false);// ✅ 確保無論成功或失敗都會更新 `loading`
-    }
-};
-
 const renderStars = (rating) => {
-  
+
   const fullStars = Math.floor(rating); // 取得完整的星星數量
   const hasHalfStar = rating % 1 !== 0; // 是否有半顆星
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0); // 剩餘的空星數量
@@ -247,7 +131,7 @@ const handleDateClick = (date) => {
 };
 
 const submitDateClick = () => {
-  
+
   if(selectedDate.length===0){
     Swal.fire({
         title: "請選擇預約日期",
@@ -340,7 +224,7 @@ const handleMonthChange = (increment) => {
 const renderDay = (day) => {
   const formattedDay = day < 10 ? `0${day}` : day; // Ensure day is two digits
   const fullDate = `${currentActDate.getFullYear()}-${formattedMonth}-${formattedDay}`; // Create the full date string in YYYY-MM-DD format
-  
+
   if (!getReservationData) return null; // Ensure there is reservation data
 
   const reservation = getReservationData[fullDate];
@@ -404,7 +288,7 @@ return (
 
       {Array.isArray(activityDetailData) ? (
           activityDetailData.map((item, index) => (
-            
+
           <div className="row no-gutter" key={index}>
             {/* 左邊大圖 */}
             <div className="col-12 col-lg-6 no-gutters mainImage-container">
@@ -447,7 +331,7 @@ return (
                           <p className="card-text">{item}</p>
                         </div>
                       )}
-                        
+
                   </div>
                   <hr/>
                 </div>
@@ -469,12 +353,12 @@ return (
                             activityDetailDataSection.map((item, index) => (
                                 <div className="mb-4" key={index}>
                                   <div className="actPic">
-                                      <img src={item.image} 
-                                          alt="活動圖片" 
+                                      <img src={item.image}
+                                          alt="活動圖片"
                                           className="card-img w-100"
                                           style={{objectFit:"cover"}}
                                       />
-                                  
+
                                   </div>
                                   <div className='contentText'>
                                     <div className='contentTextsmall'>
@@ -488,7 +372,7 @@ return (
                             ) : (
                               <p>Loading...</p>
                           )}
-                    
+
                   </div>
 
                   <hr/>
@@ -518,14 +402,14 @@ return (
                             <ReviewBars reviewData={reviewData} />
                           </div>
                       </div>
-                       {/*評論區塊 */}  
+                       {/*評論區塊 */}
                       <div >
                           {(reviewData.length > 0) ? (reviewData.map((item,index)=>
                             <div className="row reviewRow g-0" key={index}>
                               <div className="col-1 ratingerImg">
                                 <div className="roundedCircle">
                                     <img src={item.avatar}
-                                    alt={item.name} 
+                                    alt={item.name}
                                     />
                                 </div>
                               </div>
@@ -540,7 +424,7 @@ return (
                                 <p>{item.reviewContent}</p>
                               </div>
                               <div className="ratingImage">
-                              { item.imageFiles.map((image,index) => 
+                              { item.imageFiles.map((image,index) =>
                                   <div className='imageBox' key={index}>
                                     <img src={image} alt={`image-${index}`}  />
                                   </div>
@@ -559,7 +443,7 @@ return (
                                 <span className="material-icons">
                                 navigate_next
                                 </span>
-                              </button> 
+                              </button>
                               </div>
                         </div>
                 </div>
@@ -644,5 +528,5 @@ return (
 </div>
   );
 };
-  
+
   export default ActivityDetailPage;
