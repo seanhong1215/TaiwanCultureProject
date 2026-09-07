@@ -17,12 +17,7 @@ const ActivityDetailPage = () => {
   const userId = Number(localStorage.getItem("userId"));
   const userName = localStorage.getItem("userName");
   const [selectedDate, setSelectedDate] = useState('');
-
-  // 日期選擇
-  const [selectedActDate, setSelectedActDate] = useState(null);
   const [currentActDate, setCurrentActDate] = useState(new Date());
-
-  const [selectedData, setSelectedData] = useState(null);
 
   const [page, setPage] = useState(1); // 頁數狀態
   const [submitdData, setSubmitData] = useState({
@@ -114,8 +109,6 @@ const renderStars = (rating) => {
 const handleDateClick = (date) => {
 
   setSelectedDate(date);
-  const dateData = getReservationData[date];
-  setSelectedData(dateData);
   setSubmitData((preData) => ({
     ...preData,
     userId: userId,
@@ -151,14 +144,6 @@ const submitDateClick = () => {
 
   navigate("/activity-list/booking1", { state: submitdData }); // 帶著資料跳轉到預約頁面
 };
-
-// ********************日期選擇*********************
-useEffect(() => {
-  // To update the modal when the selected date changes
-  if (selectedActDate) {
-    const formattedDate = `${selectedActDate.getFullYear()}-${selectedActDate.getMonth() + 1}-${selectedActDate.getDate()}`;
-  }
-}, [selectedActDate]);
 
 const renderCalendarDays = () => {
   const daysInMonth = new Date(currentActDate.getFullYear(), currentActDate.getMonth() + 1, 0).getDate();

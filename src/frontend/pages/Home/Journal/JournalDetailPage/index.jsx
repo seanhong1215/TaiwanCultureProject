@@ -41,7 +41,7 @@ const JournalDetailPage = () => {
       getRelatedPosts();
     }
 
-  }, [navigate, currentJournal]); 
+  }, [navigate, currentJournal, journal]);
 
 
   // if (loading || !currentJournal) return <div>加載中...</div>;

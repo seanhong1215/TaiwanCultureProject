@@ -4,7 +4,6 @@ import { getActivityAll, getActivityPage, addActivitys, updatedActivitys, delete
 import './ActivityDetailPage.scss';
 import ActivityModal from '@/frontend/components/Modal/ActivityModal';
 import Swal from 'sweetalert2';
-import { Modal, Button, Form, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PageNation from "@/frontend/components/PageNation";
 
@@ -46,7 +45,7 @@ const EventManagement = () => {
         Swal.fire({ title: "新增成功", icon: "success" });
       }
     } catch(error) {
-      console.log("Error adding event", error);
+      console.error("Error adding event", error);
     }
     handleClose();
   };
@@ -67,7 +66,7 @@ const EventManagement = () => {
       setEvents(events.filter(event => event.id !== id));
       Swal.fire({ title: "刪除成功", icon: "success" });
     } catch (error) {
-      console.log("Error deleting event", error);
+      console.error("Error deleting event", error);
       Swal.fire({ title: "刪除失敗", icon: "error" });
     }
   };
@@ -92,7 +91,7 @@ const EventManagement = () => {
 
 
     } catch(error){
-        console.log(error);
+        console.error(error);
     }
 }
 

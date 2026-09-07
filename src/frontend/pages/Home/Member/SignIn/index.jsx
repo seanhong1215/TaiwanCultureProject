@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
 import { getMembers, updatedMembers } from "@/frontend/utils/api/member";
 import './Signin.scss';
 import dayjs from "dayjs";
@@ -13,7 +12,6 @@ const SignIn = () => {
 
   const [user, setUser] = useState(null);
   const [hasSignedInToday, setHasSignedInToday] = useState(false);
-  const [streak, setStreak] = useState(0);
   const [stats, setStats] = useState({
     currentStreak: 0,
     points: 0,
@@ -57,8 +55,7 @@ const SignIn = () => {
   
       // 計算連續簽到天數，並檢查 signInHistory 是否存在
       const streakCount = Array.isArray(data.signInHistory) ? calculateStreak(data.signInHistory) : 0;
-      setStreak(streakCount);
-  
+
       // 更新 stats，檢查 rewards 是否存在且有效
       if (!data?.rewards) {
         console.warn("用戶未包含 rewards 資料");
@@ -90,8 +87,8 @@ const SignIn = () => {
     // 計算簽到累積點數（獨立追蹤，不與訂單點數混合）
     let signInPoints = user?.rewards?.signInPoints || 0;
     signInPoints += 10; // 每次簽到 +10 點
-    if (streakCount % 7 === 0) {
-      signInPoints += 50; // 連續 7 天額外 +50 點
+    if (streakCount % REWARD_DAYS === 0) {
+      signInPoints += REWARD_POINTS; // 連續 7 天額外 +50 點
     }
     // 總點數 = 簽到點數 + 已計算的訂單點數
     const countedOrderIds = user?.rewards?.countedOrderIds || [];
@@ -117,8 +114,7 @@ const SignIn = () => {
       // 更新 UI
       setUser(updatedUser);
       setHasSignedInToday(true);
-      setStreak(streakCount);
-  
+
       // 更新 stats
       setStats({
         currentStreak: streakCount,

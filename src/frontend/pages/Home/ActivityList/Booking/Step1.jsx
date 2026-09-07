@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step1.scss";
@@ -31,7 +31,6 @@ const Step1 = () => {
   //react-hook-form
   const {
     register,
-    watch,
     reset,
     setValue,
     handleSubmit,
@@ -44,6 +43,9 @@ const Step1 = () => {
     mode: "onTouched"
   });
   
+  // selectValue、selectTimeSolt 刻意不放進依賴：這兩個 state 只在使用者
+  // 選擇人數/時段時才變動（由下面 onChange 呼叫 setValue 同步），若列為
+  // 依賴，每次選擇都會觸發這裡的 reset() 把整份表單重置一次。
   useEffect(() => {
     if (Object.keys(submitData).length > 0) {
       reset({
@@ -52,6 +54,7 @@ const Step1 = () => {
         timeSlot: selectTimeSolt || ""
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitData, reset]);
 
   const onSubmit = (data) => {

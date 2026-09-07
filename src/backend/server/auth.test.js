@@ -38,7 +38,6 @@ const run = async (middlewares, req) => {
 
   for (const mw of middlewares) {
     let advanced = false;
-    // eslint-disable-next-line no-await-in-loop
     await mw(req, res, () => { advanced = true; });
     if (!advanced) return result;
   }
@@ -104,7 +103,6 @@ describe('createAuth', () => {
 
     it('註冊與登入不受守衛影響', async () => {
       for (const url of ['/register', '/signin']) {
-        // eslint-disable-next-line no-await-in-loop
         const result = await run(chain(), request({ method: 'POST', url }));
         expect(result.passed).toBe(true);
       }

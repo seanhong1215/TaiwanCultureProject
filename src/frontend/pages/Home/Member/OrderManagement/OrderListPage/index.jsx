@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getOrdersByUser, updateOrder } from '@/frontend/utils/api/order';
 import { getActivityAll } from '@/frontend/utils/api/activity';
@@ -15,7 +15,6 @@ const OrderListPage = () => {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [userOrders, setUserOrders] = useState([]); // 用來存儲過濾後的使用者訂單
-  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [totalPage , setTotalPage] = useState(1);
   const [activeTab, setActiveTab] = useState('全部訂單');
   const [page, setPage] = useState(1); // 頁數狀態
@@ -185,7 +184,6 @@ const OrderListPage = () => {
 
       // 設定狀態
       setOrders(filteredByTab);
-      setTotalItems(filteredByTab.length);
       setTotalPage(filteredByTab.length ? Math.ceil(filteredByTab.length / limit) : 1);
 
       // 分頁

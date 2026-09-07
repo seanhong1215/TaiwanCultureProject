@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getActivityAll, getActivityPage } from '@/frontend/utils/api/activity';
 import { getNotifications } from '@/frontend/utils/api/notification';
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ const ActivityManager = () => {
   const [activities , setActivities] = useState([]);
 
   const [totalPage , setTotalPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 5;
 
@@ -61,8 +60,7 @@ const ActivityManager = () => {
         const response = await getActivityAll();  // 獲取所有活動資料
         setActivities(response);  // 設置活動資料
         const totalItems = response.length;  // 計算活動總數
-        setTotalItems(totalItems);
-  
+
         const totalPages = Math.ceil(totalItems / limit); // 計算總頁數
         setTotalPage(totalPages);
   
@@ -70,10 +68,10 @@ const ActivityManager = () => {
         const responsePage = await getActivityPage(page, limit);
         setFilteredActivities(responsePage);  // 更新過濾後的活動資料
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
-  
+
     fetchData();
     window.scrollTo(0, 0); // 每次換頁時，讓畫面回到頂部
   }, [page]);  // 只依賴於頁面變動，獲取資料和更新活動

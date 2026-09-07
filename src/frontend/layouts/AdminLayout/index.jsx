@@ -1,11 +1,9 @@
-import { useState, createContext } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminMenu from '@/frontend/layouts/AdminMenu';
 import AdminHeader from '@/frontend/layouts/AdminHeader';
 import {ApiProvider} from "@/frontend/components/UserContext/UserAll";
-
-// 創建上下文來管理側邊欄狀態
-export const AdminContext = createContext();
+import { AdminContext } from './context';
 
 export const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
