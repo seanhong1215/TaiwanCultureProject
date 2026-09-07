@@ -99,7 +99,7 @@
     margin-bottom: 24px;
   }
   .rating{
-    color: #F08430;
+    color: $secondary-color-text;
   }
   hr {
     margin: 0 !important;
@@ -175,7 +175,7 @@
     line-height: 28.8px;
   }
   .ratingStart{
-    color: #F08430;
+    color: $secondary-color-text;
     width: 176px;
     height: 32px;
     display: flex; /* 啟用 Flexbox */
@@ -213,7 +213,7 @@
     margin-right: 16px;
   }  
   .singleRating span {
-    color: #F08430;
+    color: $secondary-color-text;
     height: 100%; /* 填滿高度 */
     font-size: 20px;
     align-items: center;

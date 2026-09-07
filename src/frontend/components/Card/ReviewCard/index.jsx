@@ -1,23 +1,25 @@
 import PropTypes from 'prop-types';
 import './Review.scss';
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 
 export const ReviewCard = ({ avatar, name, rating, activityTitle, reviewContent }) => {
- 
+
   return (
     <div className="card mb-3" style={{ padding: "24px", borderRadius: "40px"}}>
         <div className="row g-0" >
             <div className="col-md-3 text-center">
               <img
-                  src={avatar}
-                  alt={`${name} ${avatar}`}
+                  src={cloudinaryOptimize(avatar, 128)}
+                  alt={name}
                   className="rounded-circle"
                   style={{ width: "64px", height: "64px", objectFit: "cover" }}
+                  loading="lazy"
               />
             </div>
             <div className="col-md-9">
             <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center card-title-wrap">
-                  <h5 className="card-title">{name}</h5>
+                  <h3 className="card-title">{name}</h3>
                   <p className="card-rating">
                       {Array.from({ length: 5 }, (_, i) => (
                       <span

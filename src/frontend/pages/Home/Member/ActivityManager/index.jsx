@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import PageNation from "@/frontend/components/PageNation";
 import './ActivityManager.scss';
 import { Badge, Button } from "react-bootstrap";
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 
 const ActivityManager = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
@@ -200,11 +201,12 @@ useEffect(() => {
                 <div className="row">
                   {/* 活動圖片 */}
                   <div className="col-md-4 col-sm-3 mb-3 mb-sm-0">
-                    <img 
-                      src={activity.images} 
+                    <img
+                      src={cloudinaryOptimize(activity.images, 400)}
                       alt={activity.content?.title}
                       className="img-fluid rounded"
                       style={{ width: '100%', height: '150px', objectFit: 'cover' }}
+                      loading="lazy"
                     />
                   </div>
                   

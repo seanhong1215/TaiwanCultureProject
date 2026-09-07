@@ -14,8 +14,10 @@ const Footer = () => {
                         <h1 className="header-logo-side m-0 d-flex align-items-center">
                         <img
                             src={logo}
-                            alt="logo" 
+                            alt="logo"
                             className="logo-img"
+                            width="164"
+                            height="45"
                         />
                         </h1>
                     </Link>

@@ -2,12 +2,12 @@ import { ReviewCard } from '@/frontend/components/Card/ReviewCard';
 import { BlogCard } from '@/frontend/components/Card/BlogCard';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { useHomePageData } from './hooks';
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import DatePicker from "react-datepicker";
 import beach from '@/frontend/assets/images/choosing/beach.svg';
 import communication from '@/frontend/assets/images/choosing/communication.svg';
 import fishing from '@/frontend/assets/images/choosing/fishing.svg';
@@ -19,6 +19,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import './HomePage.scss';
 
+// react-datepicker 只有搜尋彈窗打開才用得到，卻佔了首頁首屏 36KB（gzip）
+// 未使用的 JS——改成動態載入，使用者點開「更多篩選」才真正下載這個套件。
+const DatePicker = lazy(() => import('react-datepicker'));
 
 const HomePage = () => {
     const { activityData, journalData, reviews, loading, error } = useHomePageData();
@@ -221,14 +224,16 @@ const HomePage = () => {
                                 {/* 日期選擇 */}
                                 <div className="mb-3 modal-body-list">
                                     <span className="material-icons">today</span>
-                                    <DatePicker
-                                        selected={activityDate}
-                                        onChange={(date) => setActivityDate(date)}
-                                        dateFormat="yyyy-MM-dd"
-                                        placeholderText={t('form.activityDate')}
-                                        className="date-input"
-                                        calendarClassName="custom-calendar"
-                                    />
+                                    <Suspense fallback={<input className="date-input form-control" disabled placeholder={t('form.activityDate')} />}>
+                                        <DatePicker
+                                            selected={activityDate}
+                                            onChange={(date) => setActivityDate(date)}
+                                            dateFormat="yyyy-MM-dd"
+                                            placeholderText={t('form.activityDate')}
+                                            className="date-input"
+                                            calendarClassName="custom-calendar"
+                                        />
+                                    </Suspense>
                                 </div>
 
                                 {/* 地區選擇 */}
@@ -344,7 +349,7 @@ const HomePage = () => {
                                 <div className="choosing-section-content">
                                     <img src={ beach } alt="沙灘" />
                                     <div className="main-card-content">
-                                        <h5 className="card-title">{t('choosing.content.culturalExperienceTitle')}</h5>
+                                        <h3 className="card-title">{t('choosing.content.culturalExperienceTitle')}</h3>
                                         <p className="card-text">{t('choosing.content.culturalExperienceText')}</p>
                                     </div>
                                 </div>
@@ -353,7 +358,7 @@ const HomePage = () => {
                                 <div className="choosing-section-content">
                                     <img src={ communication } alt="社群" />
                                     <div className="main-card-content">
-                                        <h5 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h5>
+                                        <h3 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h3>
                                         <p className="card-text">{t('choosing.content.reservationPlatformText')}</p>
                                     </div>
                                 </div>
@@ -364,7 +369,7 @@ const HomePage = () => {
                                 <div className="choosing-section-content">
                                     <img src={ fishing } alt="衝浪" />
                                     <div className="main-card-content">
-                                        <h5 className="card-title">{t('choosing.content.recommendationsTitle')}</h5>
+                                        <h3 className="card-title">{t('choosing.content.recommendationsTitle')}</h3>
                                         <p className="card-text">{t('choosing.content.recommendationsText')}</p>
                                     </div>
                                 </div>
@@ -373,7 +378,7 @@ const HomePage = () => {
                                 <div className="choosing-section-content">
                                     <img src={ travel } alt="旅行" />
                                     <div className="main-card-content">
-                                        <h5 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h5>
+                                        <h3 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h3>
                                         <p className="card-text">{t('choosing.content.DeepConnectionText')}</p>
                                     </div>
                                 </div>
@@ -439,9 +444,9 @@ const HomePage = () => {
                             journalData.map((item) => (
                             <div className="col-custom" key={item.id}>
                                 <div className="blog-item">
-                                    <img src={item.images} alt={item.title} />
+                                    <img src={cloudinaryOptimize(item.images, 300)} alt={item.title} loading="lazy" />
                                     <p className="card-date">{item.date}</p>
-                                    <h5 className="card-title">{item.title}</h5>
+                                    <h3 className="card-title">{item.title}</h3>
                                     <p className="card-text">{item.body}</p>
                                 </div>
                             </div> 
