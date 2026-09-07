@@ -23,7 +23,8 @@
       "search": "Search",
       "cancel": "Cancel",
       "loading": "Loading...",
-      "noData": "There is currently no data..."
+      "noData": "There is currently no data...",
+      "home": "Home"
   },
   "banner": {
       "search": "Search",
@@ -73,7 +74,55 @@
       "featuredExperiences": "Featured Experiences",
       "outdoorExploration": "Outdoor Exploration",
       "price": "Price",
-      "keyword": "Search keywords"
+      "keyword": "Search keywords",
+      "keywordSearch": "Keyword Search",
+      "selectActivityDate": "Please select a date",
+      "selectPriceRange": "Please select a price range",
+      "filter": "Filter"
+  },
+  "cities": {
+      "yilan": "Yilan",
+      "taipei": "Taipei",
+      "hsinchu": "Hsinchu",
+      "miaoli": "Miaoli",
+      "taichung": "Taichung",
+      "yunlin": "Yunlin",
+      "kaohsiung": "Kaohsiung",
+      "kenting": "Kenting",
+      "pingtung": "Pingtung",
+      "taitung": "Taitung",
+      "hualien": "Hualien"
+  },
+  "activityList": {
+      "notFoundTitle": "No matching activities found",
+      "notFoundDescription": "Try broadening your search, or clear the filters to see all activities.",
+      "loadErrorTitle": "Failed to load activities",
+      "loadErrorDescription": "Please check your connection and try again.",
+      "reload": "Reload"
+  },
+  "activityDetail": {
+      "tripHighlights": "Trip Highlights",
+      "location": "Location",
+      "introduction": "About This Activity",
+      "activityImageAlt": "Activity image",
+      "reviews": "Reviews",
+      "participants": "{{count}} people joined",
+      "reviewsCount": "{{count}} reviews",
+      "noReviews": "No reviews yet.",
+      "selectDate": "Select a Date",
+      "bookNow": "Book Now",
+      "prevMonth": "Prev",
+      "nextMonth": "Next",
+      "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      "noAvailabilityThisMonth": "No availability this month",
+      "goToNearestAvailableMonth": "Go to the nearest available month",
+      "noAvailabilityAtAll": "This activity currently has no available dates",
+      "activityDateLabel": "Activity date: {{date}}",
+      "priceFrom": "From NT$ {{price}}",
+      "selectBookingDateAlertTitle": "Please select a booking date",
+      "loginRequiredAlertTitle": "Please sign in first",
+      "loginRequiredAlertText": "Sign in to continue booking — your selected date will be kept",
+      "loadingAria": "Loading, please wait"
   },
   "member": {
       "center": "Member Center",

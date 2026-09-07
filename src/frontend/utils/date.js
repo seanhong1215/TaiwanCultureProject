@@ -49,15 +49,48 @@ export function formatDate(date, format = 'YYYY-MM-DD') {
   return formatter(partsOf(parsed));
 }
 
+const EN_MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
 /**
- * 中文長格式，例如 2025年03月22日。
+ * 長格式日期，例如 2025年03月22日。
  * 預約流程各步驟原本各自重複這段組字串邏輯，統一收斂到這裡。
+ *
+ * 「年月日」漢字格式中文、日文都通用，只有 language 為 'en' 時
+ * 才需要換成英文月份寫法；不傳 language 時維持原本的中文輸出，
+ * 呼叫端（Step1/2/4）不需要跟著改。
+ * @param {string} [language] i18next 的語言代碼，例如 'en'、'jp'、'zhCn'
  * @returns {string} 日期無效時回傳空字串
  */
-export function formatDateZh(date) {
+export function formatDateZh(date, language) {
   const parsed = toDate(date);
   if (!parsed) return '';
 
   const { year, month, day } = partsOf(parsed);
+
+  if (language === 'en') {
+    return `${EN_MONTH_NAMES[Number(month) - 1]} ${Number(day)}, ${year}`;
+  }
+
   return `${year}年${month}月${day}日`;
+}
+
+/**
+ * 「年＋月」格式，例如 2025年03月，用於日曆標題這類只需要顯示到月份的地方。
+ * @param {string} [language] i18next 的語言代碼，例如 'en'、'jp'、'zhCn'
+ * @returns {string} 日期無效時回傳空字串
+ */
+export function formatMonthYear(date, language) {
+  const parsed = toDate(date);
+  if (!parsed) return '';
+
+  const { year, month } = partsOf(parsed);
+
+  if (language === 'en') {
+    return `${EN_MONTH_NAMES[Number(month) - 1]} ${year}`;
+  }
+
+  return `${year}年${month}月`;
 }
