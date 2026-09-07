@@ -17,8 +17,3 @@ export const updateUsers = async (id, data) => {
     const response = await axios.put(`/api/profiles/${id}`, data);
     return response.data;
 };
-
-export const modifyUsers = async (id, data) => {
-    const response = await axios.patch(`/api/profiles/${id}`, data);
-    return response.data;
-};

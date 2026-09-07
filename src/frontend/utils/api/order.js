@@ -69,15 +69,3 @@ export const deleteOrder = async (orderId) => {
     const response = await axios.delete(`/api/orders/${orderId}`);
     return response.data;
 };
-
-// 獲取訂單相關票券
-export const getTickets = async (id) => {
-    const response = await axios.get(`/api/orders/${id}/tickets`);
-    return response.data;
-};
-
-// 獲取訂單相關付款記錄
-export const getPayments = async (id) => {
-    const response = await axios.get(`/api/orders/${id}/payments`);
-    return response.data;
-};

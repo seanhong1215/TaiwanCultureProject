@@ -11,11 +11,6 @@ export const getReviewPage = async (page, limit) => {
     return response.data;
 };
 
-export const getReviews = async (id) => {
-    const response = await axios.get(`/api/reviews/${id}`);
-    return response.data;
-};
-
 export const addReviews = async (data) => {
     const response = await axios.post(`/api/reviews`, data);
     return response.data;
