@@ -3,9 +3,7 @@ import { BlogCard } from '@/frontend/components/Card/BlogCard';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState, useRef } from 'react';
-import { getActivityAll } from '@/frontend/utils/api/activity';
-import { getJournalAll } from '@/frontend/utils/api/journal';
-import { getReviewAll } from '@/frontend/utils/api/review';
+import { useHomePageData } from './hooks';
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -23,10 +21,7 @@ import './HomePage.scss';
 
 
 const HomePage = () => {
-    const [activityData, setActivityData] = useState([]);
-    const [journalData, setJournalData] = useState([]);
-    const [reviews, setReviews] = useState([]);
-    const [error, setError] = useState(null);
+    const { activityData, journalData, reviews, loading, error } = useHomePageData();
 
     const userId = Number(localStorage.getItem("userId"));
 
@@ -55,7 +50,6 @@ const HomePage = () => {
     const [price, setPrice] = useState("");
     const [keyword, setKeyword] = useState("");
     const [filteredData, setFilteredData] = useState([]); // 篩選後的資料
-    const [loading, setLoading] = useState(false);  
 
     const sectionRef = useRef(null); // 取得區塊的 ref
     
@@ -77,10 +71,6 @@ const HomePage = () => {
     };
 
     useEffect(() => {
-        fetchGetActivity();
-        fetchgetJournalAll();
-        fetchReviews();
-
         const handleScroll = () => {
             if (window.scrollY > 300) {
             setShowButton(true);
@@ -88,10 +78,10 @@ const HomePage = () => {
             setShowButton(false);
             }
         };
-    
+
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []); 
+    }, []);
 
     useEffect(() => {
         if (showSearchModal) {
@@ -101,41 +91,10 @@ const HomePage = () => {
         }
     }, [showSearchModal]);
 
-    const fetchGetActivity = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const response  = await getActivityAll(); 
-            const result = response.slice(0, 3); // 只取前三筆
-            setActivityData(response); 
-            setFilteredData(result); // 預設顯示全部資料
-        } catch (error) {
-            setError('Error fetching activity:', error);
-        } 
-    };
-    const fetchgetJournalAll = async () => {
-        setLoading(true);
-        try {
-            const response  = await getJournalAll(); 
-            setJournalData(response); 
-        } catch (error) {
-            setError('Error fetching journal:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    const fetchReviews = async () => {
-        setLoading(true);
-        try {
-            const response = await getReviewAll();
-            const result = response.slice(0, 6); // 只取前六筆
-            setReviews(result); 
-        } catch (error) {
-            setError('Error fetching reviews:', error);
-        }finally {
-            setLoading(false);
-        }
-    };
+    // 活動資料到位後，預設只展示前三筆，其餘等使用者搜尋再篩選
+    useEffect(() => {
+        setFilteredData(activityData.slice(0, 3));
+    }, [activityData]);
 
      // 處理搜尋邏輯
     const handleSearch = () => {
@@ -211,7 +170,7 @@ const HomePage = () => {
     const { t } = useTranslation();
 
     if (error) {
-        return <div className="alert alert-danger">{error}</div>;
+        return <div className="alert alert-danger">{error.message || String(error)}</div>;
     }
     
     return (
