@@ -2,8 +2,8 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: 
-    url('fonts/MaterialIconsRound-Regular.otf') format('opentype'),
+  font-display: swap;
+  src: url('fonts/MaterialIconsRound-Regular.otf') format('opentype');
 }
 
 .material-icons {
