@@ -1,0 +1,164 @@
+// Prisma schema — 資料模型依 src/backend/json/db.json 的既有欄位整理而來，
+// 目的是在不更動前端 34 個 api/*.js 呼叫端與既有 REST 回應格式的前提下，
+// 把資料層從 json-server（檔案）換成 Postgres（Supabase）。
+//
+// 設計原則：
+// - 有明確關聯且資料乾淨的欄位（favorites/profiles/reservations）建立真正的外鍵。
+// - orders 的 userId/activityId 因舊資料存在 1 筆髒資料（缺 userId/activityId），
+//   設為 nullable + onDelete: SetNull，避免 migration 因既有資料失敗。
+// - 深度巢狀 / 不定形狀的欄位（activityDetails、rewards、paymentData 等）用 Json，
+//   避免過度正規化成本超過此專案規模所需。
+// - reviews 目前資料沒有 userId 欄位（用 name/avatar 冗餘儲存留言者），照原樣保留，
+//   不額外發明資料裡不存在的關聯。
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  password      String
+  name          String
+  role          String   @default("USER") // USER / ADMIN / ACTIVITY_MANAGER
+  avatar        String?
+  uuid          String?  @unique // Firebase 社群登入使用者的 UID
+  signInHistory String[] @default([])
+  currentStreak Int      @default(0)
+  rewards       Json? // { reward, points, date, signInPoints, countedOrderIds, ... }
+  tickets       Json?
+  createdAt     DateTime @default(now())
+
+  profile   Profile?
+  orders    Order[]
+  favorites Favorite[]
+
+  @@map("users")
+}
+
+model Activity {
+  id              Int     @id @default(autoincrement())
+  city            String?
+  images          String? // 列表用主圖
+  rating          Float?  @default(0)
+  startDate       String?
+  endDate         String?
+  price           Int?
+  eventType       String?
+  status          String?
+  eventAddress    String?
+  content         Json // { title, description }
+  activityDetails Json? // [{ images[], trip{title,highlights[]}, map{}, sections[] }]
+
+  reviews     Review[]
+  favorites   Favorite[]
+  orders      Order[]
+  reservation Reservation?
+
+  @@map("activities")
+}
+
+model Journal {
+  id      Int     @id @default(autoincrement())
+  title   String
+  date    String?
+  content String  @db.Text
+  images  String?
+
+  @@map("journals")
+}
+
+model Review {
+  id            Int       @id @default(autoincrement())
+  avatar        String?
+  name          String?
+  rating        Float?
+  activityTitle String?
+  imageFiles    Json? // string[]
+  reviewContent String?   @db.Text
+  activityId    Int?
+  activity      Activity? @relation(fields: [activityId], references: [id], onDelete: SetNull)
+
+  @@map("reviews")
+}
+
+model Favorite {
+  id          Int     @id @default(autoincrement())
+  userId      Int
+  activityId  Int
+  isFavorited Boolean @default(true)
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, activityId])
+  @@map("favorites")
+}
+
+model Profile {
+  id          Int     @id @default(autoincrement())
+  lastName    String?
+  firstName   String?
+  nickName    String?
+  gender      String?
+  birthday    String?
+  country     String?
+  countryCode String?
+  phoneNumber String?
+  userId      Int     @unique
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model Reservation {
+  id         Int  @id @default(autoincrement())
+  activityId Int  @unique
+  dates      Json // { "YYYY-MM-DD": { price, remaining }, ... }
+
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@map("reservations")
+}
+
+model Order {
+  id               String   @id // 原本的 orderId，如 "ORD202503030006"
+  userId           Int?
+  activityId       Int?
+  createdAt        DateTime @default(now())
+  activityName     String?
+  lastBookableDate String?  @map("last_bookable_date")
+  activityLocation String?
+  activityPeriod   Json? // { startDate, endDate }
+  adultCount       Int?
+  childCount       Int?
+  adultPrice       Int?
+  childPrice       Int?
+  timeSlot         String?
+  totalAmount      Int?
+  paymentStatus    String?
+  reservedStatus   String?
+  actImage         String?
+  paymentData      Json? // { contactName, cardBrand, cardLast4 }
+  contactName      String?
+  reviewed         Boolean  @default(false)
+
+  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  activity Activity? @relation(fields: [activityId], references: [id], onDelete: SetNull)
+
+  @@map("orders")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  timestamp DateTime @default(now())
+
+  @@map("notifications")
+}
