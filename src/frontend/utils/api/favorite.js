@@ -1,11 +1,6 @@
 import axios from './client';
 
 // 收藏列表
-export const getFavoriteAll = async () => {
-    const response = await axios.get(`/api/favorites`);
-    return response.data;
-};
-
 export const getFavorites = async (userId) => {
     const response = await axios.get(`/api/favorites?userId=${userId}`);
     return response.data;
