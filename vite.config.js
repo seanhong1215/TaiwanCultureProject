@@ -63,6 +63,7 @@ export default defineConfig({
           if (pkg === 'react' || pkg === 'react-dom' || pkg === 'scheduler') return 'vendor-react';
           if (pkg === 'react-router' || pkg === 'react-router-dom') return 'vendor-react';
           if (pkg === 'react-datepicker' || pkg === 'date-fns') return 'vendor-datepicker';
+          if (pkg === '@tanstack/react-query' || pkg === '@tanstack/query-core') return 'vendor-query';
 
           // 其餘第三方套件統一進 vendor。
           // 少了這個保底，被 entry 與某個 lazy 頁面「同時使用」的共用模組
