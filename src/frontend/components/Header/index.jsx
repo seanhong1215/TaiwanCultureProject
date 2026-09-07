@@ -11,7 +11,8 @@ const Header = () => {
     const userRole = localStorage.getItem("userRole"); // 取得 userRole
 
     // 設定語言
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => { i18n.changeLanguage(lng); };
     const navigate = useNavigate();
 
     // 用戶
@@ -373,10 +374,10 @@ const Header = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/journal-list" onClick={closeMenu}>{t('menu.journal')}</Link>
                         </li>
-                        {/* 多國語系切換 */}
-                        {/* <li className="nav-item dropdown">
+                        {/* 多國語系切換：按鈕本身顯示目前使用中的語言名稱，而不是固定文字 */}
+                        <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {t('menu.lang')}
+                            {t(`lang.${i18n.language}`)}
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
@@ -390,7 +391,6 @@ const Header = () => {
                                 </li>
                             </ul>
                         </li>
-                        */}
                     </ul>
                     {/* 登入/登出按鈕 */}
                     { isMobile ? (

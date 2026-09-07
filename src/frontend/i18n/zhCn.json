@@ -23,7 +23,8 @@
         "search": "搜尋",
         "cancel": "取消",
         "loading": "載入中...",
-        "noData": "目前沒有資料..."
+        "noData": "目前沒有資料...",
+        "home": "首頁"
     },
     "banner": {
         "search": "搜尋",
@@ -73,7 +74,55 @@
         "featuredExperiences": "特色體驗",
         "outdoorExploration": "戶外探索",
         "price": "價格",
-        "keyword": "搜尋關鍵字"
+        "keyword": "搜尋關鍵字",
+        "keywordSearch": "關鍵字搜尋",
+        "selectActivityDate": "請選擇活動日期",
+        "selectPriceRange": "請選擇價格區間",
+        "filter": "篩選"
+    },
+    "cities": {
+        "yilan": "宜蘭",
+        "taipei": "台北",
+        "hsinchu": "新竹",
+        "miaoli": "苗栗",
+        "taichung": "台中",
+        "yunlin": "雲林",
+        "kaohsiung": "高雄",
+        "kenting": "墾丁",
+        "pingtung": "屏東",
+        "taitung": "台東",
+        "hualien": "花蓮"
+    },
+    "activityList": {
+        "notFoundTitle": "找不到符合條件的活動",
+        "notFoundDescription": "試著放寬搜尋條件，或清除篩選看看所有活動。",
+        "loadErrorTitle": "活動資料載入失敗",
+        "loadErrorDescription": "請檢查網路連線後重試。",
+        "reload": "重新載入"
+    },
+    "activityDetail": {
+        "tripHighlights": "行程特色",
+        "location": "地點",
+        "introduction": "活動介紹",
+        "activityImageAlt": "活動圖片",
+        "reviews": "活動評價",
+        "participants": "{{count}} 人參加過",
+        "reviewsCount": "{{count}} 則評論",
+        "noReviews": "目前沒有評論",
+        "selectDate": "選擇日期",
+        "bookNow": "預約行程",
+        "prevMonth": "上個月",
+        "nextMonth": "下個月",
+        "weekdays": ["日", "一", "二", "三", "四", "五", "六"],
+        "noAvailabilityThisMonth": "本月沒有可預約的日期",
+        "goToNearestAvailableMonth": "前往最近可預約的月份",
+        "noAvailabilityAtAll": "此活動目前沒有開放預約的日期",
+        "activityDateLabel": "活動日期：{{date}}",
+        "priceFrom": "NT$ {{price}} 起",
+        "selectBookingDateAlertTitle": "請選擇預約日期",
+        "loginRequiredAlertTitle": "請先登入會員",
+        "loginRequiredAlertText": "登入後即可繼續預約，你選擇的日期會保留",
+        "loadingAria": "載入中，請稍候"
     },
     "member": {
         "center": "會員中心",

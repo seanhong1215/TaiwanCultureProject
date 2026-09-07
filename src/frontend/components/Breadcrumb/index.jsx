@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import "./Breadcrumb.scss";
 import { getActivitys } from "@/frontend/utils/api/activity";
-import { getJournals } from "@/frontend/utils/api/journal"; 
-
-const pathNameMap = {
-  "activity-list": "所有活動",
-  "journal-list": "慢活日誌",
-};
+import { getJournals } from "@/frontend/utils/api/journal";
 
 const Breadcrumb = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
   const { id } = useParams(); // 獲取活動 ID
   const [activityName, setActivityName] = useState("");
   const [journalName, setJournalName] = useState("");
+
+  // 放在元件內才會隨著語言切換即時更新顯示文字
+  const pathNameMap = {
+    "activity-list": t('menu.activityList'),
+    "journal-list": t('menu.journal'),
+  };
 
   useEffect(() => {
     if (id) {
@@ -39,7 +42,7 @@ const Breadcrumb = () => {
   
   return (
     <nav className="breadcrumb">
-      <Link to="/" className="homeLink">首頁</Link>
+      <Link to="/" className="homeLink">{t('common.home')}</Link>
       {pathnames.map((name, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
         const isLast = index === pathnames.length - 1;

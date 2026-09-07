@@ -42,4 +42,12 @@ describe('formatDateZh', () => {
   it('無效日期回傳空字串', () => {
     expect(formatDateZh('')).toBe('');
   });
+
+  it('日文也使用年月日漢字格式（跟中文相同，不需另外轉換）', () => {
+    expect(formatDateZh(sample, 'jp')).toBe('2025年03月07日');
+  });
+
+  it('language 為 en 時改用英文月份寫法', () => {
+    expect(formatDateZh(sample, 'en')).toBe('March 7, 2025');
+  });
 });

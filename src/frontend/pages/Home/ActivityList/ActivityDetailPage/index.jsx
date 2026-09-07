@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from "react-router-dom";
 import { useActivityDetailPage } from './hooks';
 import Breadcrumb from "@/frontend/components/Breadcrumb";
 import ReviewBars from "@/frontend/components/Progress";
 import ActivityMap from "@/frontend/components/ActivityMap";
-import { formatDateZh } from "@/frontend/utils/date";
+import { formatDateZh, formatMonthYear } from "@/frontend/utils/date";
 import Skeleton, { SkeletonText } from "@/frontend/components/Skeleton";
 import "./ActivityDetailPage.scss";
 
@@ -13,6 +14,7 @@ const LIMIT = 2;
 
 const ActivityDetailPage = () => {
 
+  const { t, i18n } = useTranslation();
   const token = localStorage.getItem('token');
   const userId = Number(localStorage.getItem("userId"));
   const userName = localStorage.getItem("userName");
@@ -127,7 +129,7 @@ const submitDateClick = () => {
 
   if(selectedDate.length===0){
     Swal.fire({
-        title: "請選擇預約日期",
+        title: t('activityDetail.selectBookingDateAlertTitle'),
         icon: "warning"
     })
     return
@@ -135,8 +137,8 @@ const submitDateClick = () => {
   if(token===null){
     // 不清除已選日期：使用者登入後回到這一頁，選好的日期還在，不必重選
     Swal.fire({
-      title: "請先登入會員",
-      text: "登入後即可繼續預約，你選擇的日期會保留",
+      title: t('activityDetail.loginRequiredAlertTitle'),
+      text: t('activityDetail.loginRequiredAlertText'),
       icon: "info"
     })
     return
@@ -177,9 +179,9 @@ useEffect(() => {
  * 使用者得先開日曆亂翻才知道這活動什麼時候辦。這裡直接顯示出來。
  */
 const activityDateLabel = (() => {
-  const start = formatDateZh(activityData.startDate);
+  const start = formatDateZh(activityData.startDate, i18n.language);
   if (!start) return '';
-  const end = formatDateZh(activityData.endDate);
+  const end = formatDateZh(activityData.endDate, i18n.language);
   return !end || end === start ? start : `${start} ~ ${end}`;
 })();
 
@@ -196,7 +198,7 @@ const jumpToNearestAvailableMonth = () => {
 };
 
 // Update formatted date when currentDate changes
-const formattedDate = `${currentActDate.getFullYear()}年${(currentActDate.getMonth() + 1).toString().padStart(2, '0')}月`;
+const formattedDate = formatMonthYear(currentActDate, i18n.language);
 const formattedMonth = `${(currentActDate.getMonth() + 1).toString().padStart(2, '0')}`;
 
 // Function to handle month change (next and previous)
@@ -233,7 +235,7 @@ const renderDay = (day) => {
         {day} {/* Display day */}
         {reservation && (
           <div style={{ color: selectedDate === fullDate ? 'white' : '#616161' }}>
-            <small>價格 : {reservation.price}</small> {/* Show reservation price */}
+            <small>{t('form.price')} : {reservation.price}</small> {/* Show reservation price */}
           </div>
         )}
       </button>
@@ -247,7 +249,7 @@ const renderDay = (day) => {
 if (loading && !activityData.content) {
   return (
     <div className="activity-detail-page container" role="status" aria-busy="true">
-      <span className="visually-hidden">載入中，請稍候</span>
+      <span className="visually-hidden">{t('activityDetail.loadingAria')}</span>
       <div className="py-4">
         <Skeleton height="360px" radius="8px" />
         <div className="row mt-4">
@@ -303,12 +305,12 @@ return (
                 <div className="card-body actTitleBody">
                   <div className='actTitleDiv'>
                     <h2 className="actTitle" >{activityData.content?.title}</h2>
-                    <span className='rating'><span className="material-icons">star</span>{avgRatingstar}({RatingstarAll.length}) <span className='addFavorites'>{RatingstarAll.length} 人參加過</span></span>
+                    <span className='rating'><span className="material-icons">star</span>{avgRatingstar}({RatingstarAll.length}) <span className='addFavorites'>{t('activityDetail.participants', { count: RatingstarAll.length })}</span></span>
                   </div>
                   <hr />
                   <div className='actContent'>
                       <div className='actContentTitle'>
-                        <p>行程特色</p>
+                        <p>{t('activityDetail.tripHighlights')}</p>
                       </div>
                       <h3 className="card-text">{activityDetailData[0]?.trip?.title}</h3>
                       {activityDetailData[0]?.trip?.highlights.map((item,index)=>
@@ -323,7 +325,7 @@ return (
                 <div className="card-body actTitleBody">
                   <div className='siteContent'>
                       <div className='actContentTitle site'>
-                        <p>地點</p>
+                        <p>{t('activityDetail.location')}</p>
                       </div>
                       <div className="siteMap">
                         <ActivityMap activityDetailData={activityDetailData} />
@@ -332,14 +334,14 @@ return (
                   <hr/>
                   <div className="activityContent">
                       <div className='actContentTitle site'>
-                        <p>活動介紹</p>
+                        <p>{t('activityDetail.introduction')}</p>
                       </div>
                         {Array.isArray(activityDetailDataSection) ? (
                             activityDetailDataSection.map((item, index) => (
                                 <div className="mb-4" key={index}>
                                   <div className="actPic">
                                       <img src={item.image}
-                                          alt="活動圖片"
+                                          alt={t('activityDetail.activityImageAlt')}
                                           className="card-img w-100"
                                           style={{objectFit:"cover"}}
                                       />
@@ -364,7 +366,7 @@ return (
                 {/*活動評價*/}
                 <div className='actContent'>
                       {/*長條圖及星星*/ }
-                      <h4 className="card-title ratingTitle">活動評價</h4>
+                      <h4 className="card-title ratingTitle">{t('activityDetail.reviews')}</h4>
                       <div className="d-flex align-items-center ratingStartDiv">
                       <div style={{ width: "50%", height: "105px" }}>
                         <span
@@ -380,7 +382,7 @@ return (
                         <div className="d-flex ratingStart">
                           {renderStars(Ratingstar)} {/* ⭐ 渲染動態星星 */}
                         </div>
-                        <p className="card-text small"style={{ marginTop:'4.6px',color:"#9E9E9E" }}>{reviewData.length} 則評論</p>
+                        <p className="card-text small"style={{ marginTop:'4.6px',color:"#9E9E9E" }}>{t('activityDetail.reviewsCount', { count: reviewData.length })}</p>
                       </div>
 
                           <div className="w-50" style={{marginLeft:"32px",height:'121px'}}>
@@ -416,7 +418,7 @@ return (
                                 )}
                                 </div>
                             </div>
-                          )) : (<p>No review found.</p> )}
+                          )) : (<p>{t('activityDetail.noReviews')}</p> )}
                               <div className="pagenation" >
                               <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
                               <span className="material-icons">
@@ -438,13 +440,13 @@ return (
               {/*CallToAction */}
               <div className="card priceArea addDateTime col-lg-4">
                 <div className="card-body priceAreatitle">
-                  <h2 className="actTitle">NT${activityData.price}起</h2>
+                  <h2 className="actTitle">{t('activityDetail.priceFrom', { price: activityData.price })}</h2>
                   {activityDateLabel && (
-                    <p className="text-muted small mb-2">活動日期：{activityDateLabel}</p>
+                    <p className="text-muted small mb-2">{t('activityDetail.activityDateLabel', { date: activityDateLabel })}</p>
                   )}
                   <div className="callbutton">
                   <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    選擇日期
+                    {t('activityDetail.selectDate')}
                   </button>
                 </div>
                 </div>
@@ -453,13 +455,13 @@ return (
       </div>
       <div className="mobileView">
         <div className="card-body actTitleMobile">
-          <h2 className="">NT${activityData.price}起</h2>
+          <h2 className="">{t('activityDetail.priceFrom', { price: activityData.price })}</h2>
           {activityDateLabel && (
-            <p className="text-muted small mb-2">活動日期：{activityDateLabel}</p>
+            <p className="text-muted small mb-2">{t('activityDetail.activityDateLabel', { date: activityDateLabel })}</p>
           )}
           <div className="callbutton">
           <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            選擇日期
+            {t('activityDetail.selectDate')}
           </button>
         </div>
         </div>
@@ -472,12 +474,14 @@ return (
             <div className="getActDate">
               <div className="calendar">
               <div className="calendar-header">
-                <button onClick={() => handleMonthChange(-1)} className="btn btn-custom-outline-primary">Prev</button>
+                <button onClick={() => handleMonthChange(-1)} className="btn btn-custom-outline-primary">{t('activityDetail.prevMonth')}</button>
                 <p>{formattedDate}</p> {/* Show the current month */}
-                <button onClick={() => handleMonthChange(1)} className="btn btn-custom-outline-primary">Next</button>
+                <button onClick={() => handleMonthChange(1)} className="btn btn-custom-outline-primary">{t('activityDetail.nextMonth')}</button>
               </div>
                 <div className="week-days">
-                  <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+                  {t('activityDetail.weekdays', { returnObjects: true }).map((weekday) => (
+                    <div key={weekday}>{weekday}</div>
+                  ))}
                 </div>
                 <div className="days">
                   {renderCalendarDays()}
@@ -486,25 +490,25 @@ return (
                 {/* 本月沒有名額時給出明確指引，而不是讓使用者對著一片灰色亂猜 */}
                 {availableDates.length > 0 && !monthHasAvailability && (
                   <p className="text-center text-muted small mt-3 mb-0">
-                    本月沒有可預約的日期
+                    {t('activityDetail.noAvailabilityThisMonth')}
                     <button
                       type="button"
                       className="btn btn-link btn-sm p-0 ms-1 align-baseline"
                       onClick={jumpToNearestAvailableMonth}
                     >
-                      前往最近可預約的月份
+                      {t('activityDetail.goToNearestAvailableMonth')}
                     </button>
                   </p>
                 )}
                 {availableDates.length === 0 && (
-                  <p className="text-center text-muted small mt-3 mb-0">此活動目前沒有開放預約的日期</p>
+                  <p className="text-center text-muted small mt-3 mb-0">{t('activityDetail.noAvailabilityAtAll')}</p>
                 )}
               </div>
             </div>
           </div>
           <div className="getActDateFooter">
             <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={submitDateClick}>
-              預約行程
+              {t('activityDetail.bookNow')}
             </button>
           </div>
         </div>
