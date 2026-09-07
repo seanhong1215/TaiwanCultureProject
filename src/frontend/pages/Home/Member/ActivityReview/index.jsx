@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { addReviews, getActivityAll, uploadImageToCloudinary } from '@/frontend/utils/api';
+import { addReviews } from '@/frontend/utils/api/review';
+import { getActivityAll } from '@/frontend/utils/api/activity';
+import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import toast from '@/frontend/utils/toast';
 
 const ActivityReview = () => {

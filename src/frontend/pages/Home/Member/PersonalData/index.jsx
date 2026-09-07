@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { userProfiles, updateUsers, getUserDetail} from '@/frontend/utils/api';
+import { userProfiles, updateUsers, getUserDetail } from '@/frontend/utils/api/profile';
 import './PersonalData.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

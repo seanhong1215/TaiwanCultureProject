@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/frontend/components/Datepicker/Datepicker.scss";
-import { getJournalPage, getJournalAll } from '@/frontend/utils/api';
+import { getJournalPage, getJournalAll } from '@/frontend/utils/api/journal';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';

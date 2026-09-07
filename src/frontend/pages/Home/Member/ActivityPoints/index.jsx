@@ -1,5 +1,7 @@
 import { useState, useEffect  } from 'react';
-import { getActivityAll, getOrdersByUser, getMembers, updatedMembers } from "@/frontend/utils/api.js";
+import { getActivityAll } from "@/frontend/utils/api/activity";
+import { getOrdersByUser } from "@/frontend/utils/api/order";
+import { getMembers, updatedMembers } from "@/frontend/utils/api/member";
 import { Star } from 'lucide-react';
 
 const rewardsMap = [

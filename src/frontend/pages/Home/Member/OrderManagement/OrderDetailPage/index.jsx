@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../OrderDetailPage/OrderDetail.scss';
 import { useParams } from "react-router-dom";  // 取得動態路由參數
 
-import { getOrderDetail, getActivitys } from '@/frontend/utils/api';
+import { getOrderDetail } from '@/frontend/utils/api/order';
+import { getActivitys } from '@/frontend/utils/api/activity';
 
 
 const OrderDetailPage = () => {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getActivityAll, getActivityPage, getNotifications } from '@/frontend/utils/api';
+import { getActivityAll, getActivityPage } from '@/frontend/utils/api/activity';
+import { getNotifications } from '@/frontend/utils/api/notification';
 import { useNavigate } from "react-router-dom";
 import PageNation from "@/frontend/components/PageNation";
 import './ActivityManager.scss';

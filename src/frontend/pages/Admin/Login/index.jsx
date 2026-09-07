@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '@/frontend/utils/api';
+import { login } from '@/frontend/utils/api/auth';
 import Swal from 'sweetalert2';
 import { ShieldCheck } from 'lucide-react';
 

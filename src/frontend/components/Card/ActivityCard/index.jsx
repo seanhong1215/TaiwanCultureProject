@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import './Activity.scss';
-import { addFavorites, getFavorites, deleteFavorites } from '@/frontend/utils/api';
+import { addFavorites, getFavorites, deleteFavorites } from '@/frontend/utils/api/favorite';
 import toast from '@/frontend/utils/toast';
 import { useState } from 'react';
 import { useNavigate  } from 'react-router-dom';

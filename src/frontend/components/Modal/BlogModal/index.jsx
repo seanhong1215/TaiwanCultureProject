@@ -7,7 +7,7 @@ import EditorToolbar, { modules, formats } from '@/frontend/components/EditorToo
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { uploadImageToCloudinary } from '@/frontend/utils/api.js';
+import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import './Blog.scss';
 
 

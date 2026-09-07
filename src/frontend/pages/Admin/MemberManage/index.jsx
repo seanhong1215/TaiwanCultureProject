@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getMemberAll, getMemberPage, updatedMembers, register } from '@/frontend/utils/api';
+import { getMemberAll, getMemberPage, updatedMembers } from '@/frontend/utils/api/member';
+import { register } from '@/frontend/utils/api/auth';
 import './MemberManage.scss';
 import MemberModal from '@/frontend/components/Modal/MemberModal';
 import Swal from 'sweetalert2';

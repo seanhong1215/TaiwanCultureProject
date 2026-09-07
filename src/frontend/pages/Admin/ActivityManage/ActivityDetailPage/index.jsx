@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import { Modal, Button, Form, Card, Alert } from "react-bootstrap";
-import { addActivitys, updatedActivitys, getActivitys, uploadImageToCloudinary } from '@/frontend/utils/api';
+import { addActivitys, updatedActivitys, getActivitys } from '@/frontend/utils/api/activity';
+import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import defaultImage from "@/frontend/assets/images/default-images.png";
 import './ActivityDetilPage.scss';
 

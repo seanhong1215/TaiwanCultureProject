@@ -2,7 +2,8 @@ import React, { useState , useEffect } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step3.scss";
-import { createOrder, addNotifications } from "@/frontend/utils/api"
+import { createOrder } from "@/frontend/utils/api/order";
+import { addNotifications } from "@/frontend/utils/api/notification"
 import { useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
