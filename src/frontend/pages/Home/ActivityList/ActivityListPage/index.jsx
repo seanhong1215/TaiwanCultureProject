@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/frontend/components/Datepicker/Datepicker.scss";
-import { getActivityAll, getActivityPage } from '@/frontend/utils/api/activity';
+import { useActivityListPage } from './hooks';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import { CardGridSkeleton } from '@/frontend/components/Skeleton';
 import EmptyState from '@/frontend/components/EmptyState';
@@ -13,11 +13,7 @@ import PageNation from "@/frontend/components/PageNation";
 
 const ActivityList = () => {
   const userId = Number(localStorage.getItem("userId"));
-  const [searchResultsData, setSearchResultsData] = useState([]);
-  const [activityData, setActivityData] = useState([]);
-  const [searchData, setSearchData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [searchingValue , setSearchingValue] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null); // 初始值為 null
   const [selectedPrice, setSelectedPrice] = useState('');
 
@@ -30,61 +26,34 @@ const ActivityList = () => {
 
   const cities = ['宜蘭', '台北', '新竹', '苗栗', '台中', '雲林', '高雄', '墾丁', '屏東', '台東', '花蓮', '墾丁']; // 城市列表
   const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; // 活動類型列表
-  
- const [totalPage , setTotalPage] = useState(1);
- const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
+
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 6;
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // 按下搜尋才「定案」這次要用的篩選條件；null 代表未搜尋（瀏覽全部活動）。
+  // 個別欄位的即時輸入值（searchInput 等）不會直接觸發篩選。
+  const [appliedFilters, setAppliedFilters] = useState(null);
 
-  const fetchGetActivityAll = async () => {
-
-    setLoading(true);
-    setError(null);
-    try {
-      // 先獲取所有資料
-      const response  = await getActivityAll();
-      const totalItems = response.length; // 直接計算總筆數
-
-      // 設定總筆數
-      setTotalItems(totalItems);
-
-      // 計算總頁數
-      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
-      setTotalPage(totalPages);
-
-      // 獲取當前頁面的資料
-      const responsePage  = await getActivityPage(page, limit)
-      setActivityData(responsePage); 
-      // 獲得所有資料(給搜尋用)
-      setSearchData(response)
-
-    } catch (error) {
-        console.error('取得活動資料失敗:', error);
-        setError('活動資料載入失敗');
-    } finally {
-        // 原本沒有 finally，setLoading(true) 之後永遠不會設回 false
-        setLoading(false);
-    }
-};
+  const {
+    activityData,
+    searchResultsData,
+    isSearching,
+    totalItems,
+    totalPage,
+    loading,
+    error,
+    refetch,
+  } = useActivityListPage({ page, limit, appliedFilters });
 
   useEffect(() => {
-  fetchGetActivityAll();
-  // 每次換頁時，讓畫面回到頂部
-  window.scrollTo(0, 0);
-}, [page]);
-
-useEffect(()=>{
-  searchActivity()
-  window.scrollTo(0, 0);
-},[page])
+    // 每次換頁時，讓畫面回到頂部
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const getSearchInput = (value) => {
     setSearchInput(value)
   }
-  
+
   const getSelectedDate = (date) => {
     setSelectedDate(date);
   };
@@ -94,45 +63,10 @@ useEffect(()=>{
     setSelectedPrice(e.target.value);
   };
 
-  
-  const searchActivity = () => {
-    if (!searchInput && !selectedDate && !selectedType && !selectedCity && !selectedPrice) {
-      setSearchResultsData([]);
-      setSearchingValue([]);
-      fetchGetActivityAll();
-      return;
-    }
-    setSearchingValue([searchInput , selectedDate , selectedType, selectedCity, selectedPrice])
-    
-    const searchResults = searchData.filter((item) => {
-      const matchesTitle = searchInput 
-      ? item.content.title.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.content.description.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.city.toLowerCase().includes(searchInput.toLowerCase()) 
-      : true;
-      const matchesDate =
-      selectedDate ? new Date(item.startDate) >= new Date(selectedDate || "1970-01-01") && new Date(item.startDate) <= new Date(selectedDate || "2099-12-31") : true;
-      const matchesType = selectedType ? item.eventType === selectedType : true;
-      const matchesSite = selectedCity ? item.city === selectedCity : true;
-      const matchesPrice = selectedPrice ? item.price <= selectedPrice : true;
-      
-      return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
-    });
-
-    setTotalItems(searchResults.length); // 總結果數量
-    setTotalPage(Math.ceil(searchResults.length / limit)); // 總頁數
-    
-    const startIdx = (page - 1) * limit;
-    const endIdx = startIdx + limit;
-    
-    const paginatedResults = searchResults.slice(startIdx, endIdx);
-    
-    setSearchResultsData(paginatedResults); // Log the filtered results
-  };
-
   const searchBtn = () => {
     setPage(1);
-    searchActivity();
+    const hasAnyFilter = Boolean(searchInput || selectedDate || selectedType || selectedCity || selectedPrice);
+    setAppliedFilters(hasAnyFilter ? { searchInput, selectedDate, selectedType, selectedCity, selectedPrice } : null);
   }
 
   // 切換地區選單
@@ -276,16 +210,16 @@ const selectOptionType = (eventType) => {
                     ) : error ? (
                       <div className="col-12">
                         <EmptyState
-                          title={error}
+                          title="活動資料載入失敗"
                           description="請檢查網路連線後重試。"
                           action={
-                            <button type="button" className="btn btn-primary" onClick={fetchGetActivityAll}>
+                            <button type="button" className="btn btn-primary" onClick={refetch}>
                               重新載入
                             </button>
                           }
                         />
                       </div>
-                    ) : (searchResultsData.length === 0 && searchingValue.length > 0) ? (
+                    ) : (isSearching && searchResultsData.length === 0) ? (
                       <div className="col-12">
                         <EmptyState
                           title="找不到符合條件的活動"
@@ -308,7 +242,7 @@ const selectOptionType = (eventType) => {
                 </div>
                 <div className="row">
                     {/* 載入中或查無結果時不顯示分頁 */}
-                    {(loading || error || (searchResultsData.length === 0 && searchingValue.length > 0)) ? (
+                    {(loading || error || (isSearching && searchResultsData.length === 0)) ? (
                       ""
                     ) : (
                       <div className="col-12">

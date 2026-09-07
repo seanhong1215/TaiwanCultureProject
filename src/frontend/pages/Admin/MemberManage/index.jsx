@@ -1,22 +1,20 @@
-import { useEffect, useState } from 'react';
-import { getMemberAll, getMemberPage, updatedMembers } from '@/frontend/utils/api/member';
-import { register } from '@/frontend/utils/api/auth';
+import { useState } from 'react';
 import './MemberManage.scss';
 import MemberModal from '@/frontend/components/Modal/MemberModal';
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
+import { useAdminMembersQuery, useSaveMemberMutation } from './hooks';
 
 const UserManagement = () => {
-    const [members, setMembers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [dataLoading, setDataLoading] = useState(true);
 
-    const [totalPage , setTotalPage] = useState(1);
-    const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
     const [page, setPage] = useState(1); // 頁數狀態
     const limit = 10;
+
+    const { members, totalItems, totalPage, loading: dataLoading } = useAdminMembersQuery(page, limit);
+    const saveMemberMutation = useSaveMemberMutation();
+    const loading = saveMemberMutation.isPending;
 
  // 開啟 Modal
  const handleShow = (user = null) => {
@@ -31,45 +29,15 @@ const handleClose = () => {
 };
 
 const handleSave = async(userData) => {
-    setLoading(true);
     try {
-        if (editingUser) {
-            await updatedMembers(editingUser.id, userData);
-            Swal.fire({ title: "編輯成功", icon: "success" });
-        } else {
-            await register(userData);
-            Swal.fire({ title: "新增成功", icon: "success" });
-        }
+        await saveMemberMutation.mutateAsync({ editingUser, userData });
+        Swal.fire({ title: editingUser ? "編輯成功" : "新增成功", icon: "success" });
         handleClose();
-        AdminUsers();
     } catch(error) {
         console.error('儲存失敗:', error);
-    } finally {
-        setLoading(false);
+        Swal.fire({ title: "儲存失敗", icon: "error" });
     }
 };
-
-const AdminUsers = async() => {
-    setDataLoading(true);
-    try{
-        const [allData, responsePage] = await Promise.all([
-            getMemberAll(),
-            getMemberPage(page, limit),
-        ]);
-        const total = allData.length;
-        setTotalItems(total);
-        setTotalPage(total ? Math.ceil(total / limit) : 1);
-        setMembers(responsePage);
-    } catch(error){
-        console.error(error);
-    } finally {
-        setDataLoading(false);
-    }
-}
-
-useEffect(() => {
-    AdminUsers();
-}, [page]); 
 
 return (
     <div className="container py-4">

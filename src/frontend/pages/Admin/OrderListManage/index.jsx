@@ -1,45 +1,26 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { getOrderAll, getOrderPage, createOrder, updateOrder, deleteOrder } from '@/frontend/utils/api/order';
 import { Table } from "react-bootstrap";
 import OrderModal from '@/frontend/components/Modal/OrderModal';
 import PageNation from "@/frontend/components/PageNation";
+import { useAdminOrdersQuery, useSaveOrderMutation, useDeleteOrderMutation } from './hooks';
 
 
 const OrderManagement = () => {
-  const [orders, setOrders] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentOrder, setCurrentOrder] = useState(null);
 
-  const [totalPage , setTotalPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 10;
 
+  const { orders, totalItems, totalPage } = useAdminOrdersQuery(page, limit);
+  const saveOrderMutation = useSaveOrderMutation();
+  const deleteOrderMutation = useDeleteOrderMutation();
+
   useEffect(() => {
-    getDataFetch();
-     // 每次換頁時，讓畫面回到頂部
-  window.scrollTo(0, 0);
-  }, [page, limit]);
-
-  const getDataFetch = async () => {
-     // 先獲取所有資料
-     const response  = await getOrderAll();
-     const totalItems = response.length; // 直接計算總筆數
-
-     // 設定總筆數
-     setTotalItems(totalItems);
-
-     // 計算總頁數
-     const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
-     setTotalPage(totalPages);
-
-     // 獲取當前頁面的資料
-     const responsePage  = await getOrderPage(page, limit);
-     setOrders(responsePage); 
-
-
-  };
+    // 每次換頁時，讓畫面回到頂部
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const handleShow = (order = null) => {
     setCurrentOrder(order);
@@ -58,21 +39,20 @@ const OrderManagement = () => {
       childPrice: 150,
       paymentStatus: "",
       reservedStatus: "",
-      totalAmount: 0 
+      totalAmount: 0
     });
     setShowModal(false);
     // setCurrentOrder(null);
   };
 
   const handleSave = async (order) => {
-    if (order.id){
-      await updateOrder(order.id, order);
-      Swal.fire({ title: "更新成功", icon: "success" });
-    }else {
-      await createOrder(order);
-      Swal.fire({ title: "新增成功", icon: "success" });
+    try {
+      await saveOrderMutation.mutateAsync(order);
+      Swal.fire({ title: order.id ? "更新成功" : "新增成功", icon: "success" });
+    } catch (error) {
+      console.error("儲存訂單失敗:", error);
+      Swal.fire({ title: "儲存失敗", icon: "error" });
     }
-    getDataFetch();
     setShowModal(false);
   };
 
@@ -86,12 +66,16 @@ const OrderManagement = () => {
       cancelButtonText: "取消",
     });
     if (result.isConfirmed) {
-      await deleteOrder(orderId);
-      Swal.fire({ title: "刪除成功", icon: "success" });
-      getDataFetch();
+      try {
+        await deleteOrderMutation.mutateAsync(orderId);
+        Swal.fire({ title: "刪除成功", icon: "success" });
+      } catch (error) {
+        console.error("刪除訂單失敗:", error);
+        Swal.fire({ title: "刪除失敗", icon: "error" });
+      }
     }
   };
-  
+
 
   return (
     <div className="container mt-4">
