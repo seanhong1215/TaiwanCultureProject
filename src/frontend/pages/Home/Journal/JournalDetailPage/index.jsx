@@ -4,6 +4,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { getJournalAll } from '@/frontend/utils/api/journal';
 import './JournalDetail.scss';
 import Breadcrumb from "@/frontend/components/Breadcrumb"
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 
 const JournalDetailPage = () => {
   const location = useLocation();
@@ -69,7 +70,7 @@ const JournalDetailPage = () => {
 
             {/* Featured Image */}
             <div className="post-featured-image mb-4">
-              <img src={journal.images} alt="部落格圖片" className="img-fluid rounded" />
+              <img src={cloudinaryOptimize(journal.images, 900)} alt="部落格圖片" className="img-fluid rounded" />
             </div>
 
             {/* Post Content */}
@@ -83,10 +84,11 @@ const JournalDetailPage = () => {
                   {relatedPosts.map((post) => (
                     <div className="col-md-4 mb-4" key={post.id}>
                       <div className="card border-0" style={{cursor: 'pointer'}} onClick={() => handleClick(post)}>
-                        <img 
-                          src={post.images} 
-                          className="card-img-top rounded" 
-                          alt={post.title} 
+                        <img
+                          src={cloudinaryOptimize(post.images, 300)}
+                          className="card-img-top rounded"
+                          alt={post.title}
+                          loading="lazy"
                         />
                         <div className="card-body px-0">
                           <h5 className="card-title mt-2">

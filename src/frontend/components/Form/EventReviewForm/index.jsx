@@ -5,6 +5,7 @@ import { addReviews } from '@/frontend/utils/api/review';
 import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import { getOrders, updateOrder } from '@/frontend/utils/api/order';
 import { updatedMembers, getMembers } from '@/frontend/utils/api/member';
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 import './EventReviewForm.scss';
 
 const EventReviewForm = ({ order, onClose }) => {
@@ -219,7 +220,7 @@ return (
                 </div>
 
                 <div className="col-12 mb-3">
-                  <img src={order.actImage} className="img-fluid" alt="活動圖片" />
+                  <img src={cloudinaryOptimize(order.actImage, 500)} className="img-fluid" alt="活動圖片" loading="lazy" />
                 </div>
 
                 <div className="col-12 mb-3">

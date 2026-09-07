@@ -6,6 +6,7 @@ import PageNation from "@/frontend/components/PageNation";
 import EventReviewForm from '@/frontend/components/Form/EventReviewForm';
 import Skeleton from "@/frontend/components/Skeleton";
 import EmptyState from "@/frontend/components/EmptyState";
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 import { useUserOrdersQuery, useCancelOrderMutation } from './hooks';
 
 const OrderListPage = () => {
@@ -220,8 +221,9 @@ const OrderListPage = () => {
                   <div className="col-lg-5">
                     <div className="h-100 d-flex align-items-center justify-content-center">
                       <img
-                        src={order.actImage}
+                        src={cloudinaryOptimize(order.actImage, 400)}
                         alt={order.activityName}
+                        loading="lazy"
                         className="card-img order-img"
                       />
                     </div>

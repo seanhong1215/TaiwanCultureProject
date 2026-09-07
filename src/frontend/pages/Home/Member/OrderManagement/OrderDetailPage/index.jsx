@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";  // 取得動態路由參數
 
 import { getOrderDetail } from '@/frontend/utils/api/order';
 import { getActivitys } from '@/frontend/utils/api/activity';
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 
 
 const OrderDetailPage = () => {
@@ -130,7 +131,7 @@ const OrderDetailPage = () => {
                 <tbody>
                     <tr>
                         <td className='activities-img'>
-                        <img src={activity.images} alt="活動圖片"/>
+                        <img src={cloudinaryOptimize(activity.images, 400)} alt="活動圖片" loading="lazy"/>
                         </td>
                     </tr>
                     <tr className="d-block mt-3 mb-3">

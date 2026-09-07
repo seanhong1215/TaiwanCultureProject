@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import './Blog.scss';
+import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
 
 
 export const BlogCard = ({ image, title, content, date }) => {
 
   return (
     <>
-        <img src={image} alt={title} />
+        <img src={cloudinaryOptimize(image, 300)} alt={title} loading="lazy" />
         <p className="card-date">{date}</p>
-        <h5 className="card-title">{title}</h5>
+        <h3 className="card-title">{title}</h3>
         <p className="card-text" dangerouslySetInnerHTML={{ __html: content }}></p>
     </>
   );

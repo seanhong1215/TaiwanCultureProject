@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import PageNation from "@/frontend/components/PageNation";
 import { CardGridSkeleton } from "@/frontend/components/Skeleton";
 import EmptyState from "@/frontend/components/EmptyState";
+import { cloudinaryOptimize } from "@/frontend/utils/cloudinary";
 
 const JournalListPage = () => {
     const [totalPage , setTotalPage] = useState(1);
@@ -70,7 +71,7 @@ const JournalListPage = () => {
             journalData.map((item) => (
               <div className="col-md-6 col-lg-3" key={item.id} onClick={(e) => handleNavigate(e, item)} style={{cursor:'pointer'}}>
                 <div className="card mb-3">
-                  <img src={item.images} className="card-img-top" alt="activity" />
+                  <img src={cloudinaryOptimize(item.images, 400)} className="card-img-top" alt="activity" loading="lazy" />
                   <div className="card-body">
                     <p className="card-date">{item.date}</p>
                     <h5 className="card-title">{item.title}</h5>
