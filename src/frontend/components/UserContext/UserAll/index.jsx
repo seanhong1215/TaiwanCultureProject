@@ -1,6 +1,6 @@
 // ApiContext
 import { createContext, useState, useEffect } from "react";
-import { getMemberAll } from '@/frontend/utils/api';
+import { getMemberAll } from '@/frontend/utils/api/member';
 
 // 建立 Context
 const ApiContext = createContext();

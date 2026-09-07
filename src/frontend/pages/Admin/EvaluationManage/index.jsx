@@ -1,6 +1,7 @@
 // 評價管理組件
 import { useState, useEffect } from "react";
-import { getReviewAll, getReviewPage, getActivityAll, addReviews, updateReviews, deleteReviews } from '@/frontend/utils/api';
+import { getReviewAll, getReviewPage, addReviews, updateReviews, deleteReviews } from '@/frontend/utils/api/review';
+import { getActivityAll } from '@/frontend/utils/api/activity';
 import ActivityReviewModal from '@/frontend/components/Modal/ActivityReviewModal';
 import './EvaluationManage.scss';
 import Swal from 'sweetalert2';

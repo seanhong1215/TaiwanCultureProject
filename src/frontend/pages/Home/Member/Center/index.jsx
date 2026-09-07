@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from 'react';
-import { getOrdersByUser, getMembers, updatedMembers} from '@/frontend/utils/api';
+import { getOrdersByUser } from '@/frontend/utils/api/order';
+import { getMembers, updatedMembers } from '@/frontend/utils/api/member';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Center.scss';

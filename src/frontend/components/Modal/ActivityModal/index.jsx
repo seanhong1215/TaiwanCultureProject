@@ -5,7 +5,7 @@ import { useState, useEffect} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
-import { uploadImageToCloudinary } from '@/frontend/utils/api.js';
+import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 
 
 const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent }) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { getOrderAll, getOrderPage, createOrder, updateOrder, deleteOrder } from '@/frontend/utils/api';
+import { getOrderAll, getOrderPage, createOrder, updateOrder, deleteOrder } from '@/frontend/utils/api/order';
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import OrderModal from '@/frontend/components/Modal/OrderModal';
 import PageNation from "@/frontend/components/PageNation";

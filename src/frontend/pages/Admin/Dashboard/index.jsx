@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
 import { Eye, Users, ShoppingCart, Calendar, Star } from 'lucide-react';
-import { getMemberAll, getOrderAll, getReviewAll, getActivityAll } from '@/frontend/utils/api';
+import { getMemberAll } from '@/frontend/utils/api/member';
+import { getOrderAll } from '@/frontend/utils/api/order';
+import { getReviewAll } from '@/frontend/utils/api/review';
+import { getActivityAll } from '@/frontend/utils/api/activity';
 import './Dashboard.scss';
 
 const AdminDashboard = () => {

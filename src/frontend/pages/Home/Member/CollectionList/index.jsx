@@ -1,4 +1,5 @@
-import { getActivityAll, getFavorites } from '@/frontend/utils/api';
+import { getActivityAll } from '@/frontend/utils/api/activity';
+import { getFavorites } from '@/frontend/utils/api/favorite';
 import { useState, useEffect } from "react";
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import Swal from 'sweetalert2';

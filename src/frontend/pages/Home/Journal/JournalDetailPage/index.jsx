@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { getJournalAll } from '@/frontend/utils/api';
+import { getJournalAll } from '@/frontend/utils/api/journal';
 import './JournalDetail.scss';
 import Breadcrumb from "@/frontend/components/Breadcrumb"
 
