@@ -176,7 +176,7 @@ app.get('/', (req, res) => res.send('Welcome to the JSON Server!'));
 /* -------------------------------------------------------------------------- */
 /* 錯誤處理                                                                     */
 /* -------------------------------------------------------------------------- */
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
     return res.status(413).json({ error: '圖片超過 500 KB 上限' });
   }

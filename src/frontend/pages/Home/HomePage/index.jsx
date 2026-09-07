@@ -27,7 +27,7 @@ const HomePage = () => {
 
 
     // input value
-    const [isSearchVisible, setIsSearchVisible] = useState(true);
+    const [isSearchVisible] = useState(true);
 
     // 搜尋功能
     const handleOpenModalSearch = () => setShowSearchModal(true);
@@ -129,7 +129,6 @@ const HomePage = () => {
 
         // 點擊篩選
         const handleFilterSearch = (city) => {
-            console.log(city);
             setKeyword(city); // 設定 input 的值
         };
 

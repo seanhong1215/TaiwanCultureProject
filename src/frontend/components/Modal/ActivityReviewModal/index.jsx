@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Button, Table, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
@@ -8,15 +8,13 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
   const { register,  handleSubmit, formState: { errors }, reset } = useForm();
 
   const [previewImages, setPreviewImages] = useState([]);
-  const [mainImageFile, setMainImageFile] = useState(null);
   const [savedImage, setSavedImage] = useState([]); // 儲存從資料庫抓取的圖片
 
     // 處理主圖片上傳
     const handleMainImageChange = async(e) => {
       if (e.target.files && e.target.files[0]) {
         const file = e.target.files[0];
-        setMainImageFile(file);
-  
+
         // 預覽圖片
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -40,9 +38,9 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
 
 useEffect(() => {
   if (newReview.id) {
-      setSavedImage(newReview.imageFiles); 
+      setSavedImage(newReview.imageFiles);
     }
-}, [newReview.id]);
+}, [newReview.id, newReview.imageFiles]);
 
 // 更新活動 Id
 const handleActivityChange = (e) => {

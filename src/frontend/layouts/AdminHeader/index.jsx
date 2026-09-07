@@ -1,12 +1,12 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { AdminContext } from '@/frontend/layouts/AdminLayout';
+import { AdminContext } from '@/frontend/layouts/AdminLayout/context';
 import Swal from 'sweetalert2';
 import { Menu, LogOut, ChevronDown } from 'lucide-react';
 import './AdminHeader.scss';
 
 const AdminHeader = () => {
-  const { toggleSidebar, toggleMobileNav, mobileNavOpen } = useContext(AdminContext);
+  const { toggleSidebar, toggleMobileNav } = useContext(AdminContext);
   const navigate = useNavigate();
   const userName = localStorage.getItem("admin_userName");
   const userAvatar = localStorage.getItem("admin_userAvatar");

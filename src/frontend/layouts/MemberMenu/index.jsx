@@ -56,7 +56,8 @@ const Menu = () => {
         // ✅ 觸發 custom event，通知 Header 更新
         window.dispatchEvent(new Event("storageChange"));
       } catch (error) {
-        setError('Upload failed:', error);
+        console.error('Upload failed:', error);
+        setError('圖片上傳失敗，請稍後再試');
       }
     };
 
@@ -106,6 +107,7 @@ const Menu = () => {
               </div>
             </label>
             <p className="mt-2">{nickName || userName}</p>
+            {error && <p className="text-danger small">{error}</p>}
         </div>
 
       {userRole === "ACTIVITY_MANAGER" ? (

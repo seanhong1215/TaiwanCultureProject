@@ -141,6 +141,7 @@ const getUsersData = async () => {
             }));
         }
     } catch (err) {
+        console.error("載入個人資料失敗", err);
         setError("載入個人資料失敗");
     } finally {
         setLoading(false);

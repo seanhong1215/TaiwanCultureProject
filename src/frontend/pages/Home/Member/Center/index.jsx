@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from 'react';
+import { useState, useEffect  } from 'react';
 import { getOrdersByUser } from '@/frontend/utils/api/order';
 import { getMembers, updatedMembers } from '@/frontend/utils/api/member';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,7 @@ const rewardConditions = [
 ];
 
 // 取得今天日期（格式 YYYY-MM-DD）
-const getFormattedDate = (daysOffset = 0, rewardPoints = 0) => {
+const getFormattedDate = (_daysOffset = 0, rewardPoints = 0) => {
   let today = dayjs();
 
   // 如果是 3000 點數，使用1個月期限

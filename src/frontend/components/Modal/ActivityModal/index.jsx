@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Button, Table, Modal, Form, Alert} from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import { useForm, Controller  } from "react-hook-form";
 import { useState, useEffect} from "react";
 import DatePicker from "react-datepicker";
@@ -95,6 +95,7 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
 
 
   const onSubmit = async(data) => {
+    setLoading(true);
     try {
 
         let updatedEvent = {
@@ -122,6 +123,8 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
 
   } catch (error) {
     console.error("Form submission error:", error);
+  } finally {
+    setLoading(false);
   }
   };
 
@@ -303,8 +306,8 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>取消</Button>
-          <Button variant="primary" type="submit">儲存</Button>
+          <Button variant="secondary" onClick={handleClose} disabled={loading}>取消</Button>
+          <Button variant="primary" type="submit" disabled={loading}>{loading ? "儲存中…" : "儲存"}</Button>
         </Modal.Footer>
       </Form>
     </Modal>

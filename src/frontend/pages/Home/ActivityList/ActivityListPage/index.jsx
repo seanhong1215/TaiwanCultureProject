@@ -1,12 +1,10 @@
-import React from "react";
 import './ActivityList.scss';
 import Breadcrumb from "@/frontend/components/Breadcrumb"
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/frontend/components/Datepicker/Datepicker.scss";
 import { getActivityAll, getActivityPage } from '@/frontend/utils/api/activity';
-import Swal from 'sweetalert2';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import { CardGridSkeleton } from '@/frontend/components/Skeleton';
 import EmptyState from '@/frontend/components/EmptyState';
@@ -21,9 +19,6 @@ const ActivityList = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchingValue , setSearchingValue] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null); // 初始值為 null
-  // const [selectedDate, SelectedDate] = useState('');
-  // const [selectedType, setSelectedType] = useState('');
-  const [selectedSite, setSelectedSite] = useState('');
   const [selectedPrice, setSelectedPrice] = useState('');
 
   const [selectedCity, setSelectedCity] = useState("");  // 存放選擇的城市
@@ -95,27 +90,19 @@ useEffect(()=>{
   };
 
 
-  const getSelectedType = (e) => {
-    setSelectedType(e.target.value);
-  };
-
-  const getSelectedSite = (e) => {
-    setSelectedSite(e.target.value);
-  };
-
   const getSelectedPrice = (e) => {
     setSelectedPrice(e.target.value);
   };
 
   
   const searchActivity = () => {
-    if (!searchInput && !selectedDate && !selectedType && !selectedSite && !selectedPrice) {
+    if (!searchInput && !selectedDate && !selectedType && !selectedCity && !selectedPrice) {
       setSearchResultsData([]);
       setSearchingValue([]);
       fetchGetActivityAll();
       return;
     }
-    setSearchingValue([searchInput , selectedDate , selectedType, selectedSite, selectedPrice])
+    setSearchingValue([searchInput , selectedDate , selectedType, selectedCity, selectedPrice])
     
     const searchResults = searchData.filter((item) => {
       const matchesTitle = searchInput 
@@ -126,7 +113,7 @@ useEffect(()=>{
       const matchesDate =
       selectedDate ? new Date(item.startDate) >= new Date(selectedDate || "1970-01-01") && new Date(item.startDate) <= new Date(selectedDate || "2099-12-31") : true;
       const matchesType = selectedType ? item.eventType === selectedType : true;
-      const matchesSite = selectedSite ? item.city === selectedSite : true;
+      const matchesSite = selectedCity ? item.city === selectedCity : true;
       const matchesPrice = selectedPrice ? item.price <= selectedPrice : true;
       
       return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;

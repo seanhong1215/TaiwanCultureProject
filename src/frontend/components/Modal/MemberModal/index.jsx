@@ -1,27 +1,19 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from 'react';
-import { Button, Table, Modal, Form } from "react-bootstrap";
+import { useEffect } from 'react';
+import { Button, Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 const MemberModal = ({ showModal, handleClose, handleSave, editingUser = null, loading }) => {
   const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    role: '',
-    // status: '啟用'
-  });
 
   useEffect(() => {
     if (editingUser) {
-      const updatedData = {
+      reset({
         name: editingUser.name || '',
         email: editingUser.email || '',
         role: editingUser.role || '',
         // status: editingUser.status || ''
-      };
-      setFormData(updatedData);
-      reset(updatedData);
+      });
     } else if (!showModal) {
       // 當 Modal 關閉時，清空表單
       reset({
@@ -35,10 +27,6 @@ const MemberModal = ({ showModal, handleClose, handleSave, editingUser = null, l
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
     setValue(name, value); // 確保 useForm 內部同步變更
   };
 

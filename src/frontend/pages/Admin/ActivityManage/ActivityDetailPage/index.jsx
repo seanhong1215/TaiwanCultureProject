@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from "react-router-dom";  
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
-import { Modal, Button, Form, Card, Alert } from "react-bootstrap";
+import { Modal, Button, Form, Card } from "react-bootstrap";
 import { addActivitys, updatedActivitys, getActivitys } from '@/frontend/utils/api/activity';
 import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import defaultImage from "@/frontend/assets/images/default-images.png";
@@ -10,10 +9,8 @@ import './ActivityDetilPage.scss';
 
 
 const EventDetail = () => {
-    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
     const navigate = useNavigate();
-    const [error, setError] = useState('');
-  
+
     const { id } = useParams();
     const [initData ,setInitData] = useState({});
 
@@ -27,8 +24,6 @@ const EventDetail = () => {
     const [previewCoverImages, setPreviewCoverImages] = useState(Array(5).fill(defaultImage));
     const [previewSectionImages, setPreviewSectionImages] = useState([defaultImage]);
 
-    const [mainCoverImageFile, setMainCoverImageFile] = useState(null);
-    const [mainSectionImageFile, setMainSectionImageFile] = useState(null);
 
     useEffect(() => {
       const fetchData = async () => {
@@ -70,8 +65,8 @@ const EventDetail = () => {
         sections: firstActivity.sections.length ? firstActivity.sections : prevState.sections
       }));
         } catch (err) {
-        console.log("獲取資料錯誤:", err);
-        } 
+        console.error("獲取資料錯誤:", err);
+        }
     };
     fetchData();
     }, [id]);
@@ -80,7 +75,6 @@ const EventDetail = () => {
     // 更新封面圖片
     const updateImage = (index, event) => {
       const file = event?.target?.files[0];
-      setMainCoverImageFile(file);
 
       if (!file) return;
 
@@ -201,9 +195,6 @@ const EventDetail = () => {
         sections: [...activityData.sections] // 複製 sections
       }
 
-      // 儲存原始圖片的 URL
-      const originalImages = submitData.images.map(img => img.url || null);
-
       // 🔄 **上傳 `images[]` (僅更新變動的)**
       for (let i = 0; i < submitData.images.length; i++) {
         if (submitData.images[i] instanceof File) {
@@ -214,9 +205,6 @@ const EventDetail = () => {
           }
         }
       }
-
-      // 儲存原始圖片的 URL
-      const originalSectionImages = submitData.sections.map(section => section.image || null);
 
       // 🔄 **上傳 `sections[].image`**
       for (let i = 0; i < submitData.sections.length; i++) {
@@ -290,11 +278,6 @@ const EventDetail = () => {
         };
       });
     };
-
-
-    
-
-  {error && <Alert variant="danger">{error}</Alert>}
 
   return (
     <Modal show={true} onHide={handleClose} size="lg" centered>

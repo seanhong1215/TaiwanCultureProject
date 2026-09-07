@@ -50,7 +50,7 @@ const MessageManager = () => {
       console.error("Error fetching reviews:", error);
     }
     
-  }, [page, refreshReviews]);
+  }, [page, refreshReviews, limit]);
 
   // 滾動到頁面頂部
   useEffect(() => {

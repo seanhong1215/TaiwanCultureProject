@@ -61,7 +61,7 @@ const AdminUsers = async() => {
         setTotalPage(total ? Math.ceil(total / limit) : 1);
         setMembers(responsePage);
     } catch(error){
-        console.log(error);
+        console.error(error);
     } finally {
         setDataLoading(false);
     }

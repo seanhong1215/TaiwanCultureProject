@@ -5,11 +5,6 @@ import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import toast from '@/frontend/utils/toast';
 
 const ActivityReview = () => {
-    const [imageFiles, setImageFiles] = useState([]); // 用來儲存多張圖片
-    const [previewImage, setPreviewImage] = useState(""); // 儲存單一圖片預覽
-
-    const [selectedActivity, setSelectedActivity] = useState(""); // 獨立管理活動類型
-
     const fileInputRef = useRef(null); // 用來重置 file input
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -46,14 +41,12 @@ const ActivityReview = () => {
                 name: userName
             });
 
-            setSelectedActivity(""); // **清空下拉選單的值**
-
             if (fileInputRef.current) {
                 fileInputRef.current.value = ""; // 清空 file input
             }
             setIsSubmitted(false); // **清除提交狀態，避免重複觸發**
         }
-    }, [isSubmitted]);
+    }, [isSubmitted, userAvatar, userName]);
 
     // 刪除圖片
     const handleDeleteImage = (index) => {
@@ -66,16 +59,6 @@ const ActivityReview = () => {
     // 處理主圖片上傳
     const handleImageChange = async(e) => {
         const file = e.target.files[0];
-        if (file) {
-        // 顯示圖片預覽
-        const reader = new FileReader();
-        reader.onload = () => {
-            setPreviewImage(reader.result); // 更新圖片預覽
-            setImageFiles((prevFiles) => [...prevFiles, file]); // 新增圖片到圖片陣列
-        };
-        reader.readAsDataURL(file);
-        }
-
         // 上傳圖片
         const imageUrl = await uploadImageToCloudinary(file);
         setNewReview((prev) => ({

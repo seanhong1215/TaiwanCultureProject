@@ -1,15 +1,10 @@
-import React from "react";
 import './JournalList.scss';
 import Breadcrumb from "@/frontend/components/Breadcrumb"
-import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/frontend/components/Datepicker/Datepicker.scss";
 import { getJournalPage, getJournalAll } from '@/frontend/utils/api/journal';
-import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
 import { CardGridSkeleton } from "@/frontend/components/Skeleton";
 import EmptyState from "@/frontend/components/EmptyState";
@@ -20,8 +15,7 @@ const JournalListPage = () => {
     const [page, setPage] = useState(1); // 頁數狀態
     const limit = 8;
     const [journalData, setJournalData] = useState([]);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);  
+    const [loading, setLoading] = useState(false);
 
       // 轉址功能
       const navigate = useNavigate();
@@ -51,7 +45,7 @@ const JournalListPage = () => {
           setJournalData(response); 
 
         } catch (error) {
-          setError('Error fetching journal:', error);
+          console.error('Error fetching journal:', error);
         } finally {
           setLoading(false);
         }
