@@ -1,19 +1,29 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
-import jsonServer from 'json-server';
-import jsonServerAuth from 'json-server-auth';
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { Prisma } from '@prisma/client';
 
 // Firebase Admin
 import firebaseAdmin from 'firebase-admin';
 
+import prisma from '../lib/prisma.js';
 import { createAuth, ADMIN_ROLES } from './auth.js';
+import authRoutes from './routes/authRoutes.js';
+import activityRoutes from './routes/activity.js';
+import journalRoutes from './routes/journal.js';
+import userRoutes from './routes/users.js';
+import favoriteRoutes from './routes/favorites.js';
+import profileRoutes from './routes/profiles.js';
+import reservationRoutes from './routes/reservations.js';
+import reviewRoutes from './routes/reviews.js';
+import orderRoutes from './routes/orders.js';
+import notificationRoutes from './routes/notifications.js';
 
 // 讀取 .env 檔案
 dotenv.config();
@@ -89,13 +99,9 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
   : ['http://localhost:5173', 'http://localhost:3000'];
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
-const router = jsonServer.router(path.join(process.cwd(), 'src/backend/json/db.json'));
-app.use(jsonServer.defaults());
-app.db = router.db;
-
 // 認證／授權中介層
 const { attachIdentity, requireAuth, requireRole, guardCollections } = createAuth({
-  getDb: () => router.db,
+  prisma,
   firebaseAuth,
 });
 
@@ -126,26 +132,37 @@ app.post('/api/auth', async (req, res) => {
 /* -------------------------------------------------------------------------- */
 /* 授權守衛                                                                     */
 /* -------------------------------------------------------------------------- */
-// ⚠️ 順序很重要：這兩層必須在 json-server 的 router 之前。
-// router 會直接回應請求，掛在它後面的中介層永遠不會執行。
+// ⚠️ 順序很重要：這兩層必須在下面各資源路由之前掛上，
+// 否則路由會先回應請求，guardCollections 永遠不會執行。
 app.use('/api', attachIdentity);
 app.use('/api', guardCollections);
 
-// 後台專用路由（示範角色守衛）。
-// 同樣要在 router 之前註冊，否則 json-server 會先把 /api/admin/... 當成
-// 一個不存在的資料表回應掉，這個 handler 永遠不會被呼叫。
-app.get('/api/admin/summary', requireRole(...ADMIN_ROLES), (req, res) => {
-  const db = router.db;
-  res.json({
-    users: db.get('users').size().value(),
-    activity: db.get('activity').size().value(),
-    orders: db.get('orders').size().value(),
-  });
+// 後台專用路由（示範角色守衛）
+app.get('/api/admin/summary', requireRole(...ADMIN_ROLES), async (req, res, next) => {
+  try {
+    const [users, activity, orders] = await Promise.all([
+      prisma.user.count(),
+      prisma.activity.count(),
+      prisma.order.count(),
+    ]);
+    res.json({ users, activity, orders });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// json-server-auth 提供 /api/register、/api/signin
-app.use('/api', jsonServerAuth);
-app.use('/api', router);
+// /api/register、/api/signin（取代原本的 json-server-auth）
+app.use('/api', authRoutes);
+
+app.use('/api/activity', activityRoutes);
+app.use('/api/journal', journalRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/favorites', favoriteRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/reservations', reservationRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 /* -------------------------------------------------------------------------- */
 /* 圖片上傳                                                                     */
@@ -183,6 +200,16 @@ app.use((err, req, res, next) => {
   // express.json() 解析失敗屬於用戶端送錯格式，應回 400 而非 500
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: '請求內容不是有效的 JSON' });
+  }
+  // Prisma 已知的錯誤代碼：查無資料 / 唯一鍵衝突，換成對應的 HTTP 狀態碼
+  // 而不是一律回 500（見 https://pris.ly/d/prisma-error-reference）
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    if (err.code === 'P2025') {
+      return res.status(404).json({ error: '找不到資料' });
+    }
+    if (err.code === 'P2002') {
+      return res.status(409).json({ error: '資料重複（唯一鍵衝突）', fields: err.meta?.target });
+    }
   }
   if (err) {
     console.error('未處理的錯誤：', err.message);

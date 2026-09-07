@@ -3,19 +3,20 @@
  *
  * 設計說明：
  * 前端的路由守衛（RequireAuth / RequireAdmin）只是體驗優化，任何人都能改
- * localStorage 繞過。真正的權限判斷一律在這裡做，且必須掛在 json-server
- * 的 router 之前，否則 router 會先回應、中介層永遠不會執行。
+ * localStorage 繞過。真正的權限判斷一律在這裡做，且必須掛在資源路由
+ * 之前，否則路由會先回應、中介層永遠不會執行。
  *
  * 本專案同時存在兩種 token：
- *   1. json-server-auth 於 /api/signin 簽發的 JWT（一般帳密登入）
+ *   1. routes/authRoutes.js 於 /api/signin 簽發的 JWT（一般帳密登入）
  *   2. Firebase ID Token（Google / Facebook 社群登入）
  * resolveIdentity() 會依序嘗試驗證，統一輸出成 req.auth。
  */
 
 import jwt from 'jsonwebtoken';
 
-// json-server-auth 內建的簽章金鑰（node_modules/json-server-auth/dist/constants.js）
-// 正式產品應改用自建的簽發流程並以環境變數注入金鑰。
+// 簽發／驗證共用同一把金鑰，見 routes/authRoutes.js。
+// 沿用原本 json-server-auth 的預設金鑰字串作為 fallback，讓既有（搬遷前簽發的）
+// token 在沒設定 JWT_SECRET_KEY 的環境下仍然有效；正式環境務必透過環境變數覆蓋。
 const JSON_SERVER_JWT_SECRET = process.env.JWT_SECRET_KEY || 'json-server-auth-123456';
 
 /** 具備後台管理權限的角色 */
@@ -45,18 +46,18 @@ const collectionOf = (url) => (url || '').split('?')[0].split('/').filter(Boolea
 /**
  * 建立身分解析器。
  * @param {object} deps
- * @param {() => object} deps.getDb        取得 lowdb 實例（router.db）
+ * @param {import('@prisma/client').PrismaClient} deps.prisma
  * @param {object|null} deps.firebaseAuth  firebaseAdmin.auth()，未設定憑證時為 null
  */
-export const createAuth = ({ getDb, firebaseAuth }) => {
+export const createAuth = ({ prisma, firebaseAuth }) => {
   /** 驗證 token 並回傳 { userId, email, role, provider }，失敗回傳 null */
   const resolveIdentity = async (token) => {
     if (!token) return null;
 
-    // 1) json-server-auth 簽發的 JWT（會驗證簽章與有效期限）
+    // 1) 本地簽發的 JWT（見 routes/authRoutes.js，會驗證簽章與有效期限）
     try {
       const payload = jwt.verify(token, JSON_SERVER_JWT_SECRET);
-      const user = getDb().get('users').find({ id: Number(payload.sub) }).value();
+      const user = await prisma.user.findUnique({ where: { id: Number(payload.sub) } });
       if (user) {
         return { userId: user.id, email: user.email, role: user.role || 'Member', provider: 'local' };
       }
@@ -68,7 +69,7 @@ export const createAuth = ({ getDb, firebaseAuth }) => {
     if (firebaseAuth) {
       try {
         const decoded = await firebaseAuth.verifyIdToken(token);
-        const user = getDb().get('users').find({ uuid: decoded.uid }).value();
+        const user = await prisma.user.findUnique({ where: { uuid: decoded.uid } });
         return {
           userId: user ? user.id : null,
           email: decoded.email || (user ? user.email : null),

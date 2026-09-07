@@ -52,7 +52,7 @@ model Activity {
   eventType       String?
   status          String?
   eventAddress    String?
-  content         Json // { title, description }
+  content         Json? // { title, description } — 後台某個編輯流程只會先送 activityDetails，故設 optional
   activityDetails Json? // [{ images[], trip{title,highlights[]}, map{}, sections[] }]
 
   reviews     Review[]
@@ -69,6 +69,7 @@ model Journal {
   date    String?
   content String  @db.Text
   images  String?
+  status  String? @default("草稿") // 後台表單有預設值但沒有切換 UI，目前無人讀取，保留欄位避免寫入被靜默丟棄
 
   @@map("journals")
 }
