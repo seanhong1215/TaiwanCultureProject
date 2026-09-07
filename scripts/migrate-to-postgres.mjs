@@ -38,6 +38,14 @@ const toDate = (str, fallback = new Date()) => {
   return Number.isNaN(d.getTime()) ? fallback : d;
 };
 
+// db.json 是無 schema 的檔案，少數欄位（目前發現 activity.price）
+// 混了字串跟數字兩種型別，寫進 Postgres 前要統一轉型。
+const toNumberOrNull = (val) => {
+  if (val === undefined || val === null || val === '') return null;
+  const n = Number(val);
+  return Number.isNaN(n) ? null : n;
+};
+
 const summary = {};
 const record = (name, count) => {
   summary[name] = count;
@@ -77,10 +85,10 @@ async function migrateActivities() {
           id: a.id,
           city: a.city ?? null,
           images: a.images ?? null,
-          rating: a.rating ?? 0,
+          rating: toNumberOrNull(a.rating) ?? 0,
           startDate: a.startDate ?? null,
           endDate: a.endDate ?? null,
-          price: a.price ?? null,
+          price: toNumberOrNull(a.price),
           eventType: a.eventType ?? null,
           status: a.status ?? null,
           eventAddress: a.eventAddress ?? null,
@@ -206,12 +214,12 @@ async function migrateOrders() {
           lastBookableDate: o.last_bookable_date ?? null,
           activityLocation: o.activityLocation ?? null,
           activityPeriod: o.activityPeriod ?? undefined,
-          adultCount: o.adultCount ?? null,
-          childCount: o.childCount ?? null,
-          adultPrice: o.adultPrice ?? null,
-          childPrice: o.childPrice ?? null,
+          adultCount: toNumberOrNull(o.adultCount),
+          childCount: toNumberOrNull(o.childCount),
+          adultPrice: toNumberOrNull(o.adultPrice),
+          childPrice: toNumberOrNull(o.childPrice),
           timeSlot: o.timeSlot ?? null,
-          totalAmount: o.totalAmount ?? null,
+          totalAmount: toNumberOrNull(o.totalAmount),
           paymentStatus: o.paymentStatus ?? null,
           reservedStatus: o.reservedStatus ?? null,
           actImage: o.actImage ?? null,
