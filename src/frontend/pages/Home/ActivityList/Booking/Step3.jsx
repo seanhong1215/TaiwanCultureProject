@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import { useEffect } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step3.scss";
@@ -32,9 +32,6 @@ const Step3 = () => {
 
   const {
       register,
-      watch,
-      reset,
-      setValue,
       handleSubmit,
       formState: { errors },
     } = useForm({

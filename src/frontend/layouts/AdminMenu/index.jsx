@@ -1,8 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import {Menu, Users, Home, Calendar, Star, Package, FileText,} from 'lucide-react';
+import {Users, Home, Calendar, Star, Package, FileText,} from 'lucide-react';
 import './Menu.scss';
 import { useContext } from 'react';
-import { AdminContext } from '@/frontend/layouts/AdminLayout';
+import { AdminContext } from '@/frontend/layouts/AdminLayout/context';
 
 const AdminMenu = () => {
     const { sidebarOpen, mobileNavOpen, toggleMobileNav } = useContext(AdminContext);

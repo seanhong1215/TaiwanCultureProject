@@ -12,8 +12,6 @@ const Header = () => {
 
     // 設定語言
     const { t } = useTranslation();
-    const { i18n } = useTranslation();
-    const changeLanguage = (lng) => { i18n.changeLanguage(lng); };
     const navigate = useNavigate();
 
     // 用戶
@@ -101,6 +99,7 @@ const Header = () => {
             setIsLogin(true); // 切換回登入模式
         } catch (error) {
             setError("註冊失敗，請稍後再試");
+            console.error('註冊失敗:', error);
         } finally {
             setLoading(false);
         }

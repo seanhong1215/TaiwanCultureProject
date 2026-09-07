@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../OrderDetailPage/OrderDetail.scss';
 import { useParams } from "react-router-dom";  // 取得動態路由參數
 
@@ -23,8 +23,8 @@ const OrderDetailPage = () => {
                 setActivity(responseActivitys);  // 設置活動資料
             }
         } catch (err) {
-            console.log("獲取活動資料錯誤:", err);
-        } 
+            console.error("獲取活動資料錯誤:", err);
+        }
     };
 
     if (id) { // 確保 id 存在再執行

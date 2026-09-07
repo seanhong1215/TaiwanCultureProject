@@ -24,6 +24,7 @@ const CollectionList = () => {
         const activityResponse = await getActivityAll();
         setFavorites(activityResponse.filter((activity) => favoriteIds.includes(activity.id)));
     } catch (error) {
+        console.error("載入收藏清單失敗", error);
         setError("載入收藏清單失敗");
         Swal.fire({
             title: "載入收藏清單失敗",

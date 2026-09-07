@@ -74,7 +74,7 @@ export const useEnsureReservationData = (activityData) => {
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          console.log('Reservations not found:', error);
+          console.warn('Reservations not found:', error);
         } else {
           console.error('Error processing reservation:', error);
         }

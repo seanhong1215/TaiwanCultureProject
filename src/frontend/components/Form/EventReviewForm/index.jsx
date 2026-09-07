@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import Swal from 'sweetalert2';
 import { addReviews } from '@/frontend/utils/api/review';
@@ -9,7 +9,6 @@ import './EventReviewForm.scss';
 
 const EventReviewForm = ({ order, onClose }) => {
 
-  const [error, setError] = useState('');
   const userName = localStorage.getItem("userName");
   const userAvatar = localStorage.getItem("userAvatar");
   const userId = Number(localStorage.getItem("userId"));
@@ -337,7 +336,9 @@ return (
 
 
                 <div className="col-12">
-                  <button className="btn btn-success w-100" onClick={handleSubmit}>提交評價並獲得50點積分</button>
+                  <button className="btn btn-success w-100" onClick={handleSubmit} disabled={isUploading}>
+                    {isUploading ? "上傳中…" : "提交評價並獲得50點積分"}
+                  </button>
                 </div>
               </div>
             </div>

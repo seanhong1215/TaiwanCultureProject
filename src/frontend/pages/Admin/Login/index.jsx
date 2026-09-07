@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '@/frontend/utils/api/auth';
 import Swal from 'sweetalert2';
@@ -6,7 +6,6 @@ import { ShieldCheck } from 'lucide-react';
 
 
 const LoginPage = () => {
-  const userRole = localStorage.getItem("userRole");
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -55,7 +54,7 @@ const LoginPage = () => {
       
       navigate('/admin/dashboard');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Swal.fire({
         title: "登入失敗，請檢查帳號密碼!",
         icon: "error"

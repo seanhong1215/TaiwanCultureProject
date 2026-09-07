@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { getMembers } from '@/frontend/utils/api/member';
 
 const UserContext = createContext();
@@ -30,5 +30,3 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
-
-export const useUser = () => useContext(UserContext);

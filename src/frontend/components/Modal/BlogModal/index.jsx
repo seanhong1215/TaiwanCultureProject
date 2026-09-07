@@ -1,31 +1,31 @@
 import PropTypes from "prop-types";
-import { Button, Table, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import  { useState, useEffect, useRef } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import EditorToolbar, { modules, formats } from '@/frontend/components/EditorToolbar';
-import { useForm, Controller } from "react-hook-form";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import EditorToolbar from '@/frontend/components/EditorToolbar';
+import { modules, formats } from '@/frontend/components/EditorToolbar/quillConfig';
+import { useForm } from "react-hook-form";
 import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import './Blog.scss';
 
 
 const BlogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrentBlog }) => {
-  const { control, register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
+  const { handleSubmit } = useForm({
     defaultValues: {
       date: currentBlog.date ? new Date(currentBlog.date) : null, // 預設值為 currentBlog.date
     },
   });
-  
+
   const quillRef = useRef(null);
   const [editorValue, setEditorValue] = useState('');
 
   const [previewImages, setPreviewImages] = useState([]);
-  const [mainImageFile, setMainImageFile] = useState(null);
 
 
-    // 初始化
+    // 初始化。currentBlog.content 刻意不放進依賴：使用者在編輯器輸入時
+    // 也會透過 onEditorValueChange 回寫 currentBlog.content，若列為依賴
+    // 每次打字都會重新觸發這個 effect，重新解析一次 JSON。
   useEffect(() => {
     if (currentBlog?.id) {
       try {
@@ -36,21 +36,25 @@ const BlogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
         } else {
           setEditorValue(currentBlog.content); // 已經是 HTML
         }
-      } catch (error) {
+      } catch {
         setEditorValue(currentBlog.content); // 不是 JSON，直接當作 HTML
       }
     } else {
       setEditorValue("");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBlog?.id]);
 
 
+  // currentBlog.images 同理刻意不放進依賴：圖片上傳完成後也會透過
+  // setCurrentBlog 回寫 images，避免上傳完成又重新觸發這個初始化 effect。
   useEffect(() => {
     if (currentBlog?.images && typeof currentBlog.images === "string" && currentBlog.images.startsWith("http")) {
       setPreviewImages([currentBlog.images]);
     } else {
       setPreviewImages([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBlog?.id]);
 
 
@@ -76,7 +80,6 @@ const BlogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
   const handleMainImageChange = async(e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setMainImageFile(file);
 
       // 預覽圖片
       const reader = new FileReader();

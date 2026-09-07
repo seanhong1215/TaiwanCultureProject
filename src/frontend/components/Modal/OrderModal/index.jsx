@@ -19,7 +19,7 @@ const DEFAULT_ORDER = {
   totalAmount: 0,
 };
 
-const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurrentOrder }) => {
+const OrderModal = ({ showModal, handleClose, handleSave, currentOrder }) => {
   const [formData, setFormData] = useState(DEFAULT_ORDER);
   const isEdit = !!currentOrder?.id;
 
@@ -175,7 +175,6 @@ OrderModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   currentOrder: PropTypes.object,
-  setCurrentOrder: PropTypes.func.isRequired,
 };
 
 export default OrderModal;
