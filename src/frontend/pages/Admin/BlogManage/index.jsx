@@ -1,23 +1,23 @@
 // 部落格管理組件
 import  { useState, useEffect } from "react";
-import { getJournalAll, getJournalPage, createdJournal, updatedJournal, deletedJournal } from '@/frontend/utils/api/journal';
 import './BlogManage.scss';
 import BlogModal from '@/frontend/components/Modal/BlogModal';
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
+import { useAdminJournalsQuery, useSaveJournalMutation, useDeleteJournalMutation } from './hooks';
 
 
 const BlogManagement = () => {
-  const [blogs, setBlogs] = useState([]);
-
-  const [totalPage , setTotalPage] = useState(1)
-  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 10;
 
   const [showModal, setShowModal] = useState(false);
 
   const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", date: "", content: "", images: "", status: "草稿" });
+
+  const { blogs, totalItems, totalPage } = useAdminJournalsQuery(page, limit);
+  const saveJournalMutation = useSaveJournalMutation();
+  const deleteJournalMutation = useDeleteJournalMutation();
 
   const handleShow = (blog = { id: null, title: "", date: "", content: "", images: "", status: "" }) => {
     setCurrentBlog(blog);
@@ -35,53 +35,30 @@ const BlogManagement = () => {
   };
 
   const handleSave = async(currentBlog) => {
-    const { id, title, date, content, images, status } = currentBlog;
-    if (id) {
-      await updatedJournal(id, { title, date, content, images, status });
-      Swal.fire({ title: "更新成功", icon: "success" });
-    } else {
-      await createdJournal({ title, date, content, images, status });
-      Swal.fire({ title: "新增成功", icon: "success" });
+    try {
+      await saveJournalMutation.mutateAsync(currentBlog);
+      Swal.fire({ title: currentBlog.id ? "更新成功" : "新增成功", icon: "success" });
+    } catch (error) {
+      console.error("儲存文章失敗", error);
+      Swal.fire({ title: "儲存失敗", icon: "error" });
     }
-    AdminBlogManagement();
     handleClose();
   };
 
   const handleDelete = async(id) => {
-    await deletedJournal(id);
-    Swal.fire({ title: "刪除成功", icon: "success" });
-
-    AdminBlogManagement();
+    try {
+      await deleteJournalMutation.mutateAsync(id);
+      Swal.fire({ title: "刪除成功", icon: "success" });
+    } catch (error) {
+      console.error("刪除文章失敗", error);
+      Swal.fire({ title: "刪除失敗", icon: "error" });
+    }
   };
 
-  const AdminBlogManagement = async() => {
-    try{
-      // 先獲取所有資料
-      const response  = await getJournalAll();
-      const totalItems = response.length; // 直接計算總筆數
-
-      // 設定總筆數
-      setTotalItems(totalItems);
-
-      // 計算總頁數
-      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
-      setTotalPage(totalPages);
-
-      // 獲取當前頁面的資料
-      const responsePage  = await getJournalPage(page, limit)
-      setBlogs(responsePage); 
-
-
-    } catch(error){
-        console.error(error);
-    }
-}
-
   useEffect(() => {
-    AdminBlogManagement();
     // 每次換頁時，讓畫面回到頂部
     window.scrollTo(0, 0);
-}, [page, limit]); 
+  }, [page]);
 
   return (
     <div className="container mt-4">

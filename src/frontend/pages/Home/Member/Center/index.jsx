@@ -1,158 +1,20 @@
-import { useState, useEffect  } from 'react';
-import { getOrdersByUser } from '@/frontend/utils/api/order';
-import { getMembers, updatedMembers } from '@/frontend/utils/api/member';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import './Center.scss';
-import dayjs from 'dayjs';  // 引入 day.js
-
-// 獎勵條件設定
-const rewardConditions = [
-  { points: 10000, name: "免費四日遊", daysOffset: 0 },
-  { points: 8000, name: "免費三日遊", daysOffset: 0 },
-  { points: 5000, name: "免費二日遊", daysOffset: 0 },
-  { points: 3000, name: "免費一日遊", daysOffset: 0 },
-];
-
-// 取得今天日期（格式 YYYY-MM-DD）
-const getFormattedDate = (_daysOffset = 0, rewardPoints = 0) => {
-  let today = dayjs();
-
-  // 如果是 3000 點數，使用1個月期限
-  if (rewardPoints === 3000) {
-    today = today.add(1, 'month');  // 一個月
-  } else {
-    today = today.add(3, 'month');  // 預設其他積分加三個月
-  }
-
-  // 返回格式化日期 (YYYY-MM-DD)
-  return today.format('YYYY-MM-DD');
-};
-
+import { useMemberQuery, useUpdateMemberMutation } from '@/frontend/hooks/useMember';
+import { useOrdersByUserQuery, useAutoRewardTickets } from './hooks';
 
 const Center = () => {
 
   const userId = Number(localStorage.getItem("userId")); // 取得使用者ID
 
-  const [trips, setTrips] = useState([]);
+  const { data: trips = [] } = useOrdersByUserQuery(userId);
+  const { data: member } = useMemberQuery(userId);
+  const updateMemberMutation = useUpdateMemberMutation(userId);
 
-  const [rewards, setRewards] = useState({
-    reward: [],
-    points: 2000,
-  });
+  useAutoRewardTickets(member, updateMemberMutation);
 
-  const [tickets, setTickets] = useState([]);
-
-  const fetchTripData = async () => {
-    try {
-      if (!userId) {
-        console.error('未找到使用者ID');
-        return;
-      }
-  
-      // 直接取得該用戶的訂單資料
-      const userOrders = await getOrdersByUser(userId);
-      setTrips(userOrders);
-    } catch (error) {
-      console.error('無法獲取訂單資料', error);
-    }
-  };
-
-  const fetchMemberData = async () => {
-    try {
-      // 獲取會員資料，同時包含 rewards 和 tickets
-      const response = await getMembers(userId);
-
-      // 從響應中提取 rewards 和 tickets
-      const { rewards, tickets } = response;
-  
-      // 更新 rewards 資料
-      setRewards(rewards);
-
-      // 更新 tickets 資料
-      setTickets(tickets);
-    } catch (error) {
-      console.error('無法獲取會員資料或票據資料', error);
-    }
-  };
-
-// 發送票券（根據當天積分）
-const checkAndRewardTicket = async (rewardsData) => {
-  if (!rewardsData) return;
-
-  let newTickets = Array.isArray(tickets) ? [...tickets] : []; // 確保 tickets 是陣列
-  let rewardMessage = "";
-  let rewardSent = false;
-  let updatedRewardsData = { ...rewardsData };
-
-  // 確保 updatedRewardsData.reward_alert_sent 存在
-  if (!updatedRewardsData.reward_alert_sent) {
-    updatedRewardsData.reward_alert_sent = [];
-  }
-
-  // 檢查用戶積分並發送對應獎勵
-rewardConditions.forEach((reward) => {
-  const ticketExists = newTickets.some(ticket => ticket.name === reward.name);
-
-  if (
-    rewardsData.points >= reward.points && 
-    !updatedRewardsData.reward_alert_sent.includes(Number(reward.points)) &&
-    !ticketExists // 這裡確保不會重複新增
-  ) {
-    const ticketDate = getFormattedDate(0, reward.points);  // 設定票券日期
-
-    newTickets.push({
-      id: newTickets.length + 1,
-      name: reward.name,
-      date: ticketDate,
-      status: "尚未使用",
-    });
-
-    rewardMessage = `恭喜您達成 ${reward.points} 積分，已獲得 ${reward.name}！`;
-    updatedRewardsData.reward_alert_sent.push(reward.points);
-    rewardSent = true;
-  }
-});
-
-// 如果有發送獎勵，更新 UI 並顯示通知
-if (rewardSent) {
-  setTickets(newTickets);
-
-  // 確保 alert 只會在新增獎勵時出現
-  if (!sessionStorage.getItem("rewardAlertShown")) {
-    Swal.fire({
-      title: "獲得新獎勵！",
-      text: rewardMessage,
-      icon: "success",
-      confirmButtonText: "確認",
-    });
-  
-    sessionStorage.setItem("rewardAlertShown", "true");
-  }
-
-  // 更新後端用戶資料
-  await updatedMembers(userId, {
-    tickets: newTickets,
-    rewards: {
-      ...rewardsData,
-      reward_alert_sent: updatedRewardsData.reward_alert_sent,
-    },
-  });
-}
-};
-
-  useEffect(() => {
-    fetchTripData();
-    fetchMemberData();
-  }, []);
-
-  // 監聽 rewards 變化，檢查是否要發送票券
-  useEffect(() => {
-    if (rewards) {
-      checkAndRewardTicket(rewards);
-    }
-  }, [rewards]);
-
+  const rewards = member?.rewards ?? { reward: [], points: 0 };
+  const tickets = member?.tickets ?? [];
 
   return (
     <div className="page-container">
@@ -209,7 +71,7 @@ if (rewardSent) {
                 {/* 檢查是否有票券資料 */}
                 <tbody>
                 {tickets && tickets.length > 0 ? (
-                  
+
                   <>
                   {tickets.map((ticket) => (
                     <tr key={ticket.id}>
@@ -225,7 +87,7 @@ if (rewardSent) {
                 </tbody>
               </table>
 
-         
+
             </div>
           </div>
 

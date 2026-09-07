@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { userProfiles, updateUsers, getUserDetail } from '@/frontend/utils/api/profile';
+import { userProfiles, updateUsers } from '@/frontend/utils/api/profile';
 import './PersonalData.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/frontend/components/Datepicker/Datepicker.scss"; 
+import "@/frontend/components/Datepicker/Datepicker.scss";
 import toast from '@/frontend/utils/toast';
+import { useUserDetailQuery } from './hooks';
 
 const PersonalData = () => {
 const userId = Number(localStorage.getItem("userId")); // 取得 userId
@@ -24,8 +25,7 @@ const [formData, setFormData] = useState({
     userId
 });
 
-const [error, setError] = useState(null);
-const [loading, setLoading] = useState(true);
+const { data: userDetail, isLoading: loading, error } = useUserDetailQuery(userId);
 
 // dropdown
 const [isCountryDropdownOpen, setisCountryDropdownOpen] = useState(false); // 控制國家下拉選單
@@ -105,7 +105,8 @@ const handlePhoneChange = (e) => {
 // 提交表單
 const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
+    // 提交失敗只用 toast 提示、留在原表單讓使用者重試，不影響頁面本身的
+    // 載入狀態（原本共用同一個 error state，提交失敗會導致整個表單消失）
     if (formData.id) {
         try {
             await updateUsers(formData.id, formData);
@@ -116,48 +117,35 @@ const handleSubmit = async (e) => {
             toast.success("設定已更新");
         } catch (error) {
             console.error("更新個人資料失敗:", error);
-            setError("更新失敗");
             toast.error("更新失敗，請稍後再試");
         }
     } else {
         try {
-            await userProfiles(formData); 
+            await userProfiles(formData);
             toast.success("設定已儲存");
         } catch (error) {
             console.error("新增個人資料失敗:", error);
-            setError("新增失敗");
             toast.error("儲存失敗，請稍後再試");
         }
     }
 };
 
-const getUsersData = async () => {
-    try {
-        const response = await getUserDetail(userId);
-        if (response && response.id) {
-            setFormData(prevData => ({
-                ...prevData,
-                ...response
-            }));
-        }
-    } catch (err) {
-        console.error("載入個人資料失敗", err);
-        setError("載入個人資料失敗");
-    } finally {
-        setLoading(false);
-    }
-};
-
+// 伺服器資料到位後，帶入表單作為初始值（之後的編輯只影響 formData 本身）
 useEffect(() => {
-    getUsersData();
-}, []);
+    if (userDetail && userDetail.id) {
+        setFormData(prevData => ({
+            ...prevData,
+            ...userDetail
+        }));
+    }
+}, [userDetail]);
 
 if (loading) {
     return <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>;
 }
 
 if (error) {
-    return <div className="alert alert-danger">{error}</div>;
+    return <div className="alert alert-danger">載入個人資料失敗</div>;
 }
 
 return (

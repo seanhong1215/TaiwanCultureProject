@@ -182,7 +182,6 @@ EventModal.propTypes = {
   newReview: PropTypes.object.isRequired,
   setNewReview: PropTypes.func.isRequired, // 設定活動資料的函數
   activities: PropTypes.array.isRequired,
-  setActivities: PropTypes.func.isRequired, // 設定活動資料的函數
 };
 
 export default EventModal;

@@ -1,20 +1,15 @@
 // 評價管理組件
 import { useState, useEffect } from "react";
-import { getReviewAll, getReviewPage, addReviews, updateReviews, deleteReviews } from '@/frontend/utils/api/review';
-import { getActivityAll } from '@/frontend/utils/api/activity';
 import ActivityReviewModal from '@/frontend/components/Modal/ActivityReviewModal';
 import './EvaluationManage.scss';
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";
+import { useAdminReviewsQuery, useActivitiesForModalQuery, useSaveReviewMutation, useDeleteReviewMutation } from './hooks';
 
 
 const EvaluationManage = () => {
-  const [reviews, setReviews] = useState([]);
-  const [activities, setActivities] = useState([]);
   const userName = localStorage.getItem("admin_userName");
 
-  const [totalPage , setTotalPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 10;
 
@@ -33,27 +28,25 @@ const EvaluationManage = () => {
     status: "進行中",
   });
 
-  const handleShow = async(data) => {
-    try {
-      const getActivity = await getActivityAll();
-      setActivities(getActivity);
+  const { reviews, totalItems, totalPage } = useAdminReviewsQuery(page, limit);
+  const { data: activities = [] } = useActivitiesForModalQuery();
+  const saveReviewMutation = useSaveReviewMutation();
+  const deleteReviewMutation = useDeleteReviewMutation();
 
-      if (data) {
-        setNewReview({
-            ...data,
-            rating: data.rating ?? 5,  // 預設 rating 為 5（避免 undefined）
-        });
-      } else {
-        setNewReview({
-            ...initialReviewState,
-            rating: 5,  // 預設 rating
-        });
-      }
-
-      setShowModal(true);
-    } catch (error) {
-        console.error("Error fetching activities:", error);
+  const handleShow = (data) => {
+    if (data) {
+      setNewReview({
+          ...data,
+          rating: data.rating ?? 5,  // 預設 rating 為 5（避免 undefined）
+      });
+    } else {
+      setNewReview({
+          ...initialReviewState,
+          rating: 5,  // 預設 rating
+      });
     }
+
+    setShowModal(true);
   };
 
   const handleClose = () => {
@@ -81,17 +74,12 @@ const EvaluationManage = () => {
     };
 
     try {
-      if (newReview.id) {
-        await updateReviews(newReview.id, data);
-        Swal.fire({ title: "編輯成功", icon: "success" });
-      } else {
-        await addReviews(data);
-        Swal.fire({ title: "新增成功", icon: "success" });
-      }
+      await saveReviewMutation.mutateAsync({ id: newReview.id, data });
+      Swal.fire({ title: newReview.id ? "編輯成功" : "新增成功", icon: "success" });
       handleClose();
-      await AdminReviewManagement();
     } catch (error) {
       console.error("儲存評價失敗:", error);
+      Swal.fire({ title: "儲存失敗", icon: "error" });
     }
   };
 
@@ -107,42 +95,18 @@ const EvaluationManage = () => {
     if (!result.isConfirmed) return;
 
     try {
-      await deleteReviews(id);
+      await deleteReviewMutation.mutateAsync(id);
       Swal.fire({ title: "刪除成功", icon: "success" });
-      await AdminReviewManagement();
     } catch (error) {
       console.error("刪除評價失敗:", error);
+      Swal.fire({ title: "刪除失敗", icon: "error" });
     }
   }
 
-  const AdminReviewManagement = async() => {
-    try{
-      // 先獲取所有資料
-      const response  = await getReviewAll();
-      const totalItems = response.length; // 直接計算總筆數
-
-      // 設定總筆數
-      setTotalItems(totalItems);
-
-      // 計算總頁數
-      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
-      setTotalPage(totalPages);
-
-      // 獲取當前頁面的資料
-      const responsePage  = await getReviewPage(page, limit);
-      setReviews(responsePage); 
-
-
-    } catch(error){
-        console.error(error);
-    }
-}
-
   useEffect(() => {
-    AdminReviewManagement();
     // 每次換頁時，讓畫面回到頂部
-  window.scrollTo(0, 0);
-}, [page, limit]); 
+    window.scrollTo(0, 0);
+  }, [page]);
 
 
 
@@ -195,7 +159,6 @@ const EvaluationManage = () => {
             newReview={newReview}
             setNewReview={setNewReview}
             activities= {activities}
-            setActivities = {setActivities}
           />
       <div className="row">
         <div className="col-12 mb-4">
