@@ -23,7 +23,8 @@
       "search": "検索",
       "cancel": "キャンセル",
       "loading": "読み込み中...",
-      "noData": "現在データはありません..."
+      "noData": "現在データはありません...",
+      "home": "ホーム"
   },
   "banner": {
       "search": "検索",
@@ -73,7 +74,55 @@
       "featuredExperiences": "おすすめの体験",
       "outdoorExploration": "アウトドア探検",
       "price": "価格",
-      "keyword": "検索キーワード"
+      "keyword": "検索キーワード",
+      "keywordSearch": "キーワード検索",
+      "selectActivityDate": "日付を選択してください",
+      "selectPriceRange": "価格帯を選択してください",
+      "filter": "絞り込み"
+  },
+  "cities": {
+      "yilan": "宜蘭",
+      "taipei": "台北",
+      "hsinchu": "新竹",
+      "miaoli": "苗栗",
+      "taichung": "台中",
+      "yunlin": "雲林",
+      "kaohsiung": "高雄",
+      "kenting": "墾丁",
+      "pingtung": "屏東",
+      "taitung": "台東",
+      "hualien": "花蓮"
+  },
+  "activityList": {
+      "notFoundTitle": "条件に合うアクティビティが見つかりません",
+      "notFoundDescription": "検索条件を緩めるか、絞り込みを解除してすべてのアクティビティをご覧ください。",
+      "loadErrorTitle": "アクティビティ情報の読み込みに失敗しました",
+      "loadErrorDescription": "ネットワーク接続をご確認の上、もう一度お試しください。",
+      "reload": "再読み込み"
+  },
+  "activityDetail": {
+      "tripHighlights": "旅程のハイライト",
+      "location": "場所",
+      "introduction": "アクティビティ紹介",
+      "activityImageAlt": "アクティビティ画像",
+      "reviews": "レビュー",
+      "participants": "{{count}} 人が参加",
+      "reviewsCount": "{{count}} 件のレビュー",
+      "noReviews": "レビューはまだありません。",
+      "selectDate": "日付を選択",
+      "bookNow": "予約する",
+      "prevMonth": "前月",
+      "nextMonth": "次月",
+      "weekdays": ["日", "月", "火", "水", "木", "金", "土"],
+      "noAvailabilityThisMonth": "今月は予約可能な日程がありません",
+      "goToNearestAvailableMonth": "予約可能な最も近い月へ",
+      "noAvailabilityAtAll": "現在、このアクティビティに予約可能な日程はありません",
+      "activityDateLabel": "アクティビティ日：{{date}}",
+      "priceFrom": "NT$ {{price}} から",
+      "selectBookingDateAlertTitle": "予約日を選択してください",
+      "loginRequiredAlertTitle": "先にログインしてください",
+      "loginRequiredAlertText": "ログインすると予約を続けられます。選択した日付は保持されます",
+      "loadingAria": "読み込み中です、しばらくお待ちください"
   },
   "member": {
       "center": "会員センター",

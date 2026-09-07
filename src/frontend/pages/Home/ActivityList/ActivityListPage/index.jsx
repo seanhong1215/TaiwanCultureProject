@@ -1,6 +1,7 @@
 import './ActivityList.scss';
 import Breadcrumb from "@/frontend/components/Breadcrumb"
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/frontend/components/Datepicker/Datepicker.scss";
@@ -10,8 +11,30 @@ import { CardGridSkeleton } from '@/frontend/components/Skeleton';
 import EmptyState from '@/frontend/components/EmptyState';
 import PageNation from "@/frontend/components/PageNation";
 
+// 篩選用的「值」固定用中文，因為要跟資料庫記錄的活動城市／類型比對；
+// 顯示給使用者看的文字才依語言翻譯（labelKey）。
+const CITY_OPTIONS = [
+  { value: '宜蘭', labelKey: 'cities.yilan' },
+  { value: '台北', labelKey: 'cities.taipei' },
+  { value: '新竹', labelKey: 'cities.hsinchu' },
+  { value: '苗栗', labelKey: 'cities.miaoli' },
+  { value: '台中', labelKey: 'cities.taichung' },
+  { value: '雲林', labelKey: 'cities.yunlin' },
+  { value: '高雄', labelKey: 'cities.kaohsiung' },
+  { value: '墾丁', labelKey: 'cities.kenting' },
+  { value: '屏東', labelKey: 'cities.pingtung' },
+  { value: '台東', labelKey: 'cities.taitung' },
+  { value: '花蓮', labelKey: 'cities.hualien' },
+];
+
+const EVENT_TYPE_OPTIONS = [
+  { value: '一日行程', labelKey: 'form.oneDayItinerary' },
+  { value: '特色體驗', labelKey: 'form.featuredExperiences' },
+  { value: '戶外探索', labelKey: 'form.outdoorExploration' },
+];
 
 const ActivityList = () => {
+  const { t } = useTranslation();
   const userId = Number(localStorage.getItem("userId"));
   const [searchInput, setSearchInput] = useState("");
   const [selectedDate, setSelectedDate] = useState(null); // 初始值為 null
@@ -23,9 +46,6 @@ const ActivityList = () => {
   // dropdown
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false); // 控制地區下拉選單
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false); // 控制類型下拉選單
-
-  const cities = ['宜蘭', '台北', '新竹', '苗栗', '台中', '雲林', '高雄', '墾丁', '屏東', '台東', '花蓮', '墾丁']; // 城市列表
-  const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; // 活動類型列表
 
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 6;
@@ -92,7 +112,95 @@ const selectOptionType = (eventType) => {
     setSelectedType(eventType);
     setIsTypeDropdownOpen(false); // 選擇後關閉選單
 };
-  
+
+  const selectedCityLabel = CITY_OPTIONS.find((c) => c.value === selectedCity)?.labelKey;
+  const selectedTypeLabel = EVENT_TYPE_OPTIONS.find((e) => e.value === selectedType)?.labelKey;
+
+  const searchFormFields = (
+    <>
+      {/* 搜尋關鍵字 */}
+      <div className="mb-4 modal-body-list">
+        <span className="title">{t('form.keywordSearch')}</span>
+        <div className="list-content">
+          <span className="material-icons">search</span>
+          <input type="text" className="form-control" placeholder={t('form.keyword')} value={searchInput} onChange={(e) => getSearchInput(e.target.value)}   />
+        </div>
+      </div>
+
+      {/* 日期選擇 */}
+       <div className="mb-3 modal-body-list">
+        <span className="title">{t('form.activityDate')}</span>
+        <div className="list-content">
+          <span className="material-icons">today</span>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => getSelectedDate(date)}
+            dateFormat="yyyy-MM-dd"
+            placeholderText={t('form.selectActivityDate')}
+            className="date-input"
+            calendarClassName="custom-calendar"
+          />
+        </div>
+      </div>
+
+      {/* 地區選擇 */}
+      <div className="mb-3 modal-body-list">
+          <span className="title">{t('form.area')}</span>
+          <div className="list-content">
+          <span className="material-icons">location_on</span>
+          <div className="form-control-dropdown">
+              {/* 選擇框 */}
+              <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownCity}>
+                  {selectedCityLabel ? t(selectedCityLabel) : t('form.area')}
+              </div>
+              {/* 下拉選單 */}
+              {isCityDropdownOpen  && (
+                  <ul className="dropdown-list">
+                  {CITY_OPTIONS.map((city) => (
+                      <li key={city.value} onClick={() => selectOptionCity(city.value)}>
+                      {t(city.labelKey)}
+                      </li>
+                  ))}
+                  </ul>
+              )}
+          </div>
+        </div>
+      </div>
+
+      {/* 類型選擇 */}
+      <div className="mb-3 modal-body-list">
+        <span className="title">{t('form.eventType')}</span>
+        <div className="list-content">
+        <span className="material-icons">directions_walk</span>
+          <div className="form-control-dropdown">
+              {/* 選擇框 */}
+              <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownType}>
+                  {selectedTypeLabel ? t(selectedTypeLabel) : t('form.eventType')}
+              </div>
+              {/* 下拉選單 */}
+              {isTypeDropdownOpen && (
+                  <ul className="dropdown-list">
+                  {EVENT_TYPE_OPTIONS.map((eventType) => (
+                      <li key={eventType.value} onClick={() => selectOptionType(eventType.value)}>
+                      {t(eventType.labelKey)}
+                      </li>
+                  ))}
+                  </ul>
+              )}
+          </div>
+        </div>
+      </div>
+
+      {/* 價格輸入 */}
+      <div className="mb-4 modal-body-list">
+        <span className="title">{t('form.price')}</span>
+        <div className="list-content">
+          <span className="material-icons">paid</span>
+          <input type="text" className="form-control" placeholder={t('form.selectPriceRange')} value={selectedPrice} onChange={getSelectedPrice}/>
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <div className="blog-container">
@@ -104,98 +212,15 @@ const selectOptionType = (eventType) => {
             <div className="col-lg-3 col-12">
               <div className="left-searchBar">
                 <div className="body">
-                  {/* 搜尋關鍵字 */}
-                  <div className="mb-4 modal-body-list">
-                    <span className="title">關鍵字搜尋</span>
-                    <div className="list-content">
-                      <span className="material-icons">search</span>
-                      <input type="text" className="form-control" placeholder="搜尋關鍵字" value={searchInput} onChange={(e) => getSearchInput(e.target.value)}   />
-                    </div>
-                  </div>
-
-                  {/* 日期選擇 */}
-                   <div className="mb-3 modal-body-list">
-                    <span className="title">活動日期</span>
-                    <div className="list-content">
-                      <span className="material-icons">today</span>
-                      <DatePicker
-                        selected={selectedDate}
-                        onChange={(date) => getSelectedDate(date)}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="請選擇活動日期"
-                        className="date-input"
-                        calendarClassName="custom-calendar"
-                      />
-                    </div>
-                  </div>
-
-                  {/* 地區選擇 */}
-                  <div className="mb-3 modal-body-list">
-                      <span className="title">地區</span>
-                      <div className="list-content">
-                      <span className="material-icons">location_on</span>
-                      <div className="form-control-dropdown">
-                          {/* 選擇框 */}
-                          <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownCity}>
-                              {selectedCity || '地區'}
-                          </div>
-                          {/* 下拉選單 */}
-                          {isCityDropdownOpen  && (
-                              <ul className="dropdown-list">
-                              {cities.map((city, index) => (
-                                  <li key={index} onClick={() => selectOptionCity(city)}>
-                                  {city}
-                                  </li>
-                              ))}
-                              </ul>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 類型選擇 */}
-                  <div className="mb-3 modal-body-list">
-                    <span className="title">類型</span>
-                    <div className="list-content">
-                    <span className="material-icons">directions_walk</span>
-                      <div className="form-control-dropdown">
-                          {/* 選擇框 */}
-                          <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownType}>
-                              {selectedType || '類型'}
-                          </div>
-                          {/* 下拉選單 */}
-                          {isTypeDropdownOpen && (
-                              <ul className="dropdown-list">
-                              {eventTypes.map((eventType, index) => (
-                                  <li key={index} onClick={() => selectOptionType(eventType)}>
-                                  {eventType}
-                                  </li>
-                              ))}
-                              </ul>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 價格輸入 */}
-                  <div className="mb-4 modal-body-list">
-                    <span className="title">價格</span>
-                    <div className="list-content">
-                      <span className="material-icons">paid</span>
-                      <input type="text" className="form-control" placeholder="請選擇價格區間" value={selectedPrice} onChange={getSelectedPrice}/>
-                    </div>
-                  </div>
-
-
-                  
+                  {searchFormFields}
                 </div>
                 <div className="footer">
-                  <button type="button" className="btn btn-primary" onClick={searchBtn}>搜尋</button>
+                  <button type="button" className="btn btn-primary" onClick={searchBtn}>{t('common.search')}</button>
                 </div>
               </div>
               <div className="mobile-bar">
                 <button data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  篩選
+                  {t('form.filter')}
                   <span className="material-icons">keyboard_arrow_down</span>
                 </button>
               </div>
@@ -203,18 +228,18 @@ const selectOptionType = (eventType) => {
             <div className="col-lg-9 col-12">
               <div className="right-content">
                 <div className="row main-body">
-                  
+
                     {/* 載入中先用骨架屏撐出版面，避免整片空白讓人以為壞掉 */}
                     {loading ? (
                       <CardGridSkeleton count={6} />
                     ) : error ? (
                       <div className="col-12">
                         <EmptyState
-                          title="活動資料載入失敗"
-                          description="請檢查網路連線後重試。"
+                          title={t('activityList.loadErrorTitle')}
+                          description={t('activityList.loadErrorDescription')}
                           action={
                             <button type="button" className="btn btn-primary" onClick={refetch}>
-                              重新載入
+                              {t('activityList.reload')}
                             </button>
                           }
                         />
@@ -222,8 +247,8 @@ const selectOptionType = (eventType) => {
                     ) : (isSearching && searchResultsData.length === 0) ? (
                       <div className="col-12">
                         <EmptyState
-                          title="找不到符合條件的活動"
-                          description="試著放寬搜尋條件，或清除篩選看看所有活動。"
+                          title={t('activityList.notFoundTitle')}
+                          description={t('activityList.notFoundDescription')}
                         />
                       </div>
                     ) : (
@@ -261,92 +286,10 @@ const selectOptionType = (eventType) => {
           <div className="modal-content">
           <div className="left-searchBar">
                 <div className="body">
-                  {/* 搜尋關鍵字 */}
-                  <div className="mb-4 modal-body-list">
-                    <span className="title">關鍵字搜尋</span>
-                    <div className="list-content">
-                      <span className="material-icons">search</span>
-                      <input type="text" className="form-control" placeholder="搜尋關鍵字" value={searchInput} onChange={(e) => getSearchInput(e.target.value)}   />
-                    </div>
-                  </div>
-                 {/* 日期選擇 */}
-                 <div className="mb-3 modal-body-list">
-                    <span className="title">活動日期</span>
-                    <div className="list-content">
-                      <span className="material-icons">today</span>
-                      <DatePicker
-                        selected={selectedDate}
-                        onChange={(date) => getSelectedDate(date)}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="請選擇活動日期"
-                        className="date-input"
-                        calendarClassName="custom-calendar"
-                      />
-                    </div>
-                  </div>
-
-                  {/* 地區選擇 */}
-                  <div className="mb-3 modal-body-list">
-                      <span className="title">地區</span>
-                      <div className="list-content">
-                      <span className="material-icons">location_on</span>
-                      <div className="form-control-dropdown">
-                          {/* 選擇框 */}
-                          <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownCity}>
-                              {selectedCity || '地區'}
-                          </div>
-                          {/* 下拉選單 */}
-                          {isCityDropdownOpen  && (
-                              <ul className="dropdown-list">
-                              {cities.map((city, index) => (
-                                  <li key={index} onClick={() => selectOptionCity(city)}>
-                                  {city}
-                                  </li>
-                              ))}
-                              </ul>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 類型選擇 */}
-                  <div className="mb-3 modal-body-list">
-                    <span className="title">類型</span>
-                    <div className="list-content">
-                    <span className="material-icons">directions_walk</span>
-                      <div className="form-control-dropdown">
-                          {/* 選擇框 */}
-                          <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownType}>
-                              {selectedType || '類型'}
-                          </div>
-                          {/* 下拉選單 */}
-                          {isTypeDropdownOpen && (
-                              <ul className="dropdown-list">
-                              {eventTypes.map((eventType, index) => (
-                                  <li key={index} onClick={() => selectOptionType(eventType)}>
-                                  {eventType}
-                                  </li>
-                              ))}
-                              </ul>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 價格輸入 */}
-                  <div className="mb-4 modal-body-list">
-                    <span className="title">價格</span>
-                    <div className="list-content">
-                      <span className="material-icons">paid</span>
-                      <input type="text" className="form-control" placeholder="請選擇價格區間" value={selectedPrice} onChange={getSelectedPrice}/>
-                    </div>
-                  </div>
-         
-                 
-                
+                  {searchFormFields}
                 </div>
                 <div className="footer">
-                  <button type="button" className="btn btn-primary" onClick={searchBtn} data-bs-dismiss="modal">搜尋</button>
+                  <button type="button" className="btn btn-primary" onClick={searchBtn} data-bs-dismiss="modal">{t('common.search')}</button>
                 </div>
               </div>
           </div>
