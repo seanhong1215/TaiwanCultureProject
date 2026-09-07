@@ -1,1 +1,0 @@
-const r=t=>String(t).padStart(2,"0"),s=t=>{if(t==null||t==="")return null;const n=t instanceof Date?t:new Date(t);return Number.isNaN(n.getTime())?null:n},i=t=>({year:String(t.getFullYear()),month:r(t.getMonth()+1),day:r(t.getDate())});function c(t){const n=s(t);if(!n)return"";const{year:e,month:o,day:a}=i(n);return`${e}年${o}月${a}日`}export{c as f};

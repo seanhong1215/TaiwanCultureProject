@@ -1,0 +1,1 @@
+import"./index-BTsBlF74.js";import{ak as a}from"./vendor-BOgAe63u.js";const n=async()=>(await a.get("/api/notifications")).data,e=async t=>(await a.post("/api/notifications",t)).data;export{e as a,n as g};
