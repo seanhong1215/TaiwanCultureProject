@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { getOrdersByUser, getActivityAll, updateOrder } from '@/frontend/utils/api';
+import { getOrdersByUser, updateOrder } from '@/frontend/utils/api/order';
+import { getActivityAll } from '@/frontend/utils/api/activity';
 import './OderListPage.scss';
 import Swal from 'sweetalert2';
 import PageNation from "@/frontend/components/PageNation";

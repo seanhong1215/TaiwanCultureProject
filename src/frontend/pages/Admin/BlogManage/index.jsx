@@ -1,6 +1,6 @@
 // 部落格管理組件
 import  { useState, useEffect } from "react";
-import { getJournalAll, getJournalPage, createdJournal, updatedJournal, deletedJournal } from '@/frontend/utils/api';
+import { getJournalAll, getJournalPage, createdJournal, updatedJournal, deletedJournal } from '@/frontend/utils/api/journal';
 import './BlogManage.scss';
 import BlogModal from '@/frontend/components/Modal/BlogModal';
 import Swal from 'sweetalert2';

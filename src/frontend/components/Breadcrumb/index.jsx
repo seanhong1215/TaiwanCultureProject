@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import "./Breadcrumb.scss";
-import { getActivitys, getJournals } from "@/frontend/utils/api"; 
+import { getActivitys } from "@/frontend/utils/api/activity";
+import { getJournals } from "@/frontend/utils/api/journal"; 
 
 const pathNameMap = {
   "activity-list": "所有活動",

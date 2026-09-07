@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Header.scss';
-import { register, login, loginGoogle, loginFacebook, createMember  } from '@/frontend/utils/api';
+import { register, login, loginGoogle, loginFacebook } from '@/frontend/utils/api/auth';
+import { createMember } from '@/frontend/utils/api/member';
 import Swal from 'sweetalert2';
 import AuthModal from '@/frontend/components/Modal/AuthModal';
 import { socialSignIn, firebaseSignOut } from "@/frontend/assets/js/firebaseConfig.js";

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
-import { uploadImageToCloudinary } from '@/frontend/utils/api.js';
+import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 
 const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent, newReview, setNewReview, activities }) => {
   const { register,  handleSubmit, formState: { errors }, reset } = useForm();

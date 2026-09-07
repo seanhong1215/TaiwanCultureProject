@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef  } from 'react'
 import { NavLink, useLocation } from 'react-router-dom';
 import './Menu.scss';
-import { updatedMembers, uploadImageToCloudinary } from '@/frontend/utils/api';
+import { updatedMembers } from '@/frontend/utils/api/member';
+import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 
 const Menu = () => {
 

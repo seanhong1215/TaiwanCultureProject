@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import Swal from 'sweetalert2';
-import { addReviews, uploadImageToCloudinary, getOrders, updateOrder, updatedMembers, getMembers } from '@/frontend/utils/api';
+import { addReviews } from '@/frontend/utils/api/review';
+import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
+import { getOrders, updateOrder } from '@/frontend/utils/api/order';
+import { updatedMembers, getMembers } from '@/frontend/utils/api/member';
 import './EventReviewForm.scss';
 
 const EventReviewForm = ({ order, onClose }) => {

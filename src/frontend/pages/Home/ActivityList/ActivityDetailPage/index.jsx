@@ -1,7 +1,9 @@
 import { useState , useEffect } from 'react'; 
 import Swal from 'sweetalert2';
 import { useParams , useNavigate } from "react-router-dom";
-import { getActivitys, getReservations, addReservations, getReviewsActivityId, getReviewsActivityIdPage } from '@/frontend/utils/api';
+import { getActivitys } from '@/frontend/utils/api/activity';
+import { getReservations, addReservations } from '@/frontend/utils/api/reservation';
+import { getReviewsActivityId, getReviewsActivityIdPage } from '@/frontend/utils/api/review';
 import Breadcrumb from "@/frontend/components/Breadcrumb";
 import ReviewBars from "@/frontend/components/Progress";
 import ActivityMap from "@/frontend/components/ActivityMap";

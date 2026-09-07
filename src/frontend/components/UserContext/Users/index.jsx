@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getMembers } from '@/frontend/utils/api';
+import { getMembers } from '@/frontend/utils/api/member';
 
 const UserContext = createContext();
 

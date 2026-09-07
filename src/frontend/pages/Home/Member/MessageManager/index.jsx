@@ -1,5 +1,5 @@
 import { useState, useEffect  } from 'react';
-import { getReviewAll, getReviewPage, deleteReviews } from "@/frontend/utils/api.js";
+import { getReviewAll, getReviewPage, deleteReviews } from "@/frontend/utils/api/review";
 import PageNation from "@/frontend/components/PageNation";
 import MessageManagerModal from '@/frontend/components/Modal/MessageManagerModal';
 import Swal from 'sweetalert2';

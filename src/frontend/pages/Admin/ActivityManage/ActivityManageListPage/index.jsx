@@ -1,6 +1,6 @@
 // 活動管理組件
 import { useState, useEffect } from "react";
-import { getActivityAll,getActivityPage, addActivitys, updatedActivitys, deleteActivitys } from '@/frontend/utils/api';
+import { getActivityAll, getActivityPage, addActivitys, updatedActivitys, deleteActivitys } from '@/frontend/utils/api/activity';
 import './ActivityDetailPage.scss';
 import ActivityModal from '@/frontend/components/Modal/ActivityModal';
 import Swal from 'sweetalert2';
