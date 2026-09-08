@@ -2,148 +2,181 @@
 /**
  * 把 demo 資料的日期整體平移到「現在」。
  *
- * 種子資料的活動日期都停在 2025 年，隨著時間過去全部變成已過期 ——
+ * 種子資料的活動日期是固定的，隨著時間過去全部變成已過期 ——
  * 造訪 demo 的人會發現每個活動都無法選日期，等於看不到訂票流程。
- * 這支腳本把所有日期往後平移同一個位移量（保留活動之間的相對間隔），
+ * 這支腳本把所有排程日期往後平移同一個位移量（保留活動之間的相對間隔），
  * 讓最早的活動落在今天之後幾天。
+ *
+ * 遷移到 Postgres 之後這支腳本改成直接對資料庫跑（原本是改 db.json，
+ * 現在 db.json 只是搬遷腳本的種子來源，改它對線上 demo 已經沒有效果）。
+ *
+ * 只平移這幾個排程欄位，createdAt / timestamp 之類的歷史紀錄不動
+ * （往前推反而會出現「未來才建立的訂單」）：
+ *   - activity.startDate / activity.endDate
+ *   - order.lastBookableDate（對應 db 的 last_bookable_date）
+ *   - order.activityPeriod.{startDate,endDate}（Json 裡的巢狀欄位）
+ * reservations 不用「平移」——直接依每個活動平移後的日期區間整批重建，
+ * 這樣可預約日期一定跟活動日期對得起來（種子資料原本兩者對不上，
+ * 活動詳情頁的日曆會整頁都是 disabled）。
  *
  * 用法：node scripts/refresh-demo-dates.mjs [--days-ahead 7] [--dry-run]
  */
 
-import fs from 'node:fs';
+import prisma from '../src/backend/lib/prisma.js';
 
-const DB_PATH = 'src/backend/json/db.json';
-
-// 只平移「活動排程」相關欄位。
-// createdAt / timestamp 是歷史紀錄，往前推反而會出現「未來才建立的訂單」。
-const SCHEDULE_FIELDS = ['startDate', 'endDate', 'last_bookable_date'];
 const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const daysAheadIndex = args.indexOf('--days-ahead');
 const daysAhead = daysAheadIndex === -1 ? 7 : Number(args[daysAheadIndex + 1]);
 
-const db = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
-
-/**
- * 收集所有需要平移的排程日期。
- *
- * 有兩種形態要處理：
- *   1. 欄位值 —— { startDate: '2025-05-14' }
- *   2. 物件的 key —— reservations 用日期字串當 key：{ '2025-05-14': { price } }
- * 只搬第一種會讓活動日期與可預約日期對不起來，日曆上每一天都會是 disabled。
- */
-const collect = (node, out) => {
-  if (Array.isArray(node)) return node.forEach((n) => collect(n, out));
-  if (!node || typeof node !== 'object') return;
-
-  for (const [key, value] of Object.entries(node)) {
-    if (SCHEDULE_FIELDS.includes(key) && typeof value === 'string' && DATE_ONLY.test(value)) {
-      out.push({ kind: 'value', node, key, value });
-    }
-    if (DATE_ONLY.test(key)) {
-      out.push({ kind: 'key', node, key, value: key });
-    }
-    collect(value, out);
-  }
-};
-
-const entries = [];
-collect(db, entries);
-
-if (entries.length === 0) {
-  console.log('找不到可平移的排程日期');
-  process.exit(0);
-}
-
-// 位移量以「活動」的最早日期為錨點。
-// 若改用全部資料的最小值，會被訂單裡更早的歷史日期拉偏，
-// 導致活動被推到一兩年後的未來。
-const anchorEntries = [];
-collect(db.activity, anchorEntries);
-const anchorSource = anchorEntries.length > 0 ? anchorEntries : entries;
-
-const DAY_MS = 24 * 60 * 60 * 1000;
-const times = anchorSource.map((e) => new Date(`${e.value}T00:00:00`).getTime());
-const earliest = Math.min(...times);
-
-const target = new Date();
-target.setHours(0, 0, 0, 0);
-target.setDate(target.getDate() + daysAhead);
-
-const offsetDays = Math.round((target.getTime() - earliest) / DAY_MS);
-
-if (offsetDays <= 0) {
-  console.log(`最早的活動日期已經在今天 +${daysAhead} 天之後，不需要平移`);
-  process.exit(0);
-}
-
-const shift = (value) => {
+const shift = (value, offsetDays) => {
   const date = new Date(`${value}T00:00:00`);
   date.setDate(date.getDate() + offsetDays);
   const pad = (n) => String(n).padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 };
 
-const samples = [];
-for (const entry of entries) {
-  const next = shift(entry.value);
-  if (samples.length < 6) {
-    samples.push(`${entry.kind === 'key' ? '[key]' : `${entry.key}:`} ${entry.value} -> ${next}`);
+async function main() {
+  const activities = await prisma.activity.findMany({
+    select: { id: true, startDate: true, endDate: true, price: true },
+  });
+
+  // 位移量以「活動」的最早日期為錨點，避免被訂單裡更早的歷史日期拉偏。
+  const anchorDates = [];
+  for (const a of activities) {
+    if (a.startDate && DATE_ONLY.test(a.startDate)) anchorDates.push(a.startDate);
+    if (a.endDate && DATE_ONLY.test(a.endDate)) anchorDates.push(a.endDate);
   }
-  if (dryRun) continue;
 
-  if (entry.kind === 'key') {
-    // 改 key 要保留原本的值，並移除舊 key
-    entry.node[next] = entry.node[entry.key];
-    delete entry.node[entry.key];
-  } else {
-    entry.node[entry.key] = next;
+  if (anchorDates.length === 0) {
+    console.log('找不到可平移的活動日期');
+    return;
   }
-}
 
-const keyCount = entries.filter((e) => e.kind === 'key').length;
-console.log(`平移 ${offsetDays} 天，共 ${entries.length} 個日期（其中 ${keyCount} 個是日期 key）`);
-samples.forEach((s) => console.log('  ', s));
+  const earliest = Math.min(...anchorDates.map((d) => new Date(`${d}T00:00:00`).getTime()));
+  const target = new Date();
+  target.setHours(0, 0, 0, 0);
+  target.setDate(target.getDate() + daysAhead);
 
-/*
- * 重建 reservations。
- *
- * 種子資料裡的 reservations 日期跟活動的 startDate / endDate 對不起來
- * （例如活動 1 排在 05-14，可預約日期卻寫 01-01），因此活動詳情頁的日曆
- * 每一天都是 disabled，訂票流程根本走不下去。
- * 這裡直接依每個活動的日期區間重新產生，讓兩者必定一致。
- */
-const buildReservations = () => {
-  const pad = (n) => String(n).padStart(2, '0');
-  const toKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const offsetDays = Math.round((target.getTime() - earliest) / DAY_MS);
 
-  return db.activity.map((activity) => {
-    const record = { id: activity.id };
-    const cursor = new Date(`${activity.startDate}T00:00:00`);
-    const end = new Date(`${activity.endDate}T00:00:00`);
+  if (offsetDays <= 0) {
+    console.log(`最早的活動日期已經在今天 +${daysAhead} 天之後，不需要平移`);
+    return;
+  }
 
+  console.log(dryRun ? `🔍 Dry run：平移 ${offsetDays} 天（不會寫入資料庫）\n` : `平移 ${offsetDays} 天\n`);
+
+  // --- activity.startDate / endDate ------------------------------------
+  let activityFieldCount = 0;
+  const shiftedActivities = activities.map((a) => {
+    const data = {};
+    if (a.startDate && DATE_ONLY.test(a.startDate)) data.startDate = shift(a.startDate, offsetDays);
+    if (a.endDate && DATE_ONLY.test(a.endDate)) data.endDate = shift(a.endDate, offsetDays);
+    activityFieldCount += Object.keys(data).length;
+    return { id: a.id, price: a.price, ...data };
+  });
+
+  console.log(`activity：${activityFieldCount} 個日期欄位`);
+  shiftedActivities.slice(0, 3).forEach((a) => {
+    console.log(`   #${a.id} startDate -> ${a.startDate ?? '(不變)'}, endDate -> ${a.endDate ?? '(不變)'}`);
+  });
+
+  if (!dryRun) {
+    for (const a of shiftedActivities) {
+      const { id, price: _price, ...data } = a;
+      if (Object.keys(data).length > 0) {
+        await prisma.activity.update({ where: { id }, data });
+      }
+    }
+  }
+
+  // --- order.lastBookableDate / activityPeriod --------------------------
+  const orders = await prisma.order.findMany({
+    select: { id: true, lastBookableDate: true, activityPeriod: true },
+  });
+
+  let orderFieldCount = 0;
+  const shiftedOrders = [];
+  for (const o of orders) {
+    const data = {};
+    if (o.lastBookableDate && DATE_ONLY.test(o.lastBookableDate)) {
+      data.lastBookableDate = shift(o.lastBookableDate, offsetDays);
+    }
+    if (o.activityPeriod && typeof o.activityPeriod === 'object') {
+      const period = { ...o.activityPeriod };
+      let periodChanged = false;
+      if (typeof period.startDate === 'string' && DATE_ONLY.test(period.startDate)) {
+        period.startDate = shift(period.startDate, offsetDays);
+        periodChanged = true;
+      }
+      if (typeof period.endDate === 'string' && DATE_ONLY.test(period.endDate)) {
+        period.endDate = shift(period.endDate, offsetDays);
+        periodChanged = true;
+      }
+      if (periodChanged) data.activityPeriod = period;
+    }
+    if (Object.keys(data).length > 0) {
+      orderFieldCount += Object.keys(data).length;
+      shiftedOrders.push({ id: o.id, data });
+    }
+  }
+
+  console.log(`orders：${orderFieldCount} 個日期欄位（${shiftedOrders.length} 筆訂單）`);
+
+  if (!dryRun) {
+    for (const o of shiftedOrders) {
+      await prisma.order.update({ where: { id: o.id }, data: o.data });
+    }
+  }
+
+  // --- 重建 reservations --------------------------------------------------
+  // 種子資料裡 reservations 的日期跟活動的 startDate/endDate 常常對不上，
+  // 因此直接依每個活動平移後的日期區間重新產生，兩者保證一致。
+  const toKey = (d) => {
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  };
+
+  let reservationCount = 0;
+  for (const a of shiftedActivities) {
+    if (!a.startDate || !a.endDate) continue;
+
+    const dates = {};
+    const cursor = new Date(`${a.startDate}T00:00:00`);
+    const end = new Date(`${a.endDate}T00:00:00`);
     while (cursor <= end) {
-      record[toKey(cursor)] = { price: Number(activity.price), remaining: 10 };
+      dates[toKey(cursor)] = { price: Number(a.price) || 0, remaining: 10 };
       cursor.setDate(cursor.getDate() + 1);
     }
-    return record;
-  });
-};
 
-const rebuilt = buildReservations();
-const mismatched = db.activity.filter((a) => {
-  const record = rebuilt.find((r) => r.id === a.id);
-  return !record || !record[a.startDate];
-}).length;
+    reservationCount += 1;
+    if (!dryRun) {
+      await prisma.reservation.upsert({
+        where: { activityId: a.id },
+        create: { activityId: a.id, dates },
+        update: { dates },
+      });
+    }
+  }
 
-console.log(`\n重建 reservations：${db.reservations.length} 筆 -> ${rebuilt.length} 筆，對不上的活動 ${mismatched} 個`);
+  console.log(`reservations：重建 ${reservationCount} 筆（依活動日期區間，remaining 固定 10）`);
 
-if (dryRun) {
-  console.log('\n(--dry-run，未寫入檔案)');
-} else {
-  db.reservations = rebuilt;
-  fs.writeFileSync(DB_PATH, `${JSON.stringify(db, null, 2)}\n`);
-  console.log(`\n已寫入 ${DB_PATH}`);
+  if (dryRun) {
+    console.log('\n(--dry-run，未寫入資料庫)');
+  } else {
+    console.log('\n已寫入 Postgres');
+  }
 }
+
+main()
+  .catch((err) => {
+    console.error('❌ 執行失敗:', err);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
