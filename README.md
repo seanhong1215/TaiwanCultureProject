@@ -103,6 +103,10 @@ Render 免費方案每次冷啟動都要重新讀整個 `db.json`，也不是能
 - 一次性資料搬遷腳本（[`scripts/migrate-to-postgres.mjs`](scripts/migrate-to-postgres.mjs)）
   用 `--dry-run` 先核對筆數，正式寫入時保留原本的整數 id 以維持既有的外鍵關聯，
   寫入後再手動 `setval()` 把 Postgres 的 auto-increment 序列追上最大 id
+- 部署到 Render 時連不上 Supabase：Supabase 的 direct connection 只支援
+  IPv6，Render 的對外網路沒有 IPv6 出口。改用 Supavisor 的 Session pooler
+  （IPv4 相容）解決，本機保留 direct connection——兩邊環境不同，本來就該用
+  不同的連線字串，不是設定錯誤
 
 ---
 
@@ -169,9 +173,8 @@ npm run dev               # 前端，http://localhost:5173
 > 造訪者會發現每個活動都無法選日期。執行 `npm run refresh-demo-dates`
 > 會把所有活動日期整體往後平移（保留彼此的相對間隔），並依活動日期
 > 重建 `reservations`，確保日曆上可選的日期與活動日期一致。
-> ⚠️ 這支腳本目前只改 `db.json`（遷移到 Postgres 前的資料來源），
-> 還沒改成直接寫 Postgres——遷移後要維持 demo 日期新鮮，需要另外寫一支
-> 對 Postgres 跑的版本（見下方「已知限制」）。
+> 直接對 `DATABASE_URL` 指到的 Postgres 跑（用 `.env` 裡的連線字串），
+> 不會動到 `db.json`——定期在本機跑一次就能讓線上 demo 的日期保持新鮮。
 
 ---
 
@@ -227,12 +230,10 @@ npm run test:run
 
 ## 已知限制
 
-- **demo 資料保鮮腳本尚未跟著換到 Postgres**：`refresh-demo-dates.mjs` 還是改
-  `db.json`，遷移後這支腳本對線上 demo 已經沒有效果，需要另外寫一版直接寫
-  Postgres 的（用 Prisma 讀出所有活動、平移日期、`upsert` 回 `reservations`）
-- **後端仍部署在 Render 免費方案**：資料庫換成 Supabase 後不再有 SQLite/檔案型
-  冷啟動問題，但 Express 服務本身閒置 15 分鐘後還是會被 Render 停機，
-  首次請求仍需約 30 秒喚醒——這一層之後可以考慮換成不會休眠的方案
+- **後端仍部署在 Render 免費方案**：GitHub Actions 排程每 10 分鐘打一次
+  `/health`，讓 Render 不會閒置到觸發 15 分鐘的休眠門檻，也順便讓 Supabase
+  免費方案不會因為連續 7 天沒有資料庫活動而暫停專案。GitHub Actions 的排程
+  時間本身不保證準點，遇到延遲或跳過一次時還是可能踩到冷啟動
 - **社群登入 token**：Firebase ID Token 約 1 小時到期；目前由 axios interceptor
   接到 401 後自動清除憑證並導回登入頁，尚未實作 refresh token
 - **i18n**：語系檔僅覆蓋前台首頁與導覽列，其餘頁面仍為寫死中文
