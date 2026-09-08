@@ -1,0 +1,26 @@
+name: Keep backend awake
+
+# Render 免費方案閒置 15 分鐘會把服務停機，下一個請求要重新喚醒（30-60 秒）；
+# Supabase 免費方案的 Postgres 連續 7 天沒有資料庫活動會把整個專案暫停。
+# 這裡排程每 10 分鐘打一次 /health（該路由會真的查一次資料庫），兩邊一起保持活著。
+#
+# GitHub Actions 的排程時間不保證準點（尤其負載高的時段可能延遲甚至跳過一次），
+# 10 分鐘的頻率是刻意抓在 15 分鐘門檻之下留安全邊際，不是精準對時。
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # 方便手動觸發測試
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /health
+        run: |
+          status=$(curl -s -o /tmp/health.json -w "%{http_code}" https://taiwan-culture-project.onrender.com/health)
+          cat /tmp/health.json
+          echo
+          if [ "$status" != "200" ]; then
+            echo "健康檢查失敗，HTTP 狀態碼：$status"
+            exit 1
+          fi
