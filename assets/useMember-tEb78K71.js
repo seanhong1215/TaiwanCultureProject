@@ -1,1 +1,0 @@
-import{u,b as a,c as n}from"./vendor-query-BtxTz4nf.js";import{u as m,j as o}from"./index-CwpYQcbo.js";const i=e=>u({queryKey:["member",e],queryFn:()=>o(e),enabled:!!e}),c=e=>{const s=a();return n({mutationFn:t=>m(e,t),onSuccess:(t,r)=>{s.setQueryData(["member",e],r)}})};export{c as a,i as u};
