@@ -94,10 +94,15 @@ const app = express();
 
 app.use(express.json());
 
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? ['https://seanhong1215.github.io']
-  : ['http://localhost:5173', 'http://localhost:3000'];
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+// 開發模式下白名單寫死單一 port 很脆弱——Vite 只要那個 port 被佔用
+// 就會自動換一個（5174、5181...），CORS 直接擋掉整個網站看起來像資料庫壞了。
+// 開發環境沒有真正的安全疑慮，直接放行任何 localhost port。
+const isLocalhost = (origin) => /^http:\/\/localhost:\d+$/.test(origin);
+const corsOrigin =
+  process.env.NODE_ENV === 'production'
+    ? ['https://seanhong1215.github.io']
+    : (origin, callback) => callback(null, !origin || isLocalhost(origin));
+app.use(cors({ origin: corsOrigin, credentials: true }));
 
 // 認證／授權中介層
 const { attachIdentity, requireAuth, requireRole, guardCollections } = createAuth({
