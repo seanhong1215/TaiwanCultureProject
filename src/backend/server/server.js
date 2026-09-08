@@ -188,7 +188,24 @@ app.post(
   }
 );
 
-app.get('/', (req, res) => res.send('Welcome to the JSON Server!'));
+app.get('/', (req, res) => res.send('Taiwan Culture Project API'));
+
+/**
+ * 給 GitHub Actions 的 keep-alive 排程打的端點（見 .github/workflows/keep-alive.yml）。
+ *
+ * 故意真的查一次資料庫，不是單純回 200：
+ * - Render 免費方案閒置 15 分鐘會把整個服務停機，下一個請求要重新喚醒（30-60 秒）
+ * - Supabase 免費方案的 Postgres 連續 7 天沒有資料庫活動會直接把專案暫停
+ * 只 ping 這支路由本身擋得住第一個，擋不住第二個；查一次資料庫兩個一起解決。
+ */
+app.get('/health', async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'ok', db: 'connected', timestamp: new Date().toISOString() });
+  } catch (error) {
+    res.status(503).json({ status: 'error', db: 'unreachable', message: error.message });
+  }
+});
 
 /* -------------------------------------------------------------------------- */
 /* 錯誤處理                                                                     */
