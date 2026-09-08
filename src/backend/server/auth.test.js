@@ -11,17 +11,14 @@ const USERS = [
   { id: 4, email: 'social@test.com', role: 'Member', uuid: 'firebase-uid-4' },
 ];
 
-/** 模擬 lowdb 的 chainable API：db.get('users').find({...}).value() */
-const fakeDb = {
-  get: (collection) => ({
-    find: (query) => ({
-      value: () => {
-        if (collection !== 'users') return undefined;
-        const [key, expected] = Object.entries(query)[0];
-        return USERS.find((u) => u[key] === expected);
-      },
-    }),
-  }),
+/** 模擬 Prisma Client 的 user.findUnique({ where: {...} }) */
+const fakePrisma = {
+  user: {
+    findUnique: async ({ where }) => {
+      const [key, expected] = Object.entries(where)[0];
+      return USERS.find((u) => u[key] === expected) ?? null;
+    },
+  },
 };
 
 /** 簽發一個與 json-server-auth 相同格式的 token */
@@ -51,7 +48,7 @@ describe('createAuth', () => {
 
   beforeEach(() => {
     firebaseAuth = { verifyIdToken: vi.fn() };
-    auth = createAuth({ getDb: () => fakeDb, firebaseAuth });
+    auth = createAuth({ prisma: fakePrisma, firebaseAuth });
   });
 
   const request = (overrides) => ({ method: 'GET', url: '/', headers: {}, body: {}, ...overrides });

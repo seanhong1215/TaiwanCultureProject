@@ -1,7 +1,8 @@
 # 體驗台灣好文化 — 文化體驗活動訂票平台
 
 一個完整的活動訂票電商網站，包含前台訂票流程、會員中心與管理後台。
-以 React + Vite 建置前端，Express + json-server 提供 API，並串接 Firebase Auth 與 Cloudinary。
+以 React + Vite 建置前端，Express + Prisma + PostgreSQL（Supabase）提供 API，
+並串接 Firebase Auth 與 Cloudinary。
 
 **線上 Demo**：https://seanhong1215.github.io/taiwan-culture-project
 **後端 API**：https://taiwan-culture-project.onrender.com
@@ -53,10 +54,11 @@ DevTools 改一行就進到後台。因此授權判斷全部下放到
 [`src/backend/server/auth.js`](src/backend/server/auth.js)：
 
 - `resolveIdentity()` 驗證 **簽章與有效期限**，同時支援兩種 token
-  （json-server-auth 簽發的 JWT／社群登入的 Firebase ID Token）
+  （自建 `/api/signin` 簽發的 JWT／社群登入的 Firebase ID Token）
 - `guardCollections()` 依資料表與 HTTP 方法決定權限：活動與文章僅管理者可寫入、
-  使用者只能改自己的帳號、建立資料時以 token 身分覆寫 `userId` 防止偽造
-- 中介層必須掛在 json-server 的 router **之前** —— router 會直接回應請求，
+  使用者只能改自己的帳號（且不能自己把 `role` 改成管理者）、
+  建立資料時以 token 身分覆寫 `userId` 防止偽造
+- 中介層必須掛在各資源路由 **之前** —— 路由會直接回應請求，
   掛在它之後的中介層永遠不會執行（這是本專案修過的一個實際漏洞）
 
 ### 2. 首屏 bundle 從 2 MB 降到 347 kB (gzip)
@@ -83,6 +85,25 @@ DevTools 改一行就進到後台。因此授權判斷全部下放到
 （[`src/frontend/utils/payment.js`](src/frontend/utils/payment.js)）。
 `toSafePaymentRecord()` 採白名單而非黑名單，表單日後新增欄位也不會誤帶進資料庫。
 
+### 4. 從 json-server 換成 Prisma + PostgreSQL，前端零改動
+
+專案最初用 json-server（檔案型 mock API）起步方便，但沒有交易機制、
+Render 免費方案每次冷啟動都要重新讀整個 `db.json`，也不是能拿去正式營運的東西。
+換成 Prisma + Supabase（PostgreSQL）時刻意保留了原本的 REST 路徑與回應形狀
+（例如 `_page`/`_limit`、`_expand=user`、`reservations` 的日期扁平結構），
+前端 11 個 `api/*.js` 模組完全不用改一行：
+
+- 深巢狀／不定形欄位（`activityDetails`、`rewards`、`paymentData`）用 Postgres 的 `Json` 型別存，
+  不用為了一個沒有查詢需求的巢狀物件過度正規化成一堆關聯表
+- 每個路由用白名單（`pick()`）挑欄位寫入，行為上模擬 json-server「多餘欄位安靜地被忽略」的
+  寬鬆特性，同時擋掉 Prisma 對未知欄位的嚴格報錯
+- 重寫時順手補了一個舊架構就存在的權限漏洞：`guardCollections` 原本只檢查
+  「本人或管理者」能不能 PATCH `/users/:id`，沒檢查改了哪個欄位——
+  一般會員原本可以自己把 `role` 改成 `ADMIN`
+- 一次性資料搬遷腳本（[`scripts/migrate-to-postgres.mjs`](scripts/migrate-to-postgres.mjs)）
+  用 `--dry-run` 先核對筆數，正式寫入時保留原本的整數 id 以維持既有的外鍵關聯，
+  寫入後再手動 `setval()` 把 Postgres 的 auto-increment 序列追上最大 id
+
 ---
 
 ## 技術棧
@@ -94,7 +115,8 @@ DevTools 改一行就進到後台。因此授權判斷全部下放到
 | 表單 | React Hook Form |
 | 視覺化 | Recharts、Leaflet、Swiper |
 | 多語系 | i18next / react-i18next |
-| 後端 | Express 4、json-server + json-server-auth |
+| 後端 | Express 4、Prisma 6 |
+| 資料庫 | PostgreSQL（Supabase） |
 | 驗證 | Firebase Auth（社群登入）+ JWT |
 | 圖片 | Cloudinary |
 | 測試 | Vitest、React Testing Library |
@@ -109,8 +131,9 @@ DevTools 改一行就進到後台。因此授權判斷全部下放到
 ```bash
 git clone https://github.com/seanhong1215/taiwan-culture-project.git
 cd taiwan-culture-project
-npm install
-cp .env.example .env      # 填入自己的 Firebase / Cloudinary 設定
+npm install                # postinstall 會自動跑 prisma generate
+cp .env.example .env       # 填入自己的 Firebase / Cloudinary / DATABASE_URL 設定
+npx prisma migrate dev     # 依 prisma/schema.prisma 在你的 Postgres 建表
 ```
 
 前後端需要各開一個終端機：
@@ -138,11 +161,17 @@ npm run dev               # 前端，http://localhost:5173
 | `npm run check-bundle` | 檢查首屏 bundle 是否超出預算 |
 | `npm run refresh-demo-dates` | 把 demo 活動日期整體平移到未來（見下方說明） |
 | `npm run deploy` | 部署前端到 GitHub Pages |
+| `npm run prisma:migrate` | 依 schema 變更建立並套用新的 migration |
+| `npm run prisma:studio` | 開啟 Prisma Studio 圖形化檢視／編輯資料庫 |
+| `npm run db:migrate-data` | 一次性把 `db.json` 的種子資料搬進 Postgres（`--dry-run` 先核對筆數） |
 
 > **維護 demo 資料**：種子資料的活動日期是固定的，時間一久就全部過期，
 > 造訪者會發現每個活動都無法選日期。執行 `npm run refresh-demo-dates`
 > 會把所有活動日期整體往後平移（保留彼此的相對間隔），並依活動日期
 > 重建 `reservations`，確保日曆上可選的日期與活動日期一致。
+> ⚠️ 這支腳本目前只改 `db.json`（遷移到 Postgres 前的資料來源），
+> 還沒改成直接寫 Postgres——遷移後要維持 demo 日期新鮮，需要另外寫一支
+> 對 Postgres 跑的版本（見下方「已知限制」）。
 
 ---
 
@@ -151,11 +180,18 @@ npm run dev               # 前端，http://localhost:5173
 ```
 src/
 ├── backend/
-│   ├── json/db.json            # json-server 資料來源
+│   ├── json/db.json            # 遷移前的種子資料（現只作為一次性搬遷腳本的來源，不再是執行時的資料庫）
+│   ├── lib/
+│   │   ├── prisma.js           # PrismaClient 單例
+│   │   └── pick.js             # 寫入白名單工具
 │   └── server/
 │       ├── server.js           # Express 進入點
 │       ├── auth.js             # 認證與授權中介層
-│       └── auth.test.js
+│       ├── auth.test.js
+│       └── routes/             # 各資源的 CRUD 路由（activity / journal / users / orders …）
+prisma/
+├── schema.prisma               # 資料模型定義
+└── migrations/                 # migration 歷史
 └── frontend/
     ├── main.jsx / App.jsx      # 進入點與根元件
     ├── router/                 # 路由設定（含 lazy loading）
@@ -191,7 +227,12 @@ npm run test:run
 
 ## 已知限制
 
-- **資料庫**：json-server 沒有交易機制，不適合正式營運，後續應遷移至 PostgreSQL / MongoDB
+- **demo 資料保鮮腳本尚未跟著換到 Postgres**：`refresh-demo-dates.mjs` 還是改
+  `db.json`，遷移後這支腳本對線上 demo 已經沒有效果，需要另外寫一版直接寫
+  Postgres 的（用 Prisma 讀出所有活動、平移日期、`upsert` 回 `reservations`）
+- **後端仍部署在 Render 免費方案**：資料庫換成 Supabase 後不再有 SQLite/檔案型
+  冷啟動問題，但 Express 服務本身閒置 15 分鐘後還是會被 Render 停機，
+  首次請求仍需約 30 秒喚醒——這一層之後可以考慮換成不會休眠的方案
 - **社群登入 token**：Firebase ID Token 約 1 小時到期；目前由 axios interceptor
   接到 401 後自動清除憑證並導回登入頁，尚未實作 refresh token
 - **i18n**：語系檔僅覆蓋前台首頁與導覽列，其餘頁面仍為寫死中文
