@@ -1,7 +1,7 @@
 # 台灣文化體驗專案 — 架構文件
 
 > 適用對象：協作此專案的工程師
-> 最後更新：2026-03-21
+> 最後更新：2026-09-08
 
 ---
 
@@ -55,7 +55,8 @@
 | 輪播 | Swiper | 11 |
 | 多語系 | i18next | 24 |
 | 後端框架 | Express.js | 4 |
-| 模擬資料庫 | json-server + json-server-auth | 0.17 / 2.1 |
+| ORM | Prisma | 6 |
+| 資料庫 | PostgreSQL（Supabase 代管） | - |
 | 身份驗證 | Firebase Auth + Firebase Admin SDK | 11 / 13 |
 | 圖片儲存 | Cloudinary | 2 |
 | 部署 | GitHub Pages（前端）+ Render（後端）| - |
@@ -88,13 +89,24 @@ taiwan-culture-project/
 │   │   ├── router/
 │   │   │   └── index.jsx    # 路由設定（含 RequireAuth / RequireAdmin）
 │   │   └── utils/
-│   │       ├── api.js        # 所有 API 呼叫函式
+│   │       ├── api/          # 依領域拆分的 API 呼叫函式（activity/order/review…共 11 個模組）
+│   │       │   └── client.js # 共用 axios 實例（baseURL、token 攔截器、401 自動登出）
 │   │       └── constants.js  # 角色常數、localStorage key 常數
 │   └── backend/
+│       ├── lib/
+│       │   ├── prisma.js     # PrismaClient 單例
+│       │   └── pick.js       # 寫入白名單工具
 │       ├── server/
-│       │   └── server.js     # Express 伺服器主檔
+│       │   ├── server.js     # Express 伺服器主檔
+│       │   ├── auth.js       # 認證與授權中介層
+│       │   └── routes/       # 各資源的 CRUD 路由（activity / journal / users / orders …）
 │       └── json/
-│           └── db.json       # json-server 資料庫
+│           └── db.json       # 遷移前的種子資料，現在只作為一次性搬遷腳本的來源
+├── prisma/
+│   ├── schema.prisma          # 資料模型定義
+│   └── migrations/            # migration 歷史
+├── scripts/
+│   └── migrate-to-postgres.mjs  # 一次性把 db.json 搬進 Postgres
 ├── .env                      # 環境變數（不進 git）
 ├── .env.example              # 環境變數範本
 ├── vite.config.js
@@ -119,6 +131,13 @@ API_SECRET=你的api_secret
 # 伺服器
 PORT=3001
 
+# Postgres（Supabase）— Project Settings → Database → Connection string → URI
+# 主機是 db.<專案 ref 亂碼>.supabase.co，不是專案顯示名稱；
+# 這組 direct connection 只支援 IPv6，Render 這類沒有 IPv6 出口的環境
+# 要改用 Connection Pooling（Supavisor）那組 aws-0-<region>.pooler.supabase.com
+# 位址，帳號也要加上 .<專案 ref> 後綴（見第 13 節部署流程）
+DATABASE_URL=postgresql://postgres:密碼@db.xxxxxxxxxxxx.supabase.co:5432/postgres
+
 # Firebase 前端設定（VITE_ 前綴才能在 Vite 讀取）
 VITE_FIREBASE_API_KEY=...
 VITE_FIREBASE_AUTH_DOMAIN=...
@@ -135,14 +154,17 @@ VITE_FIREBASE_APP_ID=...
 ## 5. 啟動方式
 
 ```bash
-# 安裝依賴
+# 安裝依賴（postinstall 會自動跑 prisma generate）
 npm install
+
+# 依 prisma/schema.prisma 在你的 Postgres 建表（第一次跑，或 schema 有變動時）
+npx prisma migrate dev
 
 # 開發模式（前端 Vite dev server，port 5173）
 npm run dev
 
 # 啟動後端伺服器（port 3001）
-npm run start
+npm run server
 
 # 建置前端
 npm run build
@@ -151,7 +173,8 @@ npm run build
 npm run deploy
 ```
 
-> 開發時需同時啟動前端（`npm run dev`）與後端（`npm run start`）兩個 terminal。
+> 開發時需同時啟動前端（`npm run dev`）與後端（`npm run server`）兩個 terminal。
+> `npx prisma studio` 可以開一個圖形化介面（`localhost:5555`）直接瀏覽／編輯資料庫。
 
 ---
 
@@ -180,7 +203,7 @@ npm run deploy
 | Key | 說明 |
 |-----|------|
 | `token` | JWT（一般登入）或 Firebase ID Token（社群登入）|
-| `userId` | json-server 的用戶 id |
+| `userId` | 資料庫 `users.id`（自增整數） |
 | `userName` | 顯示名稱 |
 | `userEmail` | Email |
 | `userRole` | `ADMIN` / `ACTIVITY_MANAGER` / `Member` |
@@ -209,83 +232,85 @@ npm run deploy
 
 ## 7. 後端架構
 
-後端使用 **Express.js** 包裝 **json-server**，提供額外的自定義端點：
+後端是 **Express.js + Prisma**。曾經用 json-server（檔案型 mock API）起步，
+後來換成 Prisma + PostgreSQL（Supabase）——沒有交易機制、Render 冷啟動要重讀
+整個 `db.json`，都不是能撐正式營運的東西。換底層資料庫時刻意保留原本的
+REST 路徑與回應形狀，前端完全不用改。
 
 ### 自定義端點
 
 | Method | 路徑 | 說明 | 需要驗證 |
 |--------|------|------|----------|
 | POST | `/api/auth` | 驗證 Firebase ID Token，回傳用戶資料 | 否 |
-| GET | `/get-signature` | 取得 Cloudinary 上傳簽名 | 是（Bearer Token）|
 | POST | `/upload-to-cloudinary` | 上傳圖片到 Cloudinary | 是（Bearer Token）|
+| GET | `/health` | 健康檢查（含一次 `SELECT 1`），keep-alive 排程用 | 否 |
+| GET | `/api/admin/summary` | 後台統計（users/activity/orders 筆數） | 是（ADMIN / ACTIVITY_MANAGER）|
 
-### json-server 端點
+### 資源路由（`src/backend/server/routes/`）
 
-由 `db.json` 自動產生 RESTful API，主要資源：
+每個資源一個檔案，包在 Express Router 裡，掛在對應的 `/api/<resource>` 前綴下：
 
-| 資源 | 路徑 | 說明 |
-|------|------|------|
-| 用戶 | `/api/users` | 用戶資料（權限 644：owner讀寫，他人唯讀）|
-| 活動 | `/api/activity` | 活動資料 |
-| 部落格 | `/api/journal` | 文章資料 |
-| 訂單 | `/api/orders` | 訂單資料 |
-| 收藏 | `/api/favorites` | 收藏清單 |
-| 評價 | `/api/reviews` | 活動評價 |
-| 預約 | `/api/reservations` | 預約記錄 |
-| 個人檔案 | `/api/profiles` | 用戶個人資料 |
-| 通知 | `/api/notifications` | 系統通知 |
+| 資源 | 路徑 | 檔案 | 說明 |
+|------|------|------|------|
+| 用戶 | `/api/users` | `users.js` | 列表支援 `?uuid=`／`_page`+`_limit`；GET 回應一律不含密碼欄位 |
+| 活動 | `/api/activity` | `activity.js` | 支援 `_page`+`_limit` |
+| 部落格 | `/api/journal` | `journal.js` | 支援 `_page`+`_limit` |
+| 訂單 | `/api/orders` | `orders.js` | 支援 `?userId=`、`_expand=user`、`_sort=id&_order=desc&_limit=1`（產生訂單編號用）|
+| 收藏 | `/api/favorites` | `favorites.js` | 支援 `?userId=` |
+| 評價 | `/api/reviews` | `reviews.js` | 支援 `?activityId=`、`_page`+`_limit` |
+| 預約 | `/api/reservations` | `reservations.js` | 回應形狀是 `{id, "2026-12-20": {...}}` 這種日期扁平結構，內部用 `activityId` + `dates`(Json) 存 |
+| 個人檔案 | `/api/profiles` | `profiles.js` | 支援 `?userId=`、`_expand=user` |
+| 通知 | `/api/notifications` | `notifications.js` | 一般會員只能新增，管理者才能改／刪 |
+| 註冊／登入 | `/api/register`、`/api/signin` | `authRoutes.js` | 取代原本的 json-server-auth，簽發格式不變（`{ accessToken, user }`）|
 
-### json-server-auth 權限格式
+每個路由用 `pick()`（`src/backend/lib/pick.js`）挑白名單欄位才寫入資料庫，
+模擬 json-server「多餘欄位安靜地被忽略」的寬鬆特性，同時擋掉 Prisma 對
+未知欄位的嚴格報錯。
+
+### 授權規則（`guardCollections`，見 `auth.js`）
 
 ```
-users: 644
-       ^^^
-       |||_ 公開：可讀（4）
-       ||__ 已登入：可讀（4）
-       |___ 擁有者：可讀寫（6）
+users:         本人或管理者可寫；但只有本來就是管理者，才能把 role 改成管理者角色
+activity, journal:  僅 ADMIN / ACTIVITY_MANAGER 可寫入
+notifications: 一般會員可以新增（POST），只有管理者可以修改／刪除
+其他資源（orders/reviews/favorites/reservations/profiles）：登入即可寫入
 ```
 
-> ⚠️ 公開使用者無法直接 `POST /api/users`，建立新用戶需透過 `/api/register`。
+> ⚠️ 建立資料時（`POST`），伺服器一律用 token 裡的身分覆寫 `req.body.userId`，
+> 避免前端偽造成別人的資料。
+> ⚠️ 公開使用者無法直接 `POST /api/users`，建立新用戶需透過 `/api/register`
+> （且 `role` 欄位帶 `ADMIN`/`ACTIVITY_MANAGER` 也會被伺服器忽略掉，強制當
+> 一般會員）。
 
 ---
 
 ## 8. 資料庫結構
 
-`db.json` 主要資料結構（json-server 格式）：
+完整定義見 [`prisma/schema.prisma`](prisma/schema.prisma)。九個 model，關聯清楚的
+地方（favorites/profiles/reservations）建真外鍵，深巢狀或不定形的欄位
+（`activityDetails`、`rewards`、`paymentData` 等）用 Postgres 的 `Json` 型別存，
+避免為了沒有查詢需求的巢狀物件過度正規化成一堆關聯表。
 
-```json
-{
-  "users": [
-    {
-      "id": 1,
-      "email": "user@example.com",
-      "password": "$2a$10$...",  // bcrypt hash
-      "name": "用戶名稱",
-      "role": "Member",           // ADMIN | ACTIVITY_MANAGER | Member
-      "avatar": "/img/avatar/image-6.png",
-      "uuid": "firebase-uid",     // 社群登入用戶才有
-      "rewards": {
-        "points": 0,
-        "signInPoints": 0,
-        "countedOrderIds": []     // 已計算積分的訂單 id 列表
-      }
-    }
-  ],
-  "activity": [...],
-  "journal": [...],
-  "orders": [
-    {
-      "id": "ORD202403210001",
-      "userId": 1,
-      "activityName": "...",
-      "paymentData": { "contactName": "..." },
-      "reservedStatus": "reserved | in_progress | finished | cancel",
-      "paymentStatus": "PENDING | PAID",
-      "totalAmount": 500
-    }
-  ]
-}
-```
+| Model | 對應資源 | 說明 |
+|-------|----------|------|
+| `User` | `/api/users` | `role`：`ADMIN` \| `ACTIVITY_MANAGER` \| `Member`；`rewards`/`tickets` 為 Json |
+| `Activity` | `/api/activity` | `content`、`activityDetails`（含 `images[]`/`trip`/`map`/`sections[]`）為 Json |
+| `Journal` | `/api/journal` | 純文章資料 |
+| `Review` | `/api/reviews` | 透過 `activityId` 關聯 `Activity`（目前資料沒有 `userId`，留言者用 `name`/`avatar` 冗餘存）|
+| `Favorite` | `/api/favorites` | `userId` + `activityId` 唯一鍵 |
+| `Profile` | `/api/profiles` | 與 `User` 一對一（`userId` 唯一） |
+| `Reservation` | `/api/reservations` | `activityId` 一對一；`dates`（Json）存 `{ "YYYY-MM-DD": { price, remaining } }`，API 邊界會攤平成扁平物件（見第 7 節） |
+| `Order` | `/api/orders` | 主鍵是字串 `id`（如 `ORD202403210001`）；`userId`/`activityId` 皆為 nullable（見下方已知資料瑕疵）；`activityPeriod`/`paymentData` 為 Json |
+| `Notification` | `/api/notifications` | 純訊息記錄 |
+
+**已知資料瑕疵**：種子資料裡有 1 筆訂單缺 `userId`/`activityId`
+（一次性搬遷腳本 `scripts/migrate-to-postgres.mjs` 已經把它們設成 `null`，
+不會讓外鍵約束擋下整個搬遷；訂單本身的其餘欄位——金額、聯絡人等——不受影響）。
+
+**種子資料搬遷**：`db.json` 現在只作為 `scripts/migrate-to-postgres.mjs`
+一次性搬遷腳本的資料來源，不再是執行時讀寫的資料庫。刻意排除的死資料
+collection：`tickets`、`payments`（皆為空）、`userStats`、`vouchers`（無任何
+程式碼讀取）。
 
 ---
 
@@ -330,8 +355,8 @@ users: 644
 
 ```
 用戶輸入帳密
-  → POST /api/signin（json-server-auth）
-  → 回傳 { accessToken, user }
+  → POST /api/signin（routes/authRoutes.js，bcrypt 比對密碼）
+  → 回傳 { accessToken, user }（user 不含密碼欄位）
   → 存 token 至 localStorage
 ```
 
@@ -350,8 +375,10 @@ users: 644
   → 存 Firebase ID Token 至 localStorage.token
 ```
 
-> ⚠️ 社群登入儲存的是 **Firebase ID Token**，而非 json-server JWT。
-> 這表示 json-server-auth 的需要 JWT 的保護路由對社群登入用戶無效，需另行處理。
+> ⚠️ 社群登入儲存的是 **Firebase ID Token**，而非本地簽發的 JWT。
+> `auth.js` 的 `resolveIdentity()` 會依序嘗試兩種驗證方式（先試本地 JWT，
+> 失敗再試 Firebase ID Token），所以兩種登入方式都能通過同一套授權中介層，
+> 但 Firebase ID Token 約 1 小時就會過期（見第 14 節）。
 
 ### 後台登入
 
@@ -367,29 +394,31 @@ users: 644
 
 ## 11. API 說明
 
-所有 API 呼叫集中在 `src/frontend/utils/api.js`。
+API 呼叫依領域拆成 `src/frontend/utils/api/` 底下 11 個模組
+（`activity.js`、`order.js`、`review.js`…），共用同一個 axios 實例
+（`client.js`：baseURL、token 攔截器、401 自動清除登入狀態）。
 
 ### 重要函式
 
 ```js
-// 社群登入用戶建立（先查找再建立）
+// member.js — 社群登入用戶建立（先查找再建立）
 createMember(user)
 // 流程：GET /api/users?uuid → POST /api/register → PATCH /api/users/:id
 
-// 圖片上傳（需登入 token）
+// upload.js — 圖片上傳（需登入 token，簽名與上傳都在後端完成）
 uploadImageToCloudinary(file)
-// 流程：GET /get-signature → POST /upload-to-cloudinary
+// 流程：POST /upload-to-cloudinary（multipart/form-data）
 
-// 訂單建立（自動產生訂單編號 ORDyyyymmddXXXX）
+// order.js — 訂單建立（自動產生訂單編號 ORDyyyymmddXXXX）
 createOrder(orderData)
+// 流程：GET /api/orders?_sort=id&_order=desc&_limit=1 取得上一筆訂單編號 → POST /api/orders
 ```
 
-### Axios 基礎設定
+### Axios 基礎設定（`utils/api/client.js`）
 
 ```js
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'
-  ? 'https://taiwan-culture-project.onrender.com'
-  : 'http://localhost:3001'
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
+  || (import.meta.env.PROD ? 'https://taiwan-culture-project.onrender.com' : 'http://localhost:3001')
 ```
 
 ---
@@ -454,15 +483,33 @@ Vite 設定：生產環境 `base: '/taiwan-culture-project/'`
 ### 後端（Render）
 
 - 直接部署 `src/backend/server/server.js`
-- 需在 Render 環境變數設定 `.env` 中的所有變數
-- Firebase Admin SDK 金鑰 JSON 需另外上傳或設為環境變數
+- 需在 Render 環境變數設定 `.env` 中的所有變數，包含 `DATABASE_URL`
+- `package.json` 有 `postinstall: prisma generate`，`npm install` 時會自動產生
+  對應 Render 執行環境（Linux）的 Prisma Client，不需要額外的建置指令
+- Firebase Admin SDK 金鑰 JSON 需另外上傳或設為環境變數；找不到憑證檔時
+  只會停用社群登入並印警告，不會讓服務啟動失敗
+
+> ⚠️ **Render 的 `DATABASE_URL` 不能跟本機用同一組**：Supabase 的 direct
+> connection（`db.<專案ref>.supabase.co:5432`）只支援 IPv6，Render 的對外
+> 網路沒有 IPv6，會連不上（`Can't reach database server`）。Render 要改用
+> Connection Pooling（Supavisor）的 Session 模式：
+> `postgresql://postgres.<專案ref>:密碼@aws-0-<region>.pooler.supabase.com:5432/postgres`
+> ——host 換成 pooler 位址，帳號要加上 `.<專案ref>` 後綴（沒加會出現
+> Supavisor 的 `no tenant identifier provided` 錯誤）。本機因為有 IPv6，
+> 維持 direct connection 即可，兩邊本來就該是不同的連線字串。
+
+### Keep-alive（`.github/workflows/keep-alive.yml`）
+
+Render 免費方案閒置 15 分鐘會把服務停機，下次請求要重新喚醒（30-60 秒）；
+Supabase 免費方案連續 7 天沒有資料庫活動會把整個專案暫停。排程每 10 分鐘
+打一次 `/health`（該路由會真的查一次資料庫 `SELECT 1`），兩邊一起保持活著。
 
 ---
 
 ## 14. 已知問題與注意事項
 
 ### 社群登入 Token 問題
-社群登入（Google/Facebook）儲存的是 Firebase ID Token（約 1 小時過期），而非 json-server 的長效 JWT。
+社群登入（Google/Facebook）儲存的是 Firebase ID Token（約 1 小時過期），而非 `/api/signin` 簽發的長效（7 天）JWT。
 **影響**：圖片上傳等需要 Bearer Token 的功能，對社群登入用戶可能失效。
 **臨時解法**：目前以 token 存在與否判斷登入狀態，不驗證 token 效期。
 
@@ -472,10 +519,14 @@ Facebook 登入需要在以下兩處手動設定才能使用：
 2. **Meta Developer Console** → Facebook Login → Settings → 加入 OAuth 重新導向 URI：
    `https://taiwancultureproject.firebaseapp.com/__/auth/handler`
 
-### json-server 限制
-- 沒有真實的資料庫事務（transaction）
-- 生產環境不適合大量資料（建議遷移至 MongoDB / PostgreSQL）
-- 圖片上傳依賴 Cloudinary，本地開發需有效的 API Key
+### demo 資料保鮮腳本尚未跟著換到 Postgres
+`scripts/refresh-demo-dates.mjs`（把種子活動日期整體平移到未來，避免造訪者
+看到全部過期）目前還是改本機的 `db.json`，遷移到 Postgres 後這支腳本對線上
+demo 已經沒有效果，需要另外寫一版直接對 Postgres 跑（用 Prisma 讀出所有
+活動、平移日期、`upsert` 回 `reservations`）。
+
+### 圖片上傳依賴 Cloudinary
+本地開發需有效的 Cloudinary API Key，上傳限制 500 KB。
 
 ### findDOMNode 警告
 React Bootstrap 和 ReactQuill 在 React 18 中會產生 `findDOMNode` 棄用警告。
