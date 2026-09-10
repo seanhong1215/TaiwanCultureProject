@@ -25,8 +25,10 @@ const WRITABLE_FIELDS = ['name', 'role', 'avatar', 'uuid', 'signInHistory', 'cur
 
 router.get('/', async (req, res, next) => {
   try {
-    const { _page, _limit, uuid } = req.query;
-    const where = uuid !== undefined ? { uuid: String(uuid) } : {};
+    const { _page, _limit, uuid, email } = req.query;
+    const where = {};
+    if (uuid !== undefined) where.uuid = String(uuid);
+    if (email !== undefined) where.email = String(email);
 
     if (_page && _limit) {
       const page = Number(_page);
