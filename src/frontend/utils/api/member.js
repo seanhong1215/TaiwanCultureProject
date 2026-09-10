@@ -24,6 +24,8 @@ export const updatedMembers = async (id, data) => {
 export const createMember = async (user) => {
   try {
       // 1. 先用 uuid 查詢用戶是否已存在
+      //（後端 /api/auth 在這之前已經做過帳號連結：同 email 的舊帳號會被
+      //  更新成當前 provider 的 uuid，所以這裡通常查得到。）
       const { data: existingUsers } = await axios.get("api/users", {
         params: { uuid: user.uuid }
       });
@@ -32,7 +34,19 @@ export const createMember = async (user) => {
         return existingUsers[0];
       }
 
-      // 2. 用戶不存在，透過 /api/register 建立帳號（取得 json-server JWT）
+      // 1b. uuid 查不到，但 email 可能已經有帳號（例如 FB 沒給 email、
+      //     使用者手動輸入了一個已註冊的 email）。直接沿用該帳號登入，
+      //     不要往下走註冊撞 400。
+      if (user.email) {
+        const { data: byEmail } = await axios.get("api/users", {
+          params: { email: user.email }
+        });
+        if (byEmail.length > 0) {
+          return byEmail[0];
+        }
+      }
+
+      // 2. 用戶不存在，透過 /api/register 建立帳號（取得 JWT）
       const { data: authData } = await axios.post("api/register", {
         email: user.email,
         password: user.password,

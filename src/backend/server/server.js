@@ -120,11 +120,25 @@ app.post('/api/auth', async (req, res) => {
 
   try {
     const decodedToken = await firebaseAuth.verifyIdToken(token);
+    const { uid, email } = decodedToken;
+
+    // 帳號連結：verifyIdToken 已經證明使用者擁有這個 email。
+    // 如果已經有同 email 的帳號但 uuid 對不上（例如先前用 Google 註冊、
+    // 這次改用 Facebook），直接把 uuid 更新成當前 provider 的。
+    // 沒有這段的話，createMember 會用 uuid 查不到 → 走註冊 → 撞到
+    // 「此 email 已被註冊」400，社群登入直接失敗、進不去。
+    if (email) {
+      const existing = await prisma.user.findUnique({ where: { email } });
+      if (existing && existing.uuid !== uid) {
+        await prisma.user.update({ where: { id: existing.id }, data: { uuid: uid } });
+      }
+    }
+
     res.status(200).json({
       message: 'Token verified',
       user: {
-        uid: decodedToken.uid,
-        email: decodedToken.email || null,
+        uid,
+        email: email || null,
         name: decodedToken.name || '',
         picture: decodedToken.picture || '',
       },

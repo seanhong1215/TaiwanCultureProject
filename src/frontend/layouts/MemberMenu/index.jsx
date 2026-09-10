@@ -4,6 +4,7 @@ import './Menu.scss';
 import { updatedMembers } from '@/frontend/utils/api/member';
 import { uploadImageToCloudinary } from '@/frontend/utils/api/upload';
 import { cloudinaryOptimize } from '@/frontend/utils/cloudinary';
+import defaultAvatar from '@/frontend/assets/images/default-images.png';
 
 const Menu = () => {
 
@@ -97,11 +98,13 @@ const Menu = () => {
                 className="d-none"
               />
                 <img
-                  src={cloudinaryOptimize(userAvatar, 200)}
+                  src={cloudinaryOptimize(userAvatar, 200) || defaultAvatar}
                   alt="User Avatar"
                   className="rounded-circle img-hover"
                   width="100"
                   height="100"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => { e.currentTarget.src = defaultAvatar; }}
                   onClick={handleFileChange}
                 />
                 <span className="material-icons camera-icon">photo_camera</span>
