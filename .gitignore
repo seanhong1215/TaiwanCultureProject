@@ -48,6 +48,11 @@ build/
 # npm ci cache
 npm-cache/
 
+# 個人測試清單／草稿
+驗收.md
+scratch/
+TODO.local.md
+
 # Editor config
 .prettierignore
 .eslintcache
