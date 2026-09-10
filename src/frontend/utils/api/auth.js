@@ -22,20 +22,17 @@ export const login = async (data) => {
     return response.data;
 };
 
-// Google登入
+// Google 登入：只負責驗證 token 並拿回使用者資料。
+// 不在這裡寫 localStorage.token——要等 handleSocialLogin 把會員資料
+// （createMember）也建立／取得成功之後才設，避免「有 token 但沒有
+// userId／userAvatar」的登一半狀態把會員中心弄壞。
 export const loginGoogle = async (idToken) => {
     const response = await axios.post("api/auth", { token: idToken });
-    if (idToken) {
-        localStorage.setItem('token', idToken); // 存 Token
-    }
     return response.data;
 };
 
-// Facebook登入
+// Facebook 登入：同上
 export const loginFacebook = async (idToken) => {
     const response = await axios.post("api/auth", { token: idToken });
-    if (idToken) {
-        localStorage.setItem('token', idToken); // 存 Token
-    }
     return response.data;
 };

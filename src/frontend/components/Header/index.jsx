@@ -193,7 +193,11 @@ const Header = () => {
 
             if (!dbUser) throw new Error("建立用戶資料失敗");
 
-            // 4. 儲存用戶資訊（使用 DB 回傳的真實 ID 和 role）
+            // 4. 會員資料都到位了，這時候才把 token 寫進 localStorage
+            //（在此之前失敗的話就不會留下「有 token 卻沒會員資料」的破狀態）
+            localStorage.setItem("token", idToken);
+
+            // 5. 儲存用戶資訊（使用 DB 回傳的真實 ID 和 role）
             const avatar = dbUser.avatar || firebaseUser.picture || "https://mockmind-api.uifaces.co/content/human/212.jpg";
             localStorage.setItem("userId", dbUser.id);
             localStorage.setItem("userName", dbUser.name || firebaseUser.name);
